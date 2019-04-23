@@ -12,7 +12,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 @SpringBootTest
 public class DemoApplicationTests {
     @Autowired
-    MailService mailService;
+    MailService mailService  ;
     @Test
     public void contextLoads() {
         mailService.sendSimpleMail();
