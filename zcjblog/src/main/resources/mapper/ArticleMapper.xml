@@ -1,0 +1,409 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.neverend.blog.mapper.ArticleMapper">
+  <resultMap id="BaseResultMap" type="com.neverend.blog.entity.Article">
+    <id column="article_id" jdbcType="VARCHAR" property="articleId" />
+    <result column="account_id" jdbcType="VARCHAR" property="accountId" />
+    <result column="article_name" jdbcType="VARCHAR" property="articleName" />
+    <result column="brief_introduction" jdbcType="VARCHAR" property="briefIntroduction" />
+    <result column="creat_time" jdbcType="TIMESTAMP" property="creatTime" />
+    <result column="article_sort_id" jdbcType="VARCHAR" property="articleSortId" />
+    <result column="state" jdbcType="VARCHAR" property="state" />
+    <result column="bei_yong_yi" jdbcType="VARCHAR" property="beiYongYi" />
+    <result column="bei_yong_er" jdbcType="VARCHAR" property="beiYongEr" />
+    <result column="bei_yong_si" jdbcType="VARCHAR" property="beiYongSi" />
+    <result column="bei_yong_wu" jdbcType="VARCHAR" property="beiYongWu" />
+    <result column="bei_yong_qi" jdbcType="VARCHAR" property="beiYongQi" />
+  </resultMap>
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.neverend.blog.entity.ArticleWithBLOBs">
+    <result column="context" jdbcType="LONGVARCHAR" property="context" />
+    <result column="bei_yong_liu" jdbcType="LONGVARCHAR" property="beiYongLiu" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    article_id, account_id, article_name, brief_introduction, creat_time, article_sort_id, 
+    state, bei_yong_yi, bei_yong_er, bei_yong_si, bei_yong_wu, bei_yong_qi
+  </sql>
+  <sql id="Blob_Column_List">
+    context, bei_yong_liu
+  </sql>
+  <select id="selectByExampleWithBLOBs" parameterType="com.neverend.blog.entity.ArticleExample" resultMap="ResultMapWithBLOBs">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from tb_article
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByExample" parameterType="com.neverend.blog.entity.ArticleExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from tb_article
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="ResultMapWithBLOBs">
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from tb_article
+    where article_id = #{articleId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from tb_article
+    where article_id = #{articleId,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.neverend.blog.entity.ArticleExample">
+    delete from tb_article
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.neverend.blog.entity.ArticleWithBLOBs">
+    insert into tb_article (article_id, account_id, article_name, 
+      brief_introduction, creat_time, article_sort_id, 
+      state, bei_yong_yi, bei_yong_er, 
+      bei_yong_si, bei_yong_wu, bei_yong_qi, 
+      context, bei_yong_liu)
+    values (#{articleId,jdbcType=VARCHAR}, #{accountId,jdbcType=VARCHAR}, #{articleName,jdbcType=VARCHAR}, 
+      #{briefIntroduction,jdbcType=VARCHAR}, #{creatTime,jdbcType=TIMESTAMP}, #{articleSortId,jdbcType=VARCHAR}, 
+      #{state,jdbcType=VARCHAR}, #{beiYongYi,jdbcType=VARCHAR}, #{beiYongEr,jdbcType=VARCHAR}, 
+      #{beiYongSi,jdbcType=VARCHAR}, #{beiYongWu,jdbcType=VARCHAR}, #{beiYongQi,jdbcType=VARCHAR}, 
+      #{context,jdbcType=LONGVARCHAR}, #{beiYongLiu,jdbcType=LONGVARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.neverend.blog.entity.ArticleWithBLOBs">
+    insert into tb_article
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="articleId != null">
+        article_id,
+      </if>
+      <if test="accountId != null">
+        account_id,
+      </if>
+      <if test="articleName != null">
+        article_name,
+      </if>
+      <if test="briefIntroduction != null">
+        brief_introduction,
+      </if>
+      <if test="creatTime != null">
+        creat_time,
+      </if>
+      <if test="articleSortId != null">
+        article_sort_id,
+      </if>
+      <if test="state != null">
+        state,
+      </if>
+      <if test="beiYongYi != null">
+        bei_yong_yi,
+      </if>
+      <if test="beiYongEr != null">
+        bei_yong_er,
+      </if>
+      <if test="beiYongSi != null">
+        bei_yong_si,
+      </if>
+      <if test="beiYongWu != null">
+        bei_yong_wu,
+      </if>
+      <if test="beiYongQi != null">
+        bei_yong_qi,
+      </if>
+      <if test="context != null">
+        context,
+      </if>
+      <if test="beiYongLiu != null">
+        bei_yong_liu,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="articleId != null">
+        #{articleId,jdbcType=VARCHAR},
+      </if>
+      <if test="accountId != null">
+        #{accountId,jdbcType=VARCHAR},
+      </if>
+      <if test="articleName != null">
+        #{articleName,jdbcType=VARCHAR},
+      </if>
+      <if test="briefIntroduction != null">
+        #{briefIntroduction,jdbcType=VARCHAR},
+      </if>
+      <if test="creatTime != null">
+        #{creatTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="articleSortId != null">
+        #{articleSortId,jdbcType=VARCHAR},
+      </if>
+      <if test="state != null">
+        #{state,jdbcType=VARCHAR},
+      </if>
+      <if test="beiYongYi != null">
+        #{beiYongYi,jdbcType=VARCHAR},
+      </if>
+      <if test="beiYongEr != null">
+        #{beiYongEr,jdbcType=VARCHAR},
+      </if>
+      <if test="beiYongSi != null">
+        #{beiYongSi,jdbcType=VARCHAR},
+      </if>
+      <if test="beiYongWu != null">
+        #{beiYongWu,jdbcType=VARCHAR},
+      </if>
+      <if test="beiYongQi != null">
+        #{beiYongQi,jdbcType=VARCHAR},
+      </if>
+      <if test="context != null">
+        #{context,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="beiYongLiu != null">
+        #{beiYongLiu,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.neverend.blog.entity.ArticleExample" resultType="java.lang.Long">
+    select count(*) from tb_article
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update tb_article
+    <set>
+      <if test="record.articleId != null">
+        article_id = #{record.articleId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.accountId != null">
+        account_id = #{record.accountId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.articleName != null">
+        article_name = #{record.articleName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.briefIntroduction != null">
+        brief_introduction = #{record.briefIntroduction,jdbcType=VARCHAR},
+      </if>
+      <if test="record.creatTime != null">
+        creat_time = #{record.creatTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.articleSortId != null">
+        article_sort_id = #{record.articleSortId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.state != null">
+        state = #{record.state,jdbcType=VARCHAR},
+      </if>
+      <if test="record.beiYongYi != null">
+        bei_yong_yi = #{record.beiYongYi,jdbcType=VARCHAR},
+      </if>
+      <if test="record.beiYongEr != null">
+        bei_yong_er = #{record.beiYongEr,jdbcType=VARCHAR},
+      </if>
+      <if test="record.beiYongSi != null">
+        bei_yong_si = #{record.beiYongSi,jdbcType=VARCHAR},
+      </if>
+      <if test="record.beiYongWu != null">
+        bei_yong_wu = #{record.beiYongWu,jdbcType=VARCHAR},
+      </if>
+      <if test="record.beiYongQi != null">
+        bei_yong_qi = #{record.beiYongQi,jdbcType=VARCHAR},
+      </if>
+      <if test="record.context != null">
+        context = #{record.context,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="record.beiYongLiu != null">
+        bei_yong_liu = #{record.beiYongLiu,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExampleWithBLOBs" parameterType="map">
+    update tb_article
+    set article_id = #{record.articleId,jdbcType=VARCHAR},
+      account_id = #{record.accountId,jdbcType=VARCHAR},
+      article_name = #{record.articleName,jdbcType=VARCHAR},
+      brief_introduction = #{record.briefIntroduction,jdbcType=VARCHAR},
+      creat_time = #{record.creatTime,jdbcType=TIMESTAMP},
+      article_sort_id = #{record.articleSortId,jdbcType=VARCHAR},
+      state = #{record.state,jdbcType=VARCHAR},
+      bei_yong_yi = #{record.beiYongYi,jdbcType=VARCHAR},
+      bei_yong_er = #{record.beiYongEr,jdbcType=VARCHAR},
+      bei_yong_si = #{record.beiYongSi,jdbcType=VARCHAR},
+      bei_yong_wu = #{record.beiYongWu,jdbcType=VARCHAR},
+      bei_yong_qi = #{record.beiYongQi,jdbcType=VARCHAR},
+      context = #{record.context,jdbcType=LONGVARCHAR},
+      bei_yong_liu = #{record.beiYongLiu,jdbcType=LONGVARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update tb_article
+    set article_id = #{record.articleId,jdbcType=VARCHAR},
+      account_id = #{record.accountId,jdbcType=VARCHAR},
+      article_name = #{record.articleName,jdbcType=VARCHAR},
+      brief_introduction = #{record.briefIntroduction,jdbcType=VARCHAR},
+      creat_time = #{record.creatTime,jdbcType=TIMESTAMP},
+      article_sort_id = #{record.articleSortId,jdbcType=VARCHAR},
+      state = #{record.state,jdbcType=VARCHAR},
+      bei_yong_yi = #{record.beiYongYi,jdbcType=VARCHAR},
+      bei_yong_er = #{record.beiYongEr,jdbcType=VARCHAR},
+      bei_yong_si = #{record.beiYongSi,jdbcType=VARCHAR},
+      bei_yong_wu = #{record.beiYongWu,jdbcType=VARCHAR},
+      bei_yong_qi = #{record.beiYongQi,jdbcType=VARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.neverend.blog.entity.ArticleWithBLOBs">
+    update tb_article
+    <set>
+      <if test="accountId != null">
+        account_id = #{accountId,jdbcType=VARCHAR},
+      </if>
+      <if test="articleName != null">
+        article_name = #{articleName,jdbcType=VARCHAR},
+      </if>
+      <if test="briefIntroduction != null">
+        brief_introduction = #{briefIntroduction,jdbcType=VARCHAR},
+      </if>
+      <if test="creatTime != null">
+        creat_time = #{creatTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="articleSortId != null">
+        article_sort_id = #{articleSortId,jdbcType=VARCHAR},
+      </if>
+      <if test="state != null">
+        state = #{state,jdbcType=VARCHAR},
+      </if>
+      <if test="beiYongYi != null">
+        bei_yong_yi = #{beiYongYi,jdbcType=VARCHAR},
+      </if>
+      <if test="beiYongEr != null">
+        bei_yong_er = #{beiYongEr,jdbcType=VARCHAR},
+      </if>
+      <if test="beiYongSi != null">
+        bei_yong_si = #{beiYongSi,jdbcType=VARCHAR},
+      </if>
+      <if test="beiYongWu != null">
+        bei_yong_wu = #{beiYongWu,jdbcType=VARCHAR},
+      </if>
+      <if test="beiYongQi != null">
+        bei_yong_qi = #{beiYongQi,jdbcType=VARCHAR},
+      </if>
+      <if test="context != null">
+        context = #{context,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="beiYongLiu != null">
+        bei_yong_liu = #{beiYongLiu,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where article_id = #{articleId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.neverend.blog.entity.ArticleWithBLOBs">
+    update tb_article
+    set account_id = #{accountId,jdbcType=VARCHAR},
+      article_name = #{articleName,jdbcType=VARCHAR},
+      brief_introduction = #{briefIntroduction,jdbcType=VARCHAR},
+      creat_time = #{creatTime,jdbcType=TIMESTAMP},
+      article_sort_id = #{articleSortId,jdbcType=VARCHAR},
+      state = #{state,jdbcType=VARCHAR},
+      bei_yong_yi = #{beiYongYi,jdbcType=VARCHAR},
+      bei_yong_er = #{beiYongEr,jdbcType=VARCHAR},
+      bei_yong_si = #{beiYongSi,jdbcType=VARCHAR},
+      bei_yong_wu = #{beiYongWu,jdbcType=VARCHAR},
+      bei_yong_qi = #{beiYongQi,jdbcType=VARCHAR},
+      context = #{context,jdbcType=LONGVARCHAR},
+      bei_yong_liu = #{beiYongLiu,jdbcType=LONGVARCHAR}
+    where article_id = #{articleId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.neverend.blog.entity.Article">
+    update tb_article
+    set account_id = #{accountId,jdbcType=VARCHAR},
+      article_name = #{articleName,jdbcType=VARCHAR},
+      brief_introduction = #{briefIntroduction,jdbcType=VARCHAR},
+      creat_time = #{creatTime,jdbcType=TIMESTAMP},
+      article_sort_id = #{articleSortId,jdbcType=VARCHAR},
+      state = #{state,jdbcType=VARCHAR},
+      bei_yong_yi = #{beiYongYi,jdbcType=VARCHAR},
+      bei_yong_er = #{beiYongEr,jdbcType=VARCHAR},
+      bei_yong_si = #{beiYongSi,jdbcType=VARCHAR},
+      bei_yong_wu = #{beiYongWu,jdbcType=VARCHAR},
+      bei_yong_qi = #{beiYongQi,jdbcType=VARCHAR}
+    where article_id = #{articleId,jdbcType=VARCHAR}
+  </update>
+</mapper>

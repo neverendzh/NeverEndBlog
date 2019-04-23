@@ -1,0 +1,276 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.neverend.blog.mapper.LanMuMapper">
+  <resultMap id="BaseResultMap" type="com.neverend.blog.entity.LanMu">
+    <id column="yi_ji_lan_mu_id" jdbcType="VARCHAR" property="yiJiLanMuId" />
+    <result column="lan_mu_name" jdbcType="VARCHAR" property="lanMuName" />
+    <result column="super_lan_mu_id" jdbcType="VARCHAR" property="superLanMuId" />
+    <result column="role_permission_id" jdbcType="VARCHAR" property="rolePermissionId" />
+    <result column="bei_yong_yi" jdbcType="VARCHAR" property="beiYongYi" />
+    <result column="bei_yong_er" jdbcType="VARCHAR" property="beiYongEr" />
+    <result column="bei_yong_san" jdbcType="VARCHAR" property="beiYongSan" />
+    <result column="bei_yong_si" jdbcType="VARCHAR" property="beiYongSi" />
+    <result column="bei_yong_wu" jdbcType="VARCHAR" property="beiYongWu" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    yi_ji_lan_mu_id, lan_mu_name, super_lan_mu_id, role_permission_id, bei_yong_yi, bei_yong_er,
+    bei_yong_san, bei_yong_si, bei_yong_wu
+  </sql>
+  <select id="selectByExample" parameterType="com.neverend.blog.entity.LanMuExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from tb_lan_mu
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from tb_lan_mu
+    where yi_ji_lan_mu_id = #{yiJiLanMuId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from tb_lan_mu
+    where yi_ji_lan_mu_id = #{yiJiLanMuId,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.neverend.blog.entity.LanMuExample">
+    delete from tb_lan_mu
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.neverend.blog.entity.LanMu">
+    insert into tb_lan_mu (yi_ji_lan_mu_id, lan_mu_name, super_lan_mu_id,
+      role_permission_id, bei_yong_yi, bei_yong_er,
+      bei_yong_san, bei_yong_si, bei_yong_wu
+      )
+    values (#{yiJiLanMuId,jdbcType=VARCHAR}, #{lanMuName,jdbcType=VARCHAR}, #{superLanMuId,jdbcType=VARCHAR},
+      #{rolePermissionId,jdbcType=VARCHAR}, #{beiYongYi,jdbcType=VARCHAR}, #{beiYongEr,jdbcType=VARCHAR},
+      #{beiYongSan,jdbcType=VARCHAR}, #{beiYongSi,jdbcType=VARCHAR}, #{beiYongWu,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.neverend.blog.entity.LanMu">
+    insert into tb_lan_mu
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="yiJiLanMuId != null">
+        yi_ji_lan_mu_id,
+      </if>
+      <if test="lanMuName != null">
+        lan_mu_name,
+      </if>
+      <if test="superLanMuId != null">
+        super_lan_mu_id,
+      </if>
+      <if test="rolePermissionId != null">
+        role_permission_id,
+      </if>
+      <if test="beiYongYi != null">
+        bei_yong_yi,
+      </if>
+      <if test="beiYongEr != null">
+        bei_yong_er,
+      </if>
+      <if test="beiYongSan != null">
+        bei_yong_san,
+      </if>
+      <if test="beiYongSi != null">
+        bei_yong_si,
+      </if>
+      <if test="beiYongWu != null">
+        bei_yong_wu,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="yiJiLanMuId != null">
+        #{yiJiLanMuId,jdbcType=VARCHAR},
+      </if>
+      <if test="lanMuName != null">
+        #{lanMuName,jdbcType=VARCHAR},
+      </if>
+      <if test="superLanMuId != null">
+        #{superLanMuId,jdbcType=VARCHAR},
+      </if>
+      <if test="rolePermissionId != null">
+        #{rolePermissionId,jdbcType=VARCHAR},
+      </if>
+      <if test="beiYongYi != null">
+        #{beiYongYi,jdbcType=VARCHAR},
+      </if>
+      <if test="beiYongEr != null">
+        #{beiYongEr,jdbcType=VARCHAR},
+      </if>
+      <if test="beiYongSan != null">
+        #{beiYongSan,jdbcType=VARCHAR},
+      </if>
+      <if test="beiYongSi != null">
+        #{beiYongSi,jdbcType=VARCHAR},
+      </if>
+      <if test="beiYongWu != null">
+        #{beiYongWu,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.neverend.blog.entity.LanMuExample" resultType="java.lang.Long">
+    select count(*) from tb_lan_mu
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update tb_lan_mu
+    <set>
+      <if test="record.yiJiLanMuId != null">
+        yi_ji_lan_mu_id = #{record.yiJiLanMuId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.lanMuName != null">
+        lan_mu_name = #{record.lanMuName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.superLanMuId != null">
+        super_lan_mu_id = #{record.superLanMuId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.rolePermissionId != null">
+        role_permission_id = #{record.rolePermissionId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.beiYongYi != null">
+        bei_yong_yi = #{record.beiYongYi,jdbcType=VARCHAR},
+      </if>
+      <if test="record.beiYongEr != null">
+        bei_yong_er = #{record.beiYongEr,jdbcType=VARCHAR},
+      </if>
+      <if test="record.beiYongSan != null">
+        bei_yong_san = #{record.beiYongSan,jdbcType=VARCHAR},
+      </if>
+      <if test="record.beiYongSi != null">
+        bei_yong_si = #{record.beiYongSi,jdbcType=VARCHAR},
+      </if>
+      <if test="record.beiYongWu != null">
+        bei_yong_wu = #{record.beiYongWu,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update tb_lan_mu
+    set yi_ji_lan_mu_id = #{record.yiJiLanMuId,jdbcType=VARCHAR},
+    lan_mu_name = #{record.lanMuName,jdbcType=VARCHAR},
+    super_lan_mu_id = #{record.superLanMuId,jdbcType=VARCHAR},
+    role_permission_id = #{record.rolePermissionId,jdbcType=VARCHAR},
+    bei_yong_yi = #{record.beiYongYi,jdbcType=VARCHAR},
+    bei_yong_er = #{record.beiYongEr,jdbcType=VARCHAR},
+    bei_yong_san = #{record.beiYongSan,jdbcType=VARCHAR},
+    bei_yong_si = #{record.beiYongSi,jdbcType=VARCHAR},
+    bei_yong_wu = #{record.beiYongWu,jdbcType=VARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.neverend.blog.entity.LanMu">
+    update tb_lan_mu
+    <set>
+      <if test="lanMuName != null">
+        lan_mu_name = #{lanMuName,jdbcType=VARCHAR},
+      </if>
+      <if test="superLanMuId != null">
+        super_lan_mu_id = #{superLanMuId,jdbcType=VARCHAR},
+      </if>
+      <if test="rolePermissionId != null">
+        role_permission_id = #{rolePermissionId,jdbcType=VARCHAR},
+      </if>
+      <if test="beiYongYi != null">
+        bei_yong_yi = #{beiYongYi,jdbcType=VARCHAR},
+      </if>
+      <if test="beiYongEr != null">
+        bei_yong_er = #{beiYongEr,jdbcType=VARCHAR},
+      </if>
+      <if test="beiYongSan != null">
+        bei_yong_san = #{beiYongSan,jdbcType=VARCHAR},
+      </if>
+      <if test="beiYongSi != null">
+        bei_yong_si = #{beiYongSi,jdbcType=VARCHAR},
+      </if>
+      <if test="beiYongWu != null">
+        bei_yong_wu = #{beiYongWu,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where yi_ji_lan_mu_id = #{yiJiLanMuId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.neverend.blog.entity.LanMu">
+    update tb_lan_mu
+    set lan_mu_name = #{lanMuName,jdbcType=VARCHAR},
+      super_lan_mu_id = #{superLanMuId,jdbcType=VARCHAR},
+      role_permission_id = #{rolePermissionId,jdbcType=VARCHAR},
+      bei_yong_yi = #{beiYongYi,jdbcType=VARCHAR},
+      bei_yong_er = #{beiYongEr,jdbcType=VARCHAR},
+      bei_yong_san = #{beiYongSan,jdbcType=VARCHAR},
+      bei_yong_si = #{beiYongSi,jdbcType=VARCHAR},
+      bei_yong_wu = #{beiYongWu,jdbcType=VARCHAR}
+    where yi_ji_lan_mu_id = #{yiJiLanMuId,jdbcType=VARCHAR}
+  </update>
+</mapper>

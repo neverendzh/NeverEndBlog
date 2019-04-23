@@ -1,0 +1,270 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.neverend.blog.mapper.SuperArticleSortMapper">
+  <resultMap id="BaseResultMap" type="com.neverend.blog.entity.SuperArticleSort">
+    <id column="super_article_sort_id" jdbcType="VARCHAR" property="superArticleSortId" />
+    <result column="super_artilce_name" jdbcType="VARCHAR" property="superArtilceName" />
+    <result column="account_id" jdbcType="VARCHAR" property="accountId" />
+    <result column="creat_time" jdbcType="TIMESTAMP" property="creatTime" />
+    <result column="to_update" jdbcType="TIMESTAMP" property="toUpdate" />
+    <result column="bei_yong_yi" jdbcType="VARCHAR" property="beiYongYi" />
+    <result column="bei_yong_er" jdbcType="VARCHAR" property="beiYongEr" />
+    <result column="bei_yong_san" jdbcType="VARCHAR" property="beiYongSan" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    super_article_sort_id, super_artilce_name, account_id, creat_time, to_update, bei_yong_yi,
+    bei_yong_er, bei_yong_san
+  </sql>
+  <select id="selectByExample" parameterType="com.neverend.blog.entity.SuperArticleSortExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from tb_super_article_sort
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from tb_super_article_sort
+    where super_article_sort_id = #{superArticleSortId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from tb_super_article_sort
+    where super_article_sort_id = #{superArticleSortId,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.neverend.blog.entity.SuperArticleSortExample">
+    delete from tb_super_article_sort
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.neverend.blog.entity.SuperArticleSort">
+    insert into tb_super_article_sort (super_article_sort_id, super_artilce_name, 
+      account_id, creat_time, to_update, 
+      bei_yong_yi, bei_yong_er, bei_yong_san
+      )
+    values (#{superArticleSortId,jdbcType=VARCHAR}, #{superArtilceName,jdbcType=VARCHAR}, 
+      #{accountId,jdbcType=VARCHAR}, #{creatTime,jdbcType=TIMESTAMP}, #{toUpdate,jdbcType=TIMESTAMP}, 
+      #{beiYongYi,jdbcType=VARCHAR}, #{beiYongEr,jdbcType=VARCHAR}, #{beiYongSan,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.neverend.blog.entity.SuperArticleSort">
+    insert into tb_super_article_sort
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="superArticleSortId != null">
+        super_article_sort_id,
+      </if>
+      <if test="superArtilceName != null">
+        super_artilce_name,
+      </if>
+      <if test="accountId != null">
+        account_id,
+      </if>
+      <if test="creatTime != null">
+        creat_time,
+      </if>
+      <if test="toUpdate != null">
+        to_update,
+      </if>
+      <if test="beiYongYi != null">
+        bei_yong_yi,
+      </if>
+      <if test="beiYongEr != null">
+        bei_yong_er,
+      </if>
+      <if test="beiYongSan != null">
+        bei_yong_san,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="superArticleSortId != null">
+        #{superArticleSortId,jdbcType=VARCHAR},
+      </if>
+      <if test="superArtilceName != null">
+        #{superArtilceName,jdbcType=VARCHAR},
+      </if>
+      <if test="accountId != null">
+        #{accountId,jdbcType=VARCHAR},
+      </if>
+      <if test="creatTime != null">
+        #{creatTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="toUpdate != null">
+        #{toUpdate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="beiYongYi != null">
+        #{beiYongYi,jdbcType=VARCHAR},
+      </if>
+      <if test="beiYongEr != null">
+        #{beiYongEr,jdbcType=VARCHAR},
+      </if>
+      <if test="beiYongSan != null">
+        #{beiYongSan,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.neverend.blog.entity.SuperArticleSortExample" resultType="java.lang.Long">
+    select count(*) from tb_super_article_sort
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+    <select id="selectByWeiShanChu" resultType="com.neverend.blog.entity.SuperArticleSort">
+        SELECT
+            *
+        FROM
+            `tb_super_article_sort`
+        WHERE
+            tb_super_article_sort.bei_yong_yi = #{statOne}
+        OR tb_super_article_sort.bei_yong_yi = #{stateTwo};
+    </select>
+    <update id="updateByExampleSelective" parameterType="map">
+    update tb_super_article_sort
+    <set>
+      <if test="record.superArticleSortId != null">
+        super_article_sort_id = #{record.superArticleSortId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.superArtilceName != null">
+        super_artilce_name = #{record.superArtilceName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.accountId != null">
+        account_id = #{record.accountId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.creatTime != null">
+        creat_time = #{record.creatTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.toUpdate != null">
+        to_update = #{record.toUpdate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.beiYongYi != null">
+        bei_yong_yi = #{record.beiYongYi,jdbcType=VARCHAR},
+      </if>
+      <if test="record.beiYongEr != null">
+        bei_yong_er = #{record.beiYongEr,jdbcType=VARCHAR},
+      </if>
+      <if test="record.beiYongSan != null">
+        bei_yong_san = #{record.beiYongSan,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update tb_super_article_sort
+    set super_article_sort_id = #{record.superArticleSortId,jdbcType=VARCHAR},
+      super_artilce_name = #{record.superArtilceName,jdbcType=VARCHAR},
+      account_id = #{record.accountId,jdbcType=VARCHAR},
+      creat_time = #{record.creatTime,jdbcType=TIMESTAMP},
+      to_update = #{record.toUpdate,jdbcType=TIMESTAMP},
+      bei_yong_yi = #{record.beiYongYi,jdbcType=VARCHAR},
+      bei_yong_er = #{record.beiYongEr,jdbcType=VARCHAR},
+      bei_yong_san = #{record.beiYongSan,jdbcType=VARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.neverend.blog.entity.SuperArticleSort">
+    update tb_super_article_sort
+    <set>
+      <if test="superArtilceName != null">
+        super_artilce_name = #{superArtilceName,jdbcType=VARCHAR},
+      </if>
+      <if test="accountId != null">
+        account_id = #{accountId,jdbcType=VARCHAR},
+      </if>
+      <if test="creatTime != null">
+        creat_time = #{creatTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="toUpdate != null">
+        to_update = #{toUpdate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="beiYongYi != null">
+        bei_yong_yi = #{beiYongYi,jdbcType=VARCHAR},
+      </if>
+      <if test="beiYongEr != null">
+        bei_yong_er = #{beiYongEr,jdbcType=VARCHAR},
+      </if>
+      <if test="beiYongSan != null">
+        bei_yong_san = #{beiYongSan,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where super_article_sort_id = #{superArticleSortId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.neverend.blog.entity.SuperArticleSort">
+    update tb_super_article_sort
+    set super_artilce_name = #{superArtilceName,jdbcType=VARCHAR},
+      account_id = #{accountId,jdbcType=VARCHAR},
+      creat_time = #{creatTime,jdbcType=TIMESTAMP},
+      to_update = #{toUpdate,jdbcType=TIMESTAMP},
+      bei_yong_yi = #{beiYongYi,jdbcType=VARCHAR},
+      bei_yong_er = #{beiYongEr,jdbcType=VARCHAR},
+      bei_yong_san = #{beiYongSan,jdbcType=VARCHAR}
+    where super_article_sort_id = #{superArticleSortId,jdbcType=VARCHAR}
+  </update>
+</mapper>

@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>Never_End</title>
+    <!--header——js-->
+    <!--<div th:replace="../templates/admin/include/header :: headerJsCss"></div>-->
+    <script type="text/javascript" src="/static/res/ckeditor/plugins/codesnippet/lib/highlight/highlight.pack.js"></script>
+    <link rel="stylesheet" type="text/css" href="/static/res/ckeditor/plugins/codesnippet/lib/highlight/styles/monokai_sublime.css">
+</head>
+<body class="layui-layout-body">
+<div class="layui-layout layui-layout-admin">
+    <!--Navigation Bar-->
+    <!--<div th:replace="../templates/admin/include/top :: topHeader"></div>-->
+
+    <!--Navigation Bar-->
+    <!--<div th:replace="../templates/admin/include/left :: lefthtml"></div>-->
+
+    <div class="layui-body">
+        <!-- 内容主体区域 -->
+        <div id="bodyHtmlAdd" style="padding: 15px;">
+        </div>
+    </div>
+
+    <!--Bottom information Text-->
+    <!--<div th:replace="../templates/admin/include/footer :: footerHtml"></div>-->
+</div>
+<!--Bottom information js-->
+<script type="text/javascript" src="/static/res/jquery/jquery-3.3.1.js"></script>
+<!--<div th:replace="../templates/admin/include/footerjs :: footerJsCss"></div>-->
+<script th:inline="javascript">
+    function appenBodyYuLanHt(){
+        var type = [[${contextht}]];
+        console.log(type)
+        $("#bodyHtmlAdd").append(type);
+    };
+    appenBodyYuLanHt();
+    hljs.initHighlightingOnLoad();
+</script>
+</body>
+</html>

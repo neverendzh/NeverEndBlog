@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>NeverEnd</title>
+    <div th:replace="../templates/user/include/header :: headerJsCss"></div>
+</head>
+<body background="/static/res/admin/img/15.jpg">
+<div style="width: 400px;margin-left: 40%;margin-top: 15%">
+    <div class="layadmin-user-login-main" style="background-color: white;opacity: 0.6;">
+        <div style="height: 100px;width: 100px;padding: 0px;margin-left: 150px">
+            <img src="/static/res/admin/img/touxing.jpg" style="width: 90px;height: 60px">
+        </div>
+        <form action="/system/login" method="post">
+        <div class="layadmin-user-login-box layadmin-user-login-body layui-form" style="margin: 20px">
+            <div class="layui-form-item">
+                <label class="layadmin-user-login-icon layui-icon layui-icon-username" for="LAY-user-login-username"></label>
+                <input type="text" name="name" id="LAY-user-login-username" lay-verify="required" placeholder="用户名" class="layui-input">
+            </div>
+            <div class="layui-form-item">
+                <label class="layadmin-user-login-icon layui-icon layui-icon-password" for="LAY-user-login-password"></label>
+                <input type="password" name="password" id="LAY-user-login-password" lay-verify="required" placeholder="密码" class="layui-input layui-form-danger">
+            </div>
+            <div class="layui-form-item">
+                <div class="layui-row">
+                    <div class="layui-col-xs7">
+                        <label class="layadmin-user-login-icon layui-icon layui-icon-vercode" for="LAY-user-login-vercode"></label>
+                        <input type="text" name="vercode" id="LAY-user-login-vercode" lay-verify="required" placeholder="图形验证码" class="layui-input">
+                    </div>
+                    <div class="layui-col-xs5">
+                        <div style="margin-left: 10px;margin-top: 16px">
+                            <img src="https://www.oschina.net/action/user/captcha" class="layadmin-user-login-codeimg" id="LAY-user-get-vercode">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <button class="layui-btn layui-btn-normal layui-btn-fluid" type="submit" lay-filter="LAY-user-login-submit" style="margin-bottom: 26px">登 入</button>
+            </div>
+        </div>
+        </form>
+    </div>
+</div>
+<!--Bottom information js-->
+<div th:replace="../templates/user/include/footerjs :: footerJsCss"></div>
+
+<script>
+    if (message!=null){
+        layui.use('layer', function(){
+            var layer = layui.layer;
+            layer.msg('message');
+        });
+    }
+</script>
+</body>
+
+</html>

@@ -1,0 +1,48 @@
+<th:block th:fragment="lefthtml" xmlns:th="http://www.w3.org/1999/xhtml">
+    <div class="layui-side layui-bg-black ">
+        <div class="layui-side-scroll">
+            <!-- 左侧导航区域（可配合layui已有的垂直导航） -->
+            <ul class="layui-nav layui-nav-tree"  lay-filter="test">
+                <li class="layui-nav-item layui-nav-itemed">
+                    <a class="" href="javascript:;">文章管理</a>
+                    <dl class="layui-nav-child" style="background-color: #282b33">
+                        <dd><a href="/system/admin/fabu/wen">发布文章</a></dd>
+                        <dd><a href="JavaScript:;">查看文章</a></dd>
+                        <dd><a href="/system/articles/classification">文章分类</a></dd>
+                    </dl>
+                </li>
+                <li class="layui-nav-item layui-nav-itemed">
+                    <a class="" href="javascript:;">首页管理</a>
+                    <dl class="layui-nav-child" style="background-color: #282b33">
+                        <dd><a href="JavaScript:;">预览首页</a></dd>
+                        <dd><a href="JavaScript:;">编辑首页</a></dd>
+                    </dl>
+                </li>
+                <li class="layui-nav-item layui-nav-itemed">
+                    <a class="" href="javascript:;">留言管理</a>
+                    <dl class="layui-nav-child" style="background-color: #282b33">
+                        <dd><a href="JavaScript:;">查看留言</a></dd>
+                        <dd><a href="JavaScript:;">编辑留言</a></dd>
+                        <dd><a href="JavaScript:;">新增留言</a></dd>
+                    </dl>
+                </li>
+                <li class="layui-nav-item layui-nav-itemed">
+                    <a class="" href="javascript:;">账户管理</a>
+                    <dl class="layui-nav-child" style="background-color: #282b33">
+                        <dd><a href="JavaScript:;">新增管理员</a></dd>
+                        <dd><a href="JavaScript:;">查看管理员</a></dd>
+                    </dl>
+                </li>
+                <li class="layui-nav-item layui-nav-itemed">
+                    <a class="" href="javascript:;" style="background-color: #282b33">用户管理</a>
+                    <dl class="layui-nav-child">
+                        <dd><a href="JavaScript:;">新增用户</a></dd>
+                        <dd><a href="JavaScript:;">管理用户</a></dd>
+                    </dl>
+                </li>
+                <!--<li class="layui-nav-item"><a href="javascript:;">云市场</a></li>-->
+                <!--<li class="layui-nav-item"><a href="javascript:;">发布商品</a></li>-->
+            </ul>
+        </div>
+    </div>
+</th:block>

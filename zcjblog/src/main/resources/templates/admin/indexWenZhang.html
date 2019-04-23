@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>Never_End</title>
+    <!--header——js-->
+    <link rel="stylesheet" type="text/css" href="/static/res/ckeditor/plugins/codesnippet/lib/highlight/styles/monokai_sublime.css">
+    <div th:replace="../templates/admin/include/header :: headerJsCss"></div>
+</head>
+<body class="layui-layout-body">
+<div class="layui-layout layui-layout-admin">
+    <!--Navigation Bar-->
+    <div th:replace="../templates/admin/include/top :: topHeader"></div>
+
+    <!--Navigation Bar-->
+    <div th:replace="../templates/admin/include/left :: lefthtml"></div>
+
+    <div class="layui-body">
+
+        <!-- 内容主体区域 -->
+        <div id="bodyHtmlAdd" style="padding: 15px;">
+            <div id="yulankuang">
+            <form  method="post"  class="layui-form">
+                <div class="layui-form-item">
+                    <label class="layui-form-label"><span style="font-size: 16px">文章分类</span></label>
+                    <div class="layui-input-inline">
+                        <select name="quiz1" >
+                            <option  value="">一级分类</option>
+                            <option  value="浙江">浙江省</option>
+                            <option  value="你的工号">江西省</option>
+                            <option  value="你最喜欢的老师">福建省</option>
+                        </select>
+                    </div>
+                    <div class="layui-input-inline">
+                        <select name="quiz2">
+                            <option value="">二级分类</option>
+                            <option value="杭州">杭州</option>
+                            <option value="宁波">宁波</option>
+                            <option value="温州">温州</option>
+                            <option value="温州">台州</option>
+                            <option value="温州">绍兴</option>
+                        </select>
+                    </div>
+                    <div class="layui-input-inline">
+                        <select name="quiz3">
+                            <option value="">三级分类</option>
+                            <option value="西湖区">西湖区</option>
+                            <option value="余杭区">余杭区</option>
+                            <option value="拱墅区">临安市</option>
+                        </select>
+                    </div>
+                </div>
+                <textarea name="editor1" id="editor1"></textarea>
+            </form>
+            <div style="padding: 0px;height: 40px;width: 100%;margin-top: 5px">
+                <div style="float: right;margin: 5px">
+                    <button onclick="releaseBlog()" class="layui-btn">发布</button>
+                </div>
+
+                <div style="float: right;margin: 5px">
+                    <button onclick="clearText()" class="layui-btn">重置</button>
+                </div>
+
+                <div style="float: right;margin: 5px">
+                    <button onclick="huQuTextHtml()" class="layui-btn">预览</button>
+                </div>
+
+
+            </div>
+            </div>
+        </div>
+    </div>
+
+    <!--Bottom information Text-->
+    <div th:replace="../templates/admin/include/footer :: footerHtml"></div>
+    <script type="text/javascript" src="/static/res/ckeditor/ckeditor.js"></script>
+    <script type="text/javascript" src="/static/res/ckeditor/plugins/codesnippet/lib/highlight/highlight.pack.js"></script>
+</div>
+<!--Bottom information js-->
+<div th:replace="../templates/admin/include/footerjs :: footerJsCss"></div>
+<script>
+    layui.use('form',function(){});
+    CKEDITOR.replace( 'editor1');
+    function huQuTextHtml() {
+        var dataht = CKEDITOR.instances.editor1.getData();
+        var datauht = encodeURIComponent(dataht);
+        $.ajax({
+            type:'post',
+            url:'/system/yulan',
+            data:'context='+datauht+"&articleName=000标题&articleSortId=1&briefIntroduction=测试摘要",
+            success:function(data){
+                if (data.code == "1"){
+                    window.open(data.url);
+                }
+            }
+        });
+    }
+    function releaseBlog() {
+      layui.use('layer', function(){
+          //询问框
+         layer.confirm('确定发布', {
+              btn: ['确定','取消'] //按钮
+          }, function(){
+              var index = layer.load(1, {
+                  shade: [0.1,'#fff'] //0.1透明度的白色背景
+              });
+              var dataht = CKEDITOR.instances.editor1.getData();
+              var datauht = encodeURIComponent(dataht);
+              $.ajax({
+                  type:'post',
+                  url:'/system/publish/articles',
+                  data:'context='+datauht+"&articleName=000标题&articleSortId=1&briefIntroduction=测试摘要",
+                  success:function(data){
+                      layer.close(index);
+                      if (data.code == "1"){
+                          layer.msg("发布成功");
+                      }
+                  }
+              });
+          }, function(){
+              layer.msg('已取消');
+          });
+
+        });
+    }
+    function clearText() {
+        CKEDITOR.instances.editor1.setData(' ')
+    }
+</script>
+</body>
+</html>
