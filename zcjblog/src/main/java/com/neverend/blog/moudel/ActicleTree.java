@@ -12,6 +12,19 @@ public class ActicleTree {
     private Boolean checked;//节点是否初始为选中状态（如果开启复选框的话），默认 false
     private Boolean disabled;//节点是否为禁用状态。默认 false
 
+    @Override
+    public String toString() {
+        return "ActicleTree{" +
+                "title='" + title + '\'' +
+                ", id='" + id + '\'' +
+                ", children=" + children +
+                ", href='" + href + '\'' +
+                ", spread=" + spread +
+                ", checked=" + checked +
+                ", disabled=" + disabled +
+                '}';
+    }
+
     public String getTitle() {
         return title;
     }

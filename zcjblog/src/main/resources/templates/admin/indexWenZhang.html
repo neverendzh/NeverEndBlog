@@ -129,8 +129,7 @@
         var acticelName = $("#acticleName").val().trim();
         var acticleZy = $("#acticleZy").val().trim();
         var acticleUser = $("#acticleUser").val().trim();
-        var checkData = tree.getChecked('syId');
-        console.log(checkData);
+        var checkData = JSON.stringify(tree.getChecked('syId'));
         var dataht = CKEDITOR.instances.editor1.getData();
         var datauht = encodeURIComponent(dataht);
         if (datauht == ""){
@@ -148,7 +147,7 @@
                         $.ajax({
                             type: 'post',
                             url: '/system/publish/articles',
-                            data: 'context=' + datauht + "&articleName="+encodeURI(acticelName)+"&articleSortId="+checkData+"&briefIntroduction="+encodeURI(acticleZy),
+                            data: 'context=' + datauht + "&articleName="+encodeURI(acticelName)+"&articleSortSuperId="+checkData+"&briefIntroduction="+encodeURI(acticleZy),
                             success: function (data) {
                                 layer.close(index1);
                                 if (data.code == "200") {
@@ -156,6 +155,10 @@
                                 }else {
                                     layer.msg(data.msg);
                                 }
+                            },
+                            error:function () {
+                              layer.close(index1);
+                              layer.msg("服务中断");
                             }
                         });
                     }, function () {

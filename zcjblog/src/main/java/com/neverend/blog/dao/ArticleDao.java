@@ -24,7 +24,7 @@ public interface ArticleDao {
      */
     List<ArticleWithBLOBs> selectArticleId(String articleId);
 
-    Article selectAccountIdAndArticleName(String articleName,String sortId, String id);
+    Article selectAccountIdAndArticleName(String articleName, String id);
 
     /**
      * 根据文章id跟新文章

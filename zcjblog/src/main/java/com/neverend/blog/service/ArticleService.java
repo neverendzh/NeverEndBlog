@@ -31,5 +31,5 @@ public interface ArticleService {
      * @param s 状态
      * @return msg
      */
-    Msg saveArticle(Account account, ArticleWithBLOBs articleWithBLOBs, String s);
+    Msg saveArticle(Account account, ArticleWithBLOBs articleWithBLOBs, String s,String acid);
 }

@@ -3,6 +3,7 @@ package com.neverend.blog.contoller.admin;
 import com.google.gson.Gson;
 import com.neverend.blog.entity.Account;
 import com.neverend.blog.entity.ArticleWithBLOBs;
+import com.neverend.blog.moudel.ActicleTree;
 import com.neverend.blog.moudel.Msg;
 import com.neverend.blog.service.AccountService;
 import com.neverend.blog.service.ArticleService;
@@ -46,13 +47,20 @@ public class FabuBlog {
         return msg;
     }
 
+    /**
+     * 发布文章
+     * @param request
+     * @param articleWithBLOBs
+     * @param articleSortId
+     * @return
+     */
     @PostMapping("/publish/articles")
     @ResponseBody
     public Msg publishArticle(HttpServletRequest request,ArticleWithBLOBs articleWithBLOBs,
-                              @RequestParam(name = "articleSortId") String articleSortId){
+                              @RequestParam(name = "articleSortSuperId") String articleSortId)  {
         HttpSession httpSession = request.getSession();
         Account account = (Account) httpSession.getAttribute("account");
-        Msg msg = articleService.saveArticle(account,articleWithBLOBs,"0");
+        Msg msg = articleService.saveArticle(account,articleWithBLOBs,"0",articleSortId);
         return msg;
     }
     /**

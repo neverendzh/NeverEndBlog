@@ -52,11 +52,10 @@ public class ArticleDaoImpl implements ArticleDao {
      * @return
      */
     @Override
-    public Article selectAccountIdAndArticleName(String articleName,String sortId, String id) {
+    public Article selectAccountIdAndArticleName(String articleName, String id) {
         ArticleExample articleExample = new ArticleExample();
         ArticleExample.Criteria criteria = articleExample.createCriteria();
         criteria.andArticleNameEqualTo(articleName);
-        criteria.andArticleSortIdEqualTo(sortId);
         criteria.andAccountIdEqualTo(id);
         List<Article> articles =  articleMapper.selectByExample(articleExample);
         if (articles.size()>0){
@@ -74,7 +73,7 @@ public class ArticleDaoImpl implements ArticleDao {
      */
     @Override
     public String updateByArticle(ArticleWithBLOBs articleWithBLOBs) {
-        articleMapper.updateByPrimaryKeyWithBLOBs(articleWithBLOBs);
+        articleMapper.updateByPrimaryKeySelective(articleWithBLOBs);
         return articleWithBLOBs.getArticleId();
     }
 }
