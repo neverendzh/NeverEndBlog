@@ -8,14 +8,6 @@ import com.neverend.blog.moudel.Msg;
  * @author zcj
  */
 public interface ArticleService {
-
-    /**
-     * 保存文章
-     * @param account
-     * @return
-     */
-    Msg saveArticle(Account account,ArticleWithBLOBs articleWithBLOBs);
-
     /**
      * 根据文章id查询
      * 进入预览

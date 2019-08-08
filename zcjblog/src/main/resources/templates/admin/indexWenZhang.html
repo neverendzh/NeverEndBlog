@@ -106,23 +106,38 @@
     CKEDITOR.replace('editor1');
 
     function huQuTextHtml() {
+        var acticelName = $("#acticleName").val().trim();
+        var acticleZy = $("#acticleZy").val().trim();
+        var acticleUser = $("#acticleUser").val().trim();
+        var checkData = JSON.stringify(tree.getChecked('syId'));
         var dataht = CKEDITOR.instances.editor1.getData();
         var datauht = encodeURIComponent(dataht);
-        $.ajax({
-            type: 'post',
-            url: '/system/yulan',
-            data: 'context=' + datauht + "&articleName=000标题&articleSortId=1&briefIntroduction=测试摘要",
-            success: function (data) {
-                if (data.code == "1") {
-                    window.open(data.url);
-                } else {
-                    layui.use(['layer', 'form', 'tree'], function () {
-                        var layer = layui.layer
-                        layer.msg(data.msg);
-                    })
-                }
+        if (datauht == ""){
+            layer.msg("输入文章内容");
+        } else {
+            if (acticelName != "" && acticelName.length>1 && checkData.length>0){
+                $.ajax({
+                    type: 'post',
+                    url: '/system/yulan',
+                    data: 'context=' + datauht + "&articleName="+encodeURI(acticelName)+"&articleSortSuperId="+checkData+"&briefIntroduction="+encodeURI(acticleZy),
+                    success: function (data) {
+                        if (data.code == "200") {
+                            window.open(data.url);
+                        } else {
+                            layui.use(['layer', 'form', 'tree'], function () {
+                                var layer = layui.layer
+                                layer.msg(data.msg);
+                            })
+                        }
+                    },
+                    error:function () {
+                        layer.msg("服务中断");
+                    }
+                });
+            } else {
+                layer.msg("设置写标题&设置文章类型");
             }
-        });
+        }
     }
 
     function releaseBlog() {

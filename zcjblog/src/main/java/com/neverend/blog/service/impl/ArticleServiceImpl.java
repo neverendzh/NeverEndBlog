@@ -44,62 +44,6 @@ public class ArticleServiceImpl implements ArticleService {
     private AccountService accountService;
     @Autowired
     private ArticleSuperArticleIdDao articleIdDao;
-    /**
-     * 保存文章
-     * @param articleWithBLOBs
-     * @return
-     */
-    @Override
-    public Msg saveArticle(Account account,ArticleWithBLOBs articleWithBLOBs) {
-        Msg msg = new Msg();
-        Date date = new Date();
-        Account accountIsTrue =  accountService.selectAccount(account);
-        if (accountIsTrue == null){
-            msg.setCode("0");
-            msg.setMsg("请登录后操作");
-            return msg;
-        }
-        if (getArticleName(articleWithBLOBs)){
-            Article article = articleDao.selectAccountIdAndArticleName(articleWithBLOBs.getArticleName(),accountIsTrue.getId());
-            if (article !=null ){
-//                设置用户id
-                articleWithBLOBs.setAccountId(accountIsTrue.getId());
-//                设置文章id
-                articleWithBLOBs.setArticleId(article.getArticleId());
-//                跟新时间
-                articleWithBLOBs.setBeiYongYi(Long.toString(date.getTime()));
-//                  创建时间
-                articleWithBLOBs.setCreatTime(article.getCreatTime());
-//                状态
-                articleWithBLOBs.setState("-1");
-
-                String code =  articleDao.updateByArticle(articleWithBLOBs);
-                msg.setUrl("/system/admin/fabu/yulan?articleId="+article.getArticleId());
-                msg.setCode("1");
-            }else {
-//                插入
-                articleWithBLOBs.setArticleId(Long.toString(date.getTime()));
-                articleWithBLOBs.setAccountId(accountIsTrue.getId());
-                articleWithBLOBs.setArticleName(articleWithBLOBs.getArticleName());
-                articleWithBLOBs.setBriefIntroduction(articleWithBLOBs.getBriefIntroduction());
-                articleWithBLOBs.setCreatTime(new Date());
-                articleWithBLOBs.setArticleSortId(articleWithBLOBs.getArticleSortId());
-                articleWithBLOBs.setState("-1");
-                int saveNum = articleDao.saveArticleDao(articleWithBLOBs);
-                if (saveNum>0){
-                    msg.setUrl("/system/admin/fabu/yulan?articleId="+articleWithBLOBs.getArticleId());
-                    msg.setCode("1");
-                }else {
-//                    插入失败
-                    msg.setCode("0");
-                }
-
-            }
-
-        }
-
-        return msg;
-    }
 
     public boolean getArticleName(ArticleWithBLOBs articleWithBLOBs){
        if (articleWithBLOBs!=null || !"".equals(articleWithBLOBs.getContext().trim())|| !"".equals(articleWithBLOBs.getArticleSortId().trim())){
@@ -147,6 +91,7 @@ public class ArticleServiceImpl implements ArticleService {
                     articleWithBLOBs.setArticleId(article.getArticleId());
 //                跟新时间
                     articleWithBLOBs.setBeiYongYi(Long.toString(System.currentTimeMillis()));
+                    articleWithBLOBs.setState(state);
                     String code =  articleDao.updateByArticle(articleWithBLOBs);
 
 //                    取出生成的文章隶属id
@@ -180,7 +125,9 @@ public class ArticleServiceImpl implements ArticleService {
                         msg.setMsg(Code.sucessMsg);
                     }else {
 //                    插入失败
-                        msg.setCode("0");
+                        msg.setCode(Code.error);
+                        msg.setCode(Code.errorMsg);
+
                     }
 
                 }

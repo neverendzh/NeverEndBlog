@@ -40,10 +40,11 @@ public class FabuBlog {
      */
     @PostMapping("/yulan")
     @ResponseBody
-    public Msg yulanBlog(HttpServletRequest request,ArticleWithBLOBs articleWithBLOBs){
+    public Msg yulanBlog(HttpServletRequest request,ArticleWithBLOBs articleWithBLOBs,
+                         @RequestParam(name = "articleSortSuperId") String articleSortId){
         HttpSession httpSession = request.getSession();
         Account account = (Account) httpSession.getAttribute("account");
-        Msg msg = articleService.saveArticle(account,articleWithBLOBs);
+        Msg msg = articleService.saveArticle(account,articleWithBLOBs,"-1",articleSortId);
         return msg;
     }
 

@@ -11,9 +11,14 @@
         </h1>
         <div id="topCaiDan" class="nav">
         </div>
-                <button onclick="loginUserAccount()" type="button" id="longinId" style="float: right;margin-top: 40px;margin-right: 20px" class="layui-btn layui-btn-sm" shiro:hasRole="1">登录</button>
-                <a href="/system/login" style="float: right;margin-top: 40px;margin-right: 20px" class="layui-btn layui-btn-sm" shiro:hasRole="1">注册</a>
-                <a href="/system/logout"style="float: right;margin-top: 40px;margin-right: 20px" class="layui-btn layui-btn-sm" shiro:hasAnyRoles="2,3,4">退出</a>
+        <button onclick="loginUserAccount()" type="button" id="longinId"
+                style="float: right;margin-top: 40px;margin-right: 20px" class="layui-btn layui-btn-sm"
+                shiro:hasRole="1">登录
+        </button>
+        <a href="/system/login" style="float: right;margin-top: 40px;margin-right: 20px" class="layui-btn layui-btn-sm"
+           shiro:hasRole="1">注册</a>
+        <a href="/system/logout" style="float: right;margin-top: 40px;margin-right: 20px" class="layui-btn layui-btn-sm"
+           shiro:hasAnyRoles="2,3,4">退出</a>
     </div>
 
 </th:block>
