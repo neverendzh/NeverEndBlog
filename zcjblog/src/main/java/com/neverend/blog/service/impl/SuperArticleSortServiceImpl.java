@@ -3,9 +3,11 @@ package com.neverend.blog.service.impl;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.neverend.blog.entity.Account;
+import com.neverend.blog.entity.Article;
 import com.neverend.blog.entity.SuperArticleSort;
 import com.neverend.blog.entity.SuperArticleSortExample;
 import com.neverend.blog.mapper.SuperArticleSortMapper;
+import com.neverend.blog.moudel.ActicleTree;
 import com.neverend.blog.moudel.Msg;
 import com.neverend.blog.service.SuperArticleSortService;
 import org.hibernate.validator.constraints.URL;
@@ -70,7 +72,7 @@ public class SuperArticleSortServiceImpl implements SuperArticleSortService {
      * @return
      */
     private PageInfo<SuperArticleSort> getSuperArticleSortPageInfo(String page, String limit,String type) {
-        PageHelper.startPage(Integer.valueOf(page),Integer.valueOf(limit));
+        PageHelper.startPage(Integer.valueOf(page),Integer.valueOf(1000));
         SuperArticleSortExample superArticleSortExample = new SuperArticleSortExample();
         SuperArticleSortExample.Criteria criteria = superArticleSortExample.createCriteria();
         criteria.andBeiYongYiNotLike("%false");
@@ -148,7 +150,7 @@ public class SuperArticleSortServiceImpl implements SuperArticleSortService {
         try {
             if (account!=null){
                 if (getSuperArticleSort(name.trim())){
-                    save(name, account);
+                    save(name,type, account);
                     msg.setCode("1");
                     msg.setMsg("添加成功");
                 }else {
@@ -168,14 +170,24 @@ public class SuperArticleSortServiceImpl implements SuperArticleSortService {
 
     }
 
-    private void save(String name, Account account) {
+    private void save(String name,String type, Account account) {
+
         SuperArticleSort superArticleSort = new SuperArticleSort();
         Date date = new Date();
         String articleSortId = Long.toString(date.getTime());
         superArticleSort.setSuperArticleSortId(articleSortId);
         superArticleSort.setSuperArtilceName(name);
         superArticleSort.setAccountId(account.getId());
-        superArticleSort.setCreatTime(new Date());
+        superArticleSort.setCreatTime(date);
+        superArticleSort.setToUpdate(date);
+        if ("".equals(type)){
+            superArticleSort.setBeiYongSan(articleSortId);
+            superArticleSort.setBeiYongEr(articleSortId+"-");
+        }else {
+            String[] ks = type.split("k");
+            superArticleSort.setBeiYongSan(ks[0]);
+            superArticleSort.setBeiYongEr(ks[1]+ks[0]+"-");
+        }
         superArticleSort.setBeiYongYi(articleSortId+"-true");
         superArticleSortMapper.insertSelective(superArticleSort);
     }
@@ -310,6 +322,207 @@ public class SuperArticleSortServiceImpl implements SuperArticleSortService {
             msg.setMsg("无数据");
         }
         return msg;
+    }
+
+    /**
+     *
+     * 获取所有分类和分类名称
+     * @return
+     */
+    @Override
+    public Msg getClassTypeNameS() {
+        Msg msg = new Msg();
+        List<SuperArticleSort> articles = superArticleSortMapper.selArticleNameSTypeS();
+        Map<String,List<SuperArticleSort>> treeMap = new HashMap<>();
+        getTreeMap(articles, treeMap);
+        int size = treeMap.size();
+        List<ActicleTree> retunActicleTree = new ArrayList<>();
+//        设置一级节点
+        getNoeTree(treeMap, size, retunActicleTree);
+//        List<ActicleTree> addTreead = null;
+//      设置二级节点
+            HashSet<String> parene = new HashSet<>();
+            List<SuperArticleSort> treeXiaJi = treeMap.get(Integer.toString(2));
+            for (int k=0;k<treeXiaJi.size();k++) {
+                for (int j =0;j<retunActicleTree.size();j++) {
+//                       获取 retunActicleTree 第几层的第几个节点
+                    ActicleTree acticleTree = null;
+                    SuperArticleSort superArticleSort = treeXiaJi.get(k);
+                    String beiYongSan = superArticleSort.getBeiYongSan();
+                    acticleTree = retunActicleTree.get(j);
+                    if (acticleTree.getId().equals(beiYongSan)){
+                        addTree(retunActicleTree,superArticleSort,j);
+                        parene.add(Integer.toString(j));
+                    }
+                }
+            }
+//设置三级节点
+        List<SuperArticleSort> treeXiaJisan = treeMap.get(Integer.toString(3));
+        HashSet<String> pareneSan = new HashSet<>();
+        for (int i=0;i<treeXiaJisan.size();i++) {
+            SuperArticleSort superArticleSort = treeXiaJisan.get(i);
+            String beiYongSan = superArticleSort.getBeiYongSan();
+            for (String s : parene) {
+                List<ActicleTree> acticleTrees = retunActicleTree.get(Integer.valueOf(s)).getChildren();
+               for (int k=0;k<acticleTrees.size();k++){
+                   ActicleTree acticleTree = acticleTrees.get(k);
+                   if (acticleTrees.get(k).getId().equals(beiYongSan)){
+                       pareneSan.add(Integer.toString(k));
+                       if (acticleTree.getChildren()!=null){
+                           List<ActicleTree> children = acticleTree.getChildren();
+                           ActicleTree acticleTreeadd = new ActicleTree();
+                           acticleTreeadd.setTitle(superArticleSort.getSuperArtilceName());
+                           acticleTreeadd.setId(superArticleSort.getSuperArticleSortId());
+                           acticleTreeadd.setChecked(false);
+                           acticleTreeadd.setDisabled(false);
+                           children.add(acticleTreeadd);
+                           acticleTree.setChildren(children);
+                       }else {
+                           List<ActicleTree> children = new ArrayList<>();
+                           ActicleTree acticleTreeadd = new ActicleTree();
+                           acticleTreeadd.setTitle(superArticleSort.getSuperArtilceName());
+                           acticleTreeadd.setId(superArticleSort.getSuperArticleSortId());
+                           acticleTreeadd.setChecked(false);
+                           acticleTreeadd.setDisabled(false);
+                           children.add(acticleTreeadd);
+                           acticleTree.setChildren(children);
+                       }
+                   }
+               }
+
+            }
+        }
+//设置四级级节点
+        List<SuperArticleSort> treeXiaJiSi = treeMap.get(Integer.toString(4));
+
+        for (int i=0;i<treeXiaJiSi.size();i++) {
+            SuperArticleSort superArticleSort = treeXiaJiSi.get(i);
+            String beiYongSan = superArticleSort.getBeiYongSan();
+            for (String s : parene) {
+                List<ActicleTree> acticleTrees = retunActicleTree.get(Integer.valueOf(s)).getChildren();
+                for (int k=0;k<acticleTrees.size();k++){
+                    if (acticleTrees.get(k).getChildren()!=null){
+                        List<ActicleTree> acticleTree11 = acticleTrees.get(k).getChildren();
+                        for (String s1 : pareneSan) {
+                            ActicleTree acticleTree = acticleTree11.get(Integer.valueOf(s1));
+                            if (acticleTree.getId().equals(beiYongSan)){
+                                if (acticleTree.getChildren()!=null){
+                                    List<ActicleTree> children = acticleTree.getChildren();
+                                    ActicleTree acticleTreeadd = new ActicleTree();
+                                    acticleTreeadd.setTitle(superArticleSort.getSuperArtilceName());
+                                    acticleTreeadd.setId(superArticleSort.getSuperArticleSortId());
+                                    acticleTreeadd.setChecked(false);
+                                    acticleTreeadd.setDisabled(false);
+                                    children.add(acticleTreeadd);
+                                    acticleTree.setChildren(children);
+                                }else {
+                                    List<ActicleTree> children = new ArrayList<>();
+                                    ActicleTree acticleTreeadd = new ActicleTree();
+                                    acticleTreeadd.setTitle(superArticleSort.getSuperArtilceName());
+                                    acticleTreeadd.setId(superArticleSort.getSuperArticleSortId());
+                                    acticleTreeadd.setChecked(false);
+                                    acticleTreeadd.setDisabled(false);
+                                    children.add(acticleTreeadd);
+                                    acticleTree.setChildren(children);
+                                }
+                            }
+                        }
+                    }
+                }
+
+            }
+        }
+
+        msg.setObjectmsg(retunActicleTree);
+        msg.setCode("0");
+        msg.setMsg("sucess");
+        msg.setCount(retunActicleTree.size()+"");
+        return msg;
+    }
+
+    /**
+     * 获取上级分类
+     * @param type
+     * @return
+     */
+    @Override
+    public Msg getType(String type) {
+        List<SuperArticleSort> articles = superArticleSortMapper.selArticleNameSTypeS();
+        Map<String,List<SuperArticleSort>> treeMap = new HashMap<>();
+        getTreeMap(articles, treeMap);
+        List<SuperArticleSort> superArticleSorts = null;
+        if (type.equals("0")){
+            superArticleSorts =treeMap.get(Integer.toString(1));
+        }else {
+            superArticleSorts = treeMap.get(Integer.toString(Integer.valueOf(type)+1));
+        }
+        Msg msg = new Msg();
+        msg.setCode("0");
+        msg.setObjectmsg(superArticleSorts);
+        return msg;
+    }
+
+    private void addTree3(List<ActicleTree> retunActicleTree, SuperArticleSort superArticleSort, int ch) {
+
+    }
+
+
+    private List<ActicleTree> addTree(List<ActicleTree> retunActicleTree, SuperArticleSort xiaji,int j) {
+        ActicleTree acticleTree = retunActicleTree.get(j);
+
+        List<ActicleTree> acticleEdit = null;
+        if (acticleTree.getChildren()!=null){
+            acticleEdit = acticleTree.getChildren();
+        }else {
+            acticleEdit = new ArrayList<>();
+        }
+
+        ActicleTree acticleTreeadd = new ActicleTree();
+        acticleTreeadd.setTitle(xiaji.getSuperArtilceName());
+        acticleTreeadd.setId(xiaji.getSuperArticleSortId());
+        acticleTreeadd.setChecked(false);
+        acticleTreeadd.setDisabled(false);
+        acticleEdit.add(acticleTreeadd);
+        acticleTree.setChildren(acticleEdit);
+        retunActicleTree.set(j,acticleTree);
+        return retunActicleTree;
+    }
+
+    private void getNoeTree(Map<String, List<SuperArticleSort>> treeMap, int size, List<ActicleTree> retunActicleTree) {
+        //        获取第一级节点
+        if (size>0){
+            List<SuperArticleSort> superArticleSortList = treeMap.get(Integer.toString(1));
+            for (SuperArticleSort articleSort : superArticleSortList) {
+                ActicleTree acticleTree = new ActicleTree();
+                acticleTree.setTitle(articleSort.getSuperArtilceName());
+                acticleTree.setId(articleSort.getSuperArticleSortId());
+                acticleTree.setChecked(false);
+                acticleTree.setDisabled(false);
+                retunActicleTree.add(acticleTree);
+            }
+        }
+    }
+
+    /**
+     * 根据getBeiYongEr长度分类，确定属于总节点中的第几级节点
+     * @param articles
+     * @param treeMap
+     * @return
+     */
+    private   void getTreeMap(List<SuperArticleSort> articles, Map<String, List<SuperArticleSort>> treeMap) {
+        for (SuperArticleSort superArticleSort : articles){
+            String treelength = Integer.toString(superArticleSort.getBeiYongEr().split("-").length);
+            int treelengthInt = Integer.valueOf(treelength);
+
+            if (treeMap.get(treelength) != null){
+                List<SuperArticleSort> superArticleSorts = treeMap.get(treelength);
+                superArticleSorts.add(superArticleSort);
+            }else {
+                List<SuperArticleSort> superArticleSortsTr = new ArrayList<>();
+                superArticleSortsTr.add(superArticleSort);
+                treeMap.put(treelength,superArticleSortsTr);
+            }
+        }
     }
 
     /**

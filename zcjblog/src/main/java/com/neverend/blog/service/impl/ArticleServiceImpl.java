@@ -38,6 +38,11 @@ public class ArticleServiceImpl implements ArticleService {
         Msg msg = new Msg();
         Date date = new Date();
         Account accountIsTrue =  accountService.selectAccount(account);
+        if (accountIsTrue == null){
+            msg.setCode("0");
+            msg.setMsg("请登录后操作");
+            return msg;
+        }
         if (getArticleName(articleWithBLOBs)){
             Article article = articleDao.selectAccountIdAndArticleName(articleWithBLOBs.getArticleName(),articleWithBLOBs.getArticleSortId(),accountIsTrue.getId());
             if (article !=null ){

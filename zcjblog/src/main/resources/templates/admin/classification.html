@@ -18,11 +18,8 @@
     <div class="layui-body">
         <!-- 内容主体区域 -->
         <div id="bodyHtmlAdd" style="padding: 15px;">
-            <div class="layui-tab layui-tab-brief"  lay-filter="tabclass">
+            <div class="layui-tab layui-tab-card"  lay-filter="tabclass">
                 <ul id="liTapType" class="layui-tab-title">
-                    <!--<li class="layui-this">一级分类</li>
-                    <li>二级分类</li>
-                    <li>三级分类</li>-->
                 </ul>
                 <div id="tapContent" class="layui-tab-content">
                  <div class="layui-tab-item layui-show">
@@ -41,46 +38,6 @@
                             <input type="checkbox" name="lock" value="{{d.beiYongYi}}" title="锁定" lay-filter="lockDemo" {{ d.beiYongYi == d.superArticleSortId ? 'checked' : '' }}>
                      </script>
                  </div>
-                 <div class="layui-tab-item">
-                        <!--二级start-->
-                        <table class="layui-hide" id="eryijifenl" lay-filter="eryijifenl"></table>
-
-                        <script type="text/html" id="erbianji">
-                            <div class="layui-btn-container">
-                                <button class="layui-btn layui-btn-sm" lay-event="ergetCheckData">新增分类</button>
-                            </div>
-                        </script>
-
-                        <script type="text/html" id="erbarDemo">
-                            <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
-                            <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
-                        </script>
-
-                        <script type="text/html" id="ercheckboxTpl">
-                            <input type="checkbox" name="lock" value="{{d.beiYongYi}}" title="锁定" lay-filter="erlockDemo" {{ d.beiYongYi == d.superArticleSortId ? 'checked' : '' }}>
-                        </script>
-                        <!--二级end-->
-                    </div>
-                 <div class="layui-tab-item">
-                        <!--三级start-->
-                        <table class="layui-hide" id="sanyijifenl" lay-filter="sanyijifenl"></table>
-
-                        <script type="text/html" id="sanbianji">
-                            <div class="layui-btn-container">
-                                <button class="layui-btn layui-btn-sm" lay-event="sangetCheckData">新增分类</button>
-                            </div>
-                        </script>
-
-                        <script type="text/html" id="sanbarDemo">
-                            <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
-                            <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
-                        </script>
-
-                        <script type="text/html" id="sancheckboxTpl">
-                            <input type="checkbox" name="lock" value="{{d.superArticleSortId}}" title="锁定" lay-filter="sanlockDemo" {{ d.id == 10006 ? 'checked' : '' }}>
-                        </script>
-                        <!--三级end-->
-                    </div>
                 </div>
             </div>
 
@@ -92,6 +49,7 @@
 </div>
 <!--Bottom information js-->
 <div th:replace="../templates/admin/include/footerjs :: footerJsCss"></div>
+<script type="text/javascript" src="/static/res/js/util/NumberToChinese.js"></script>
 <script  type="text/javascript"  th:inline="none">
     layui.use(['table','element'], function(){
         var type = 0;
@@ -105,11 +63,232 @@
                 yiji(table,form,tabnum);
             });
         getTaps();
+        function yiji(table,form,type) {
+            //一级star
+            table.render({
+                elem: '#yijifenl'
+                ,toolbar: '#bianji'
+                ,url:'/system/articles/classification/all/Articles?type='+type
+                ,cellMinWidth: 80
+                ,cols: [[
+                    {type:'numbers'}
+                    ,{type: 'checkbox'}
+                    ,{field:'superArticleSortId', title:'ID', width:100, unresize: true, sort: true}
+                    ,{field:'superArtilceName', title:'分类名称',sort: true}
+                    ,{field:'accountId', title:'创建用户',sort: true}
+                    ,{field:'creatTime', title: '创建时间',templet: function(d){
+                            return  new Date(d.creatTime).Format("yyyy-MM-dd hh:mm:ss")
+                        }, minWidth:120, sort: true}
+                    ,{field:'toUpdate', title:'更新时间',templet: function(d){
+                            return  new Date(d.toUpdate).Format("yyyy-MM-dd hh:mm:ss")},
+                        sort: true}
+                    ,{field:'beiYongYi', title:'状态', width:110, templet: '#checkboxTpl', unresize: true}
+                    ,{fixed: 'right', title:'操作', toolbar: '#barDemo', width:150}
+                ]]
+                ,page: { //支持传入 laypage 组件的所有参数（某些参数除外，如：jump/elem） - 详见文档
+                    layout: ['limit', 'count', 'prev', 'page', 'next', 'skip'] //自定义分页布局
+                    //,curr: 5 //设定初始在第 5 页
+                    ,groups: 7 //只显示 1 个连续页码
+                    ,first: false //不显示首页
+                    ,last: false //不显示尾页,
+                    ,prev:"上一页"
+                    ,next:"下一页"
+                }
+            });
+
+            //头工具栏事件
+            table.on('toolbar(yijifenl)', function(obj){
+                if (obj.event == "getCheckData"){
+                    $.ajax({
+                        type:'get',
+                        url:'/system/calss/ifcation/type',
+                        data:'type='+type,
+                        success:function(data){
+                            if (data.code == 0){
+
+                                var htmlhead = " <form class=\"layui-form\">\n" +
+                                    "                <div class=\"layui-form-item\">\n" +
+                                    "                    <label class=\"layui-form-label\">分类名称</label>\n" +
+                                    "                    <div class=\"layui-input-block\">\n" +
+                                    "                        <input type=\"text\" name=\"title\" lay-verify=\"title\" autocomplete=\"off\" placeholder=\"请分类名称\" class=\"layui-input\">\n" +
+                                    "                    </div>\n" +
+                                    "                </div>\n" +
+                                    "                <div class=\"layui-form-item\">\n" +
+                                    "                    <label class=\"layui-form-label\">上级分类</label>\n" +
+                                    "                    <div class=\"layui-input-block\">\n" +
+                                    "                        <select name=\"interest\" lay-filter=\"aihao\">";
+
+                                var opten = " <option value=\"\">默认一级分类</option>";
+
+                                var shangj = data.objectmsg;
+                                for (var i=0;i<shangj.length;i++){
+                                    opten = opten+"<option  value="+shangj[i].superArticleSortId+"k"+shangj[i].beiYongEr+">"+shangj[i].superArtilceName+"</option>";
+                                }
+
+                                var endhtml = " </select>\n" +
+                                    "                    </div>\n" +
+                                    "                </div>\n" +
+                                    "                <div class=\"layui-form-item\">\n" +
+                                    "                    <div class=\"layui-input-block\">\n" +
+
+                                    "                        <button class=\"layui-btn\" lay-submit  lay-filter=\"demo1\">保存</button>\n" +
+                                    "                     <button type=\"reset\"  class=\"layui-btn layui-btn-primary\">取消</button>\n" +
+                                    "                    </div>\n" +
+                                    "                </div>\n" +
+                                    "            </form>";
+                                layer.open({
+                                    type: 1,
+                                    title:"添加分类",
+                                    skin: 'layui-layer-demo', //样式类名
+                                    closeBtn: 1, //不显示关闭按钮
+                                    anim: 2,
+                                    shadeClose: true, //开启遮罩关闭
+                                    content: htmlhead+opten+endhtml
+                                });
+                                form.render();
+                            }else {
+                                layer.msg("服务中断");
+                            }
+
+                        },
+                        error:function (data) {
+                            layer.msg("服务暂停")
+                        }
+                    });
+                }
+            });
+
+            //监听行工具事件
+            table.on('tool(yijifenl)', function(obj){
+                var data = obj.data;
+                if(obj.event === 'del'){
+                    layer.confirm('确定删除', function(index){
+                        layer.close(index);
+                        $.ajax({
+                            type:'post',
+                            url:'/system/calss/ifcation/remove',
+                            data:'articleId='+data.superArticleSortId+"&type="+type,
+                            success:function(data){
+                                if (data.code == "1"){
+                                    obj.del();
+                                    layer.msg(data.msg)
+                                }
+                                if (data.code == "0"){
+                                    layer.msg(data.msg)
+                                }
+                                if (data.code == "-1"){
+                                    layer.msg(data.msg)
+                                }
+                            },
+                            error:function (data) {
+                                layer.msg("服务暂停")
+                            }
+                        });
+                    });
+                } else if(obj.event === 'edit'){
+                    layer.prompt({
+                        title:'编辑',
+                        formType: 0
+                        ,value: data.superArtilceName
+                    }, function(value, index){
+                        layer.close(index);
+                        $.ajax({
+                            type:'post',
+                            url:'/system/calss/ifcation/edit',
+                            data:'name='+ value+"&type="+type+"&articleId="+data.superArticleSortId,
+                            success:function(data){
+                                if (data.code == "1"){
+                                    obj.update({
+                                        superArtilceName: value
+                                    });
+                                    layer.msg(data.msg)
+                                }
+                                if (data.code == "0"){
+                                    layer.msg(data.msg)
+                                }
+                                if (data.code == "-1"){
+                                    layer.msg(data.msg)
+                                }
+                            },
+                            error:function (data) {
+                                layer.msg("服务暂停")
+                            }
+                        });
+                    });
+                }
+            });
+
+            //监听锁定操作
+            form.on('checkbox(lockDemo)', function(obj){
+                $.ajax({
+                    type:'post',
+                    url:'/system/calss/ifcation/lock',
+                    data:'articleId='+this.value+"&type="+type+"&isLock="+obj.elem.checked,
+                    success:function(data){
+                        if (data.code == "1"){
+                            layer.msg(data.msg)
+                        }
+                        if (data.code == "0"){
+                            layer.msg(data.msg)
+                        }
+                        if (data.code == "-1"){
+                            layer.msg(data.msg)
+                        }
+                    },
+                    error:function (data) {
+                        layer.msg("服务暂停")
+                    }
+                });
+            });
+
+            form.on('submit(demo1)', function(data){
+                var name = "";
+                var type = "";
+                if (data.field.title != ""){
+                    name = data.field.title;
+                    if (data.field.interest != ""){
+                        type = data.field.interest;
+                    }  else {
+                        type = "";
+                    }
+                    $.ajax({
+                        type:'post',
+                        url:'/system/calss/ifcation/add',
+                        data:'name='+name+"&type="+type,
+                        success:function(data){
+                            if (data.code == "1"){
+                                layer.closeAll();
+                                window.location.href("/system/articles/classification");
+                                layer.msg(data.msg)
+                            }
+                            if (data.code == "0"){
+                                layer.msg(data.msg)
+                            }
+                            if (data.code == "-1"){
+                                layer.msg(data.msg)
+                            }
+                        },
+                        error:function (data) {
+                            layer.msg("服务暂停")
+                        }
+                    });
+                    return false;
+                }else {
+                   layer.msg("输入名称");
+                   return false;
+                }
+
+
+            });
+
+            //一级end
+        };
+        yiji(table,form,0);
+        element.init();
     });
     function getTaps() {
         var nodesTap =  document.getElementById("liTapType").getElementsByTagName("li").length;
         var lengli = $("#liTapType li").length;
-        console.log(lengli+"+++"+nodesTap);
     }
     function umberClassType(element) {
         $.ajax({
@@ -126,9 +305,9 @@
                         var tapnum = i+1;
                         if (i==0){
                             tapcontentHtml = "";
-                            html = html+"<li class=\"layui-this\">"+tapnum+"级分类</li>"
+                            html = html+"<li class=\"layui-this\">"+NumberToChinese(tapnum)+"级分类</li>"
                         }else {
-                            html = html+"<li>"+tapnum+"级分类</li>"
+                            html = html+"<li>"+NumberToChinese(tapnum)+"级分类</li>"
                         }
                     }
                     $("#liTapType").append(html);
@@ -143,273 +322,7 @@
             }
         });
     }
-    function yiji(table,form,type) {
-        //一级star
-        table.render({
-            elem: '#yijifenl'
-            ,toolbar: '#bianji'
-            ,url:'/system/articles/classification/all/Articles?type='+type
-            ,cellMinWidth: 80
-            ,cols: [[
-                 {type:'numbers'}
-                ,{type: 'checkbox'}
-                ,{field:'superArticleSortId', title:'ID', width:100, unresize: true, sort: true}
-                ,{field:'superArtilceName', title:'分类名称',sort: true}
-                ,{field:'accountId', title:'创建用户',sort: true}
-                ,{field:'creatTime', title: '创建时间',templet: function(d){
-                    return  new Date(d.creatTime).Format("yyyy-MM-dd hh:mm:ss")
-                    }, minWidth:120, sort: true}
-                ,{field:'toUpdate', title:'更新时间',templet: function(d){
-                    return  new Date(d.toUpdate).Format("yyyy-MM-dd hh:mm:ss")},
-                    sort: true}
-                ,{field:'beiYongYi', title:'状态', width:110, templet: '#checkboxTpl', unresize: true}
-                ,{fixed: 'right', title:'操作', toolbar: '#barDemo', width:150}
-            ]]
-            ,page: { //支持传入 laypage 组件的所有参数（某些参数除外，如：jump/elem） - 详见文档
-                layout: ['limit', 'count', 'prev', 'page', 'next', 'skip'] //自定义分页布局
-                //,curr: 5 //设定初始在第 5 页
-                ,groups: 7 //只显示 1 个连续页码
-                ,first: false //不显示首页
-                ,last: false //不显示尾页,
-                ,prev:"上一页"
-                ,next:"下一页"
-            }
-        });
 
-        //头工具栏事件
-        table.on('toolbar(yijifenl)', function(obj){
-            if (obj.event == 'getCheckData'){
-                layer.prompt({title: '输入新增分类', formType: 0}, function(pass, index){
-                    layer.close(index);
-                    $.ajax({
-                        type:'post',
-                        url:'/system/calss/ifcation/add',
-                        data:'name='+pass+"&type="+type,
-                        success:function(data){
-                            if (data.code == "1"){
-                                yiji(table,form,type);
-                                layer.msg(data.msg)
-                            }
-                            if (data.code == "0"){
-                                layer.msg(data.msg)
-                            }
-                            if (data.code == "-1"){
-                                layer.msg(data.msg)
-                            }
-                        },
-                        error:function (data) {
-                            layer.msg("服务暂停")
-                        }
-                    });
-
-                });
-            }
-        });
-
-        //监听行工具事件
-        table.on('tool(yijifenl)', function(obj){
-            var data = obj.data;
-            if(obj.event === 'del'){
-                layer.confirm('确定删除', function(index){
-                    layer.close(index);
-                    $.ajax({
-                        type:'post',
-                        url:'/system/calss/ifcation/remove',
-                        data:'articleId='+data.superArticleSortId+"&type="+type,
-                        success:function(data){
-                            if (data.code == "1"){
-                                obj.del();
-                                layer.msg(data.msg)
-                            }
-                            if (data.code == "0"){
-                                layer.msg(data.msg)
-                            }
-                            if (data.code == "-1"){
-                                layer.msg(data.msg)
-                            }
-                        },
-                        error:function (data) {
-                            layer.msg("服务暂停")
-                        }
-                    });
-                });
-            } else if(obj.event === 'edit'){
-                layer.prompt({
-                    title:'编辑',
-                    formType: 0
-                    ,value: data.superArtilceName
-                }, function(value, index){
-                    layer.close(index);
-                    $.ajax({
-                        type:'post',
-                        url:'/system/calss/ifcation/edit',
-                        data:'name='+ value+"&type="+type+"&articleId="+data.superArticleSortId,
-                        success:function(data){
-                            if (data.code == "1"){
-                                obj.update({
-                                    superArtilceName: value
-                                });
-                                layer.msg(data.msg)
-                            }
-                            if (data.code == "0"){
-                                layer.msg(data.msg)
-                            }
-                            if (data.code == "-1"){
-                                layer.msg(data.msg)
-                            }
-                        },
-                        error:function (data) {
-                            layer.msg("服务暂停")
-                        }
-                    });
-                });
-            }
-        });
-
-        //监听锁定操作
-        form.on('checkbox(lockDemo)', function(obj){
-            $.ajax({
-                type:'post',
-                url:'/system/calss/ifcation/lock',
-                data:'articleId='+this.value+"&type="+type+"&isLock="+obj.elem.checked,
-                success:function(data){
-                    if (data.code == "1"){
-                        layer.msg(data.msg)
-                    }
-                    if (data.code == "0"){
-                        layer.msg(data.msg)
-                    }
-                    if (data.code == "-1"){
-                        layer.msg(data.msg)
-                    }
-                },
-                error:function (data) {
-                    layer.msg("服务暂停")
-                }
-            });
-        });
-        //一级end
-    };
-
-
-
-
-    function erji(table,form,type) {
-        //二star
-        table.render({
-            elem: '#eryijifenl'
-            ,toolbar: '#erbianji'
-            ,url:'/system/articles/classification/all/Articles?type='+type
-            ,cellMinWidth: 80
-            ,cols: [[
-                {type:'numbers'}
-                ,{type: 'checkbox'}
-                ,{field:'superArticleSortId', title:'ID', width:100, unresize: true, sort: true}
-                ,{field:'superArtilceName', title:'分类名称'}
-                ,{field:'accountId', title:'创建用户'}
-                ,{field:'creatTime', title: '创建时间', minWidth:120, sort: true}
-                ,{field:'toUpdate', title:'更新时间'}
-                ,{field:'beiYongYi', title:'状态', width:110, templet: '#ercheckboxTpl', unresize: true}
-                ,{fixed: 'right', title:'操作', toolbar: '#erbarDemo', width:150}
-            ]]
-            ,page: true
-        });
-
-        //头工具栏事件
-        table.on('toolbar(eryijifenl)', function(obj){
-            if (obj.event == 'ergetCheckData'){
-                layer.msg("二级头部")
-
-            }
-        });
-
-        //监听行工具事件
-        table.on('tool(eryijifenl)', function(obj){
-            var data = obj.data;
-            if(obj.event === 'del'){
-                layer.confirm('真的删除行么', function(index){
-
-                    obj.del();
-                    layer.close(index);
-                });
-            } else if(obj.event === 'edit'){
-                layer.prompt({
-                    formType: 2
-                    ,value: data.email
-                }, function(value, index){
-                    obj.update({
-                        email: value
-                    });
-                    layer.close(index);
-                });
-            }
-        });
-
-        //监听锁定操作
-        form.on('checkbox(erlockDemo)', function(obj){
-            layer.msg("二级状态");
-            // layer.tips(this.value + ' ' + this.name + '：'+ obj.elem.checked, obj.othis);
-        });
-        //二end
-    };
-    function sanji(table,form,type) {
-        //三star
-        table.render({
-            elem: '#sanyijifenl'
-            ,toolbar: '#sanbianji'
-            ,url:'/system/articles/classification/all/Articles?type='+type
-            ,cellMinWidth: 80
-            ,cols: [[
-                {type:'numbers'}
-                ,{type: 'checkbox'}
-                ,{field:'superArticleSortId', title:'ID', width:100, unresize: true, sort: true}
-                ,{field:'superArtilceName', title:'分类名称'}
-                ,{field:'accountId', title:'创建用户'}
-                ,{field:'creatTime', title: '创建时间', minWidth:120, sort: true}
-                ,{field:'toUpdate', title:'更新时间'}
-                ,{field:'beiYongYi', title:'状态', width:110, templet: '#sancheckboxTpl', unresize: true}
-                ,{fixed: 'right', title:'操作', toolbar: '#sanbarDemo', width:150}
-            ]]
-            ,page: true
-        });
-
-        //头工具栏事件
-        table.on('toolbar(sanyijifenl)', function(obj){
-            if (obj.event == 'sangetCheckData'){
-                layer.msg("三级头部")
-
-            }
-        });
-
-        //监听行工具事件
-        table.on('tool(sanyijifenl)', function(obj){
-            var data = obj.data;
-            if(obj.event === 'del'){
-                layer.confirm('真的删除行么', function(index){
-
-                    obj.del();
-                    layer.close(index);
-                });
-            } else if(obj.event === 'edit'){
-                layer.prompt({
-                    formType: 2
-                    ,value: data.email
-                }, function(value, index){
-                    obj.update({
-                        email: value
-                    });
-                    layer.close(index);
-                });
-            }
-        });
-
-        //监听锁定操作
-        form.on('checkbox(sanlockDemo)', function(obj){
-            layer.msg("三级状态");
-            // layer.tips(this.value + ' ' + this.name + '：'+ obj.elem.checked, obj.othis);
-        });
-        //三end
-    }
 </script>
 
 </body>

@@ -14,6 +14,16 @@ public class Msg {
     private String count;
     private List<SuperArticleSort> data;
     private String url;
+    private Object objectmsg;
+
+
+    public Object getObjectmsg() {
+        return objectmsg;
+    }
+
+    public void setObjectmsg(Object objectmsg) {
+        this.objectmsg = objectmsg;
+    }
 
     public List<SuperArticleSort> getData() {
         return data;

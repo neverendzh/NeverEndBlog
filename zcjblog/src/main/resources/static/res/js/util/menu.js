@@ -1,12 +1,4 @@
-/**
- 
- @Name: layuiSimpleBlog - 极简博客模板
- @Author: xuzhiwen
- @Copyright: layui.com
- 
- */
- 
- 
+
 layui.define(['mm','jquery'],function(exports){
   var $ = layui.$,mm = layui.mm;
   var menu = {

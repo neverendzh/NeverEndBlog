@@ -183,6 +183,17 @@
             tb_super_article_sort.bei_yong_yi = #{statOne}
         OR tb_super_article_sort.bei_yong_yi = #{stateTwo};
     </select>
+    <select id="selArticleNameSTypeS" resultType="com.neverend.blog.entity.SuperArticleSort">
+      SELECT
+          super_article_sort_id,
+          super_artilce_name,
+          bei_yong_er,
+          bei_yong_san
+      FROM
+          tb_super_article_sort
+      ORDER BY
+          LENGTH(bei_yong_er) ASC;
+    </select>
     <update id="updateByExampleSelective" parameterType="map">
     update tb_super_article_sort
     <set>

@@ -71,4 +71,17 @@ public interface SuperArticleSortService {
      */
     Msg getClassType();
 
+    /**
+     *
+     * 获取所有分类和分类名称
+     * @return
+     */
+    Msg getClassTypeNameS();
+
+    /**
+     * 获取上级分类
+     * @param type
+     * @return
+     */
+    Msg getType(String type);
 }

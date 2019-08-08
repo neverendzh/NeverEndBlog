@@ -6,6 +6,7 @@ import com.neverend.blog.entity.ArticleWithBLOBs;
 import com.neverend.blog.moudel.Msg;
 import com.neverend.blog.service.AccountService;
 import com.neverend.blog.service.ArticleService;
+import com.neverend.blog.service.SuperArticleSortService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -28,6 +29,8 @@ public class FabuBlog {
     private AccountService accountService;
     @Autowired
     private ArticleService articleService;
+    @Autowired
+    private SuperArticleSortService superArticleSortService;
 
     /**
      * 预览
@@ -65,8 +68,15 @@ public class FabuBlog {
      * @return
      */
     @GetMapping("/admin/fabu/wen")
-    public String AdminFabuWenZhang(){
+    public String AdminFabuWenZhang(HttpServletRequest request){
         return "admin/indexWenZhang";
+    }
+
+    @GetMapping("/admin/acticle/tree")
+    @ResponseBody
+    public Msg treeActicles(HttpServletRequest request){
+        Msg msg = superArticleSortService.getClassTypeNameS();
+        return msg;
     }
 
     /**

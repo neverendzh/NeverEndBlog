@@ -1,5 +1,6 @@
 package com.neverend.blog.mapper;
 
+import com.neverend.blog.entity.Article;
 import com.neverend.blog.entity.SuperArticleSort;
 import com.neverend.blog.entity.SuperArticleSortExample;
 import java.util.List;
@@ -31,5 +32,11 @@ public interface SuperArticleSortMapper {
     int updateByPrimaryKey(SuperArticleSort record);
 
     List<SuperArticleSort> selectByWeiShanChu(@Param("statOne") String statOne,@Param("stateTwo") String stateTwo);
+
+    /**
+     * 根据文章的上下级长度倒序
+     * @return
+     */
+    List<SuperArticleSort> selArticleNameSTypeS();
 
 }

@@ -54,7 +54,7 @@ public class AccountServiceImpl implements AccountService {
      */
     @Override
     public Account selectAccount(Account account) {
-        if (account != null || !"".equals(account.getId())){
+        if (account != null && !"".equals(account.getId())){
             AccountExample accountExample = new AccountExample();
             AccountExample.Criteria criteria = accountExample.createCriteria();
             criteria.andIdEqualTo(account.getId());
