@@ -48,7 +48,8 @@ public class FabuBlog {
 
     @PostMapping("/publish/articles")
     @ResponseBody
-    public Msg publishArticle(HttpServletRequest request,ArticleWithBLOBs articleWithBLOBs){
+    public Msg publishArticle(HttpServletRequest request,ArticleWithBLOBs articleWithBLOBs,
+                              @RequestParam(name = "articleSortId") String articleSortId){
         HttpSession httpSession = request.getSession();
         Account account = (Account) httpSession.getAttribute("account");
         Msg msg = articleService.saveArticle(account,articleWithBLOBs,"0");

@@ -130,35 +130,42 @@
         var acticleZy = $("#acticleZy").val().trim();
         var acticleUser = $("#acticleUser").val().trim();
         var checkData = tree.getChecked('syId');
-        if (acticelName != "" && acticelName.length>1 && checkData.length>0){
-            layui.use('layer', function () {
-                //询问框
-                layer.confirm('确定发布', {
-                    btn: ['确定', '取消'] //按钮
-                }, function () {
-                    var index = layer.load(1, {
-                        shade: [0.1, '#fff'] //0.1透明度的白色背景
-                    });
-                    var dataht = CKEDITOR.instances.editor1.getData();
-                    var datauht = encodeURIComponent(dataht);
-                    $.ajax({
-                        type: 'post',
-                        url: '/system/publish/articles',
-                        data: 'context=' + datauht + "&articleName="+encodeURI(acticelName)+"&articleSortId="+checkData+"&briefIntroduction="+encodeURI(acticleZy),
-                        success: function (data) {
-                            layer.close(index);
-                            if (data.code == "1") {
-                                layer.msg("发布成功");
-                            }
-                        }
-                    });
-                }, function () {
-                    layer.msg('已取消');
-                });
-
-            });
+        console.log(checkData);
+        var dataht = CKEDITOR.instances.editor1.getData();
+        var datauht = encodeURIComponent(dataht);
+        if (datauht == ""){
+            layer.msg("输入文章内容");
         } else {
-            layer.msg("设置写标题&设置文章类型");
+            if (acticelName != "" && acticelName.length>1 && checkData.length>0){
+                layui.use('layer', function () {
+                    //询问框
+                    layer.confirm('确定发布', {
+                        btn: ['确定', '取消'] //按钮
+                    }, function () {
+                        var index1 = layer.load(1, {
+                            shade: [0.1, '#fff'] //0.1透明度的白色背景
+                        });
+                        $.ajax({
+                            type: 'post',
+                            url: '/system/publish/articles',
+                            data: 'context=' + datauht + "&articleName="+encodeURI(acticelName)+"&articleSortId="+checkData+"&briefIntroduction="+encodeURI(acticleZy),
+                            success: function (data) {
+                                layer.close(index1);
+                                if (data.code == "200") {
+                                    layer.msg("发布成功");
+                                }else {
+                                    layer.msg(data.msg);
+                                }
+                            }
+                        });
+                    }, function () {
+                        layer.msg('已取消');
+                    });
+
+                });
+            } else {
+                layer.msg("设置写标题&设置文章类型");
+            }
         }
     }
 

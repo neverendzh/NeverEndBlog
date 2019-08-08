@@ -5,11 +5,13 @@ import com.neverend.blog.entity.Account;
 import com.neverend.blog.entity.Article;
 import com.neverend.blog.entity.ArticleWithBLOBs;
 import com.neverend.blog.mapper.AccountMapper;
+import com.neverend.blog.moudel.Code;
 import com.neverend.blog.moudel.Msg;
 import com.neverend.blog.service.AccountService;
 import com.neverend.blog.service.ArticleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpSession;
 import java.util.Date;
@@ -120,42 +122,48 @@ public class ArticleServiceImpl implements ArticleService {
         Msg msg = new Msg();
         Date date = new Date();
         Account accountIsTrue =  accountService.selectAccount(account);
-        if (getArticleName(articleWithBLOBs)){
-            Article article = articleDao.selectAccountIdAndArticleName(articleWithBLOBs.getArticleName(),articleWithBLOBs.getArticleSortId(),accountIsTrue.getId());
-            if (article !=null ){
+        if (accountIsTrue != null){
+            if (getArticleName(articleWithBLOBs)){
+                Article article = articleDao.selectAccountIdAndArticleName(articleWithBLOBs.getArticleName(),articleWithBLOBs.getArticleSortId(),accountIsTrue.getId());
+                if (article !=null ){
 //                设置用户id
-                articleWithBLOBs.setAccountId(accountIsTrue.getId());
+                    articleWithBLOBs.setAccountId(accountIsTrue.getId());
 //                设置文章id
-                articleWithBLOBs.setArticleId(article.getArticleId());
+                    articleWithBLOBs.setArticleId(article.getArticleId());
 //                跟新时间
-                articleWithBLOBs.setBeiYongYi(Long.toString(date.getTime()));
+                    articleWithBLOBs.setBeiYongYi(Long.toString(date.getTime()));
 //                  创建时间
-                articleWithBLOBs.setCreatTime(article.getCreatTime());
+                    articleWithBLOBs.setCreatTime(article.getCreatTime());
 //                状态
-                articleWithBLOBs.setState(state);
-                String code =  articleDao.updateByArticle(articleWithBLOBs);
-                msg.setUrl("/system/admin/fabu/yulan?articleId="+article.getArticleId());
-                msg.setCode("1");
-            }else {
-//                插入
-                articleWithBLOBs.setArticleId(Long.toString(date.getTime()));
-                articleWithBLOBs.setAccountId(accountIsTrue.getId());
-                articleWithBLOBs.setArticleName(articleWithBLOBs.getArticleName());
-                articleWithBLOBs.setBriefIntroduction(articleWithBLOBs.getBriefIntroduction());
-                articleWithBLOBs.setCreatTime(new Date());
-                articleWithBLOBs.setArticleSortId(articleWithBLOBs.getArticleSortId());
-                articleWithBLOBs.setState(state);
-                int saveNum = articleDao.saveArticleDao(articleWithBLOBs);
-                if (saveNum>0){
-                    msg.setUrl("/system/admin/fabu/yulan?articleId="+articleWithBLOBs.getArticleId());
+                    articleWithBLOBs.setState(state);
+                    String code =  articleDao.updateByArticle(articleWithBLOBs);
+                    msg.setUrl("/system/admin/fabu/yulan?articleId="+article.getArticleId());
                     msg.setCode("1");
                 }else {
+//                插入
+                    articleWithBLOBs.setArticleId(Long.toString(date.getTime()));
+                    articleWithBLOBs.setAccountId(accountIsTrue.getId());
+                    articleWithBLOBs.setArticleName(articleWithBLOBs.getArticleName());
+                    articleWithBLOBs.setBriefIntroduction(articleWithBLOBs.getBriefIntroduction());
+                    articleWithBLOBs.setCreatTime(new Date());
+                    articleWithBLOBs.setArticleSortId(articleWithBLOBs.getArticleSortId());
+                    articleWithBLOBs.setState(state);
+                    int saveNum = articleDao.saveArticleDao(articleWithBLOBs);
+                    if (saveNum>0){
+                        msg.setUrl("/system/admin/fabu/yulan?articleId="+articleWithBLOBs.getArticleId());
+                        msg.setCode(Code.sucess);
+                        msg.setMsg(Code.sucessMsg);
+                    }else {
 //                    插入失败
-                    msg.setCode("0");
+                        msg.setCode("0");
+                    }
+
                 }
 
             }
-
+        }else {
+            msg.setCode(Code.login);
+            msg.setMsg(Code.loginMsg);
         }
 
         return msg;
