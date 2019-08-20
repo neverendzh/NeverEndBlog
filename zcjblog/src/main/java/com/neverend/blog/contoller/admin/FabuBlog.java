@@ -34,7 +34,7 @@ public class FabuBlog {
     private SuperArticleSortService superArticleSortService;
 
     /**
-     * 预览
+     * 预览保存
      * @param articleWithBLOBs
      * @return
      */
@@ -96,7 +96,9 @@ public class FabuBlog {
     @GetMapping("/admin/fabu/yulan")
     public String Yulan(@RequestParam(name = "articleId",required = false) String articleId,HttpServletRequest request){
         ArticleWithBLOBs articleWithBLOBs = articleService.getArticle(articleId);
+        request.setAttribute("articelName",articleWithBLOBs.getArticleName());
         request.setAttribute("contextht",articleWithBLOBs.getContext());
+
         return "admin/yulan";
     }
 }

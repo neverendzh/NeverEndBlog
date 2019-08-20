@@ -1,24 +1,18 @@
 <th:block th:fragment="topHeader" xmlns:th="http://www.w3.org/1999/xhtml" xmlns:shiro="http://www.w3.org/1999/xhtml">
-    <div class="header">
-        <div class="menu-btn">
-            <div class="menu"></div>
+    <div class="layui-layout layui-layout-admin">
+        <div class="layui-header" id="topCaiDan">
+            <div class="layui-logo">NeverEnd_Blog</div>
+            <ul class="layui-nav layui-layout-right" style="margin-top: 16px;">
+                <button onclick="loginUserAccount()" type="button" id="longinId"
+                        class="layui-btn layui-btn-sm"
+                        shiro:hasRole="1">登录
+                </button>
+                <a href="/system/login" class="layui-btn layui-btn-sm"
+                   shiro:hasRole="1">注册</a>
+                <a href="/system/logout" class="layui-btn layui-btn-sm"
+                   shiro:hasAnyRoles="2,3,4">退出</a>
+            </ul>
         </div>
-        <h1 class="logo" style="margin-top: 6px">
-            <a href="/user/index">
-                <span>NeverEnd</span>
-                <img src="/static/res/img/logo.png">
-            </a>
-        </h1>
-        <div id="topCaiDan" class="nav">
-        </div>
-        <button onclick="loginUserAccount()" type="button" id="longinId"
-                style="float: right;margin-top: 40px;margin-right: 20px" class="layui-btn layui-btn-sm"
-                shiro:hasRole="1">登录
-        </button>
-        <a href="/system/login" style="float: right;margin-top: 40px;margin-right: 20px" class="layui-btn layui-btn-sm"
-           shiro:hasRole="1">注册</a>
-        <a href="/system/logout" style="float: right;margin-top: 40px;margin-right: 20px" class="layui-btn layui-btn-sm"
-           shiro:hasAnyRoles="2,3,4">退出</a>
     </div>
 
 </th:block>

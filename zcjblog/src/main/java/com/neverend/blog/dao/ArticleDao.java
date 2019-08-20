@@ -1,5 +1,6 @@
 package com.neverend.blog.dao;
 
+import com.github.pagehelper.PageInfo;
 import com.neverend.blog.entity.Article;
 import com.neverend.blog.entity.ArticleWithBLOBs;
 
@@ -32,4 +33,12 @@ public interface ArticleDao {
      * @return
      */
     String updateByArticle(ArticleWithBLOBs articleWithBLOBs);
+
+    /**
+     * 排序热度
+     * @param pageStart
+     * @param pageNum
+     * @return
+     */
+    PageInfo<Article> orderByArcileB6(int pageStart, int pageNum);
 }

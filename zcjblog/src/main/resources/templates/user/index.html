@@ -11,189 +11,121 @@
 
     </style>
 </head>
-<body>
+<body background="/static/res/img/indeximg/backgru.jpg">
 <!--Navigation Bar-->
 <div th:replace="../templates/user/include/top :: topHeader"></div>
 
-<div class="banner">
-    <div class="cont w1000">
-        <div class="title">
-            <h3>MY<br/>BLOG</h3>
-            <h4>well-balanced heart</h4>
+<div class="layui-container" style="background: #e4e8d7;min-height: 592px;">
+    <div class="layui-row" style="margin-top: 10px;">
+        <div class="layui-col-xs6 layui-col-sm6 layui-col-md3">
+                <div class="layui-card" style="margin-top: 2px;border-radius: 8px;">
+                    <div class="layui-card-header">选择文章分类查看</div>
+                    <div class="layui-card-body">
+                        <div id="ztreeAticle"></div>
+                    </div>
+                </div>
+
         </div>
-        <div class="amount">
-            <p><span class="text">访问量</span><span class="access">1000</span></p>
-            <p><span class="text">日志</span><span class="daily-record">1000</span></p>
+        <div class="layui-col-xs6 layui-col-sm6 layui-col-md6">
+            <div class="layui-card" style="margin: 6px;border-radius: 8px;">
+                <div class="layui-card-header">标题</div>
+                <div class="layui-card-body">
+
+                </div>
+            </div>
+        </div>
+        <div class="layui-col-xs6 layui-col-sm6 layui-col-md3">
+            <div>
+                <div class="layui-form-item">
+                    <div class="layui-input-inline">
+                        <div class="layui-input-inline">
+                            <input style="width: 280px;border-radius: 42px;" type="search" name="keyword" autocomplete="off" class="layui-input" placeholder="标题关键字"/>
+                            <i class="layui-icon layui-icon-search" style="position: absolute;top:8px;right: -76px;font-size: 24px;color: #1E9FFF;"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-card" style="margin-top: -12px;border-radius: 8px;">
+                    <div class="layui-card-header">全部文章</div>
+                    <div class="layui-card-body">
+                        <ul>
+                            <li>11</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
+
+    <!--Bottom information Text-->
+    <div th:replace="../templates/user/include/footer :: footerHtml"></div>
 </div>
 
-<!--content Text-->
-<div class="content">
-    <div class="cont w1000">
-        <div class="title">
-        <span id="sybootm" class="layui-breadcrumb">
-        </span>
-        </div>
-        <div>
-       </div>
-        <div class="list-item">
-            <div class="item">
-                <div class="layui-fluid">
-                    <div class="layui-row">
-                        <div class="layui-col-xs12 layui-col-sm4 layui-col-md5">
-                            <div class="img"><img src="/static/res/img/sy_img1.jpg" alt=""></div>
-                        </div>
-                        <div class="layui-col-xs12 layui-col-sm8 layui-col-md7">
-                            <div class="item-cont">
-                                <h3>空间立体效果图，完美呈现最终效果
-                                    <button class="layui-btn layui-btn-danger new-icon">new</button>
-                                </h3>
-                                <h5>设计文章</h5>
-                                <p>
-                                    室内设计作为一门新兴的学科，尽管还只是近数十年的事，但是人们有意识地对自己生活、生产活动的室内进行安排布置，甚至美化装饰，赋予室内环境以所祈使的气氛，却早巳从人类文明伊始的时期就已存在</p>
-                                <a href="/leave/details" class="go-icon"></a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="item">
-                <div class="layui-fluid">
-                    <div class="layui-row">
-                        <div class="layui-col-xs12 layui-col-sm4 layui-col-md5">
-                            <div class="img"><img src="/static/res/img/sy_img2.jpg" alt=""></div>
-                        </div>
-                        <div class="layui-col-xs12 layui-col-sm8 layui-col-md7">
-                            <div class="item-cont">
-                                <h3>空间立体效果图，完美呈现最终效果
-                                    <button class="layui-btn layui-btn-danger new-icon">new</button>
-                                </h3>
-                                <h5>设计文章</h5>
-                                <p>
-                                    室内设计作为一门新兴的学科，尽管还只是近数十年的事，但是人们有意识地对自己生活、生产活动的室内进行安排布置，甚至美化装饰，赋予室内环境以所祈使的气氛，却早巳从人类文明伊始的时期就已存在</p>
-                                <a href="/leave/details" class="go-icon"></a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="item">
-                <div class="layui-fluid">
-                    <div class="layui-row">
-                        <div class="layui-col-xs12 layui-col-sm4 layui-col-md5">
-                            <div class="img"><img src="/static/res/img/sy_img3.jpg" alt=""></div>
-                        </div>
-                        <div class="layui-col-xs12 layui-col-sm8 layui-col-md7">
-                            <div class="item-cont">
-                                <h3>空间立体效果图，完美呈现最终效果
-                                    <button class="layui-btn layui-btn-danger new-icon">new</button>
-                                </h3>
-                                <h5>设计文章</h5>
-                                <p>
-                                    室内设计作为一门新兴的学科，尽管还只是近数十年的事，但是人们有意识地对自己生活、生产活动的室内进行安排布置，甚至美化装饰，赋予室内环境以所祈使的气氛，却早巳从人类文明伊始的时期就已存在</p>
-                                <a href="/leave/details" class="go-icon"></a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="item">
-                <div class="layui-fluid">
-                    <div class="layui-row">
-                        <div class="layui-col-xs12 layui-col-sm4 layui-col-md5">
-                            <div class="img"><img src="/static/res/img/sy_img4.jpg" alt=""></div>
-                        </div>
-                        <div class="layui-col-xs12 layui-col-sm8 layui-col-md7">
-                            <div class="item-cont">
-                                <h3>空间立体效果图，完美呈现最终效果
-                                    <button class="layui-btn layui-btn-danger new-icon">new</button>
-                                </h3>
-                                <h5>设计文章</h5>
-                                <p>
-                                    室内设计作为一门新兴的学科，尽管还只是近数十年的事，但是人们有意识地对自己生活、生产活动的室内进行安排布置，甚至美化装饰，赋予室内环境以所祈使的气氛，却早巳从人类文明伊始的时期就已存在</p>
-                                <a href="/leave/details" class="go-icon"></a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="item">
-                <div class="layui-fluid">
-                    <div class="layui-row">
-                        <div class="layui-col-xs12 layui-col-sm4 layui-col-md5">
-                            <div class="img"><img src="/static/res/img/sy_img5.jpg" alt=""></div>
-                        </div>
-                        <div class="layui-col-xs12 layui-col-sm8 layui-col-md7">
-                            <div class="item-cont">
-                                <h3>空间立体效果图，完美呈现最终效果
-                                    <button class="layui-btn layui-btn-danger new-icon">new</button>
-                                </h3>
-                                <h5>设计文章</h5>
-                                <p>
-                                    室内设计作为一门新兴的学科，尽管还只是近数十年的事，但是人们有意识地对自己生活、生产活动的室内进行安排布置，甚至美化装饰，赋予室内环境以所祈使的气氛，却早巳从人类文明伊始的时期就已存在</p>
-                                <a href="/leave/details" class="go-icon"></a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div id="demo" style="text-align: center;"></div>
-    </div>
-</div>
-
-
-<!--Bottom information Text-->
-<div th:replace="../templates/user/include/footer :: footerHtml"></div>
 
 <!--Bottom information js-->
 <div th:replace="../templates/user/include/footerjs :: footerJsCss"></div>
 <script type="text/javascript">
     layui.config({
         base: '/static/res/js/util/'
-    }).use(['element', 'laypage', 'jquery', 'menu'], function () {
-        element = layui.element, laypage = layui.laypage, $ = layui.$, menu = layui.menu;
-        laypage.render({
-            elem: 'demo'
-            , count: 70 //数据总数，从服务端得到
+    }).use(['layer', 'form', 'tree'], function () {
+        layer = layui.layer;
+        var form = layui.form;
+        tree = layui.tree;
+        $.ajax({
+            type: 'get',
+            url: '/system/admin/acticle/tree',
+            data: '',
+            success: function (data) {
+                if (data.code == 0) {
+                    var datatree = data.objectmsg;
+                    //渲染
+                    var inst1 = tree.render({
+                        elem: '#ztreeAticle',  //绑定元素
+                        showLine: true,
+                        showCheckbox: true,
+                        data: datatree,
+                        id: 'syId' //定义索引
+                    });
+                }
+            }
         });
-        menu.init();
     });
-    (function requestJsonTp(){
+    (function requestJsonTp() {
+        var hearht = "<ul class=\"layui-nav layui-layout-left\">";
         var topLanMu = "";
         $.ajax({
-            type:'post',
-            url:'/lan/mu/top',
-            contentType:'application/json;charset=utf-8',
+            type: 'post',
+            url: '/lan/mu/top',
+            contentType: 'application/json;charset=utf-8',
             //数据格式是json串，商品信息
-            data:'{"topName":"首页头部"}',
-            success:function(data){//返回json结果'
+            data: '{"topName":"首页头部"}',
+            success: function (data) {//返回json结果'
                 var jsonObject = JSON.parse(data);
-                for (var i=0;i<jsonObject.length;i++){
-                    topLanMu = topLanMu+"<a href=\""+jsonObject[i].lookUrl+"\">"+jsonObject[i].lanMu+"</a>";
+                for (var i = 0; i < jsonObject.length; i++) {
+
+                    topLanMu = topLanMu + "<li class=\"layui-nav-item \"><a href=\"" + jsonObject[i].lookUrl + "\">" + jsonObject[i].lanMu + "</a></li>";
                 }
-                $("#topCaiDan").append(topLanMu);
+                var endht = hearht + topLanMu + " </ul>";
+                $("#topCaiDan").append(endht);
             }
 
         })
     })();
-    (function requestJsonWeiBo(){
+    (function requestJsonWeiBo() {
         var topLanMu = "";
         var xieg = "<span lay-separator=\"\">|</span>";
         $.ajax({
-            type:'post',
-            url:'/lan/mu/boom',
-            contentType:'application/json;charset=utf-8',
+            type: 'post',
+            url: '/lan/mu/boom',
+            contentType: 'application/json;charset=utf-8',
             //数据格式是json串，商品信息
-            data:'{"bName":"首页尾部"}',
-            success:function(data){//返回json结果'
+            data: '{"bName":"首页尾部"}',
+            success: function (data) {//返回json结果'
                 var jsonObject = JSON.parse(data);
-                for (var i=0;i<jsonObject.length;i++){
-                    if (i<jsonObject.length-1){
-                        topLanMu = topLanMu+"<a href=\""+jsonObject[i].lookUrl+"?type="+jsonObject[i].roleCode+"\">"+jsonObject[i].lanMu+"</a>"+xieg;
-                    }else {
-                        topLanMu = topLanMu+"<a href=\""+jsonObject[i].lookUrl+"?type="+jsonObject[i].roleCode+"\">"+jsonObject[i].lanMu+"</a>";
+                for (var i = 0; i < jsonObject.length; i++) {
+                    if (i < jsonObject.length - 1) {
+                        topLanMu = topLanMu + "<a href=\"" + jsonObject[i].lookUrl + "?type=" + jsonObject[i].roleCode + "\">" + jsonObject[i].lanMu + "</a>" + xieg;
+                    } else {
+                        topLanMu = topLanMu + "<a href=\"" + jsonObject[i].lookUrl + "?type=" + jsonObject[i].roleCode + "\">" + jsonObject[i].lanMu + "</a>";
                     }
                 }
                 $("#sybootm").append(topLanMu);
@@ -204,67 +136,68 @@
 
     var layuiDomeLogin;
     var layer;
+
     //登录表单显示
     function loginUserAccount() {
-       layuiDomeLogin = layui.use('layer', function(){
+        layuiDomeLogin = layui.use('layer', function () {
             layer = layui.layer;
             var loginhtmlform = layer.open({
-               title: "登录",
-               type:1,
-               shade: 0,
-               btnAlign: 'c',
-               skin: 'layui-layer-molv',
-               offset: '200px',
-               content: '<form> <div style="margin-top: 25px" class="layui-form-item">\n' +
-               '    <label class="layui-form-label">输入框</label>\n' +
-               '    <div class="layui-input-inline">\n' +
-               '      <input type="text" id="accountMobile" name="accountMobile" required  lay-verify="required" placeholder="账号" autocomplete="off" class="layui-input">\n' +
-               '    </div>\n' +
-               '  </div>\n' +
-               '  <div class="layui-form-item">\n' +
-               '    <label class="layui-form-label">密码框</label>\n' +
-               '    <div class="layui-input-inline">\n' +
-               '      <input type="password" id="password" name="password" required lay-verify="required" placeholder="密码" autocomplete="off" class="layui-input">\n' +
-               '    </div>\n' +
-               '  </div></form>',
-               btn: ['登录', '重置'],
-               yes: function(index, layero){
-                   var accountMobile = $("#accountMobile").val();
-                   var password =$("#password").val();
-                   if (accountMobile == ""  || accountMobile == null ){
-                       layer.tips('输入账号', '#accountMobile');
-                       return false;
-                   }
-                   if (password == ""  || password == null){
-                       layer.tips('输入密码', '#password');
-                       return false;
-                   }
-                   $.ajax({
-                       type:'post',
-                       url:'/',
-                       data:'accountMobile='+accountMobile+'&password='+password,
-                       success:function(data){//返回json结果'
-                           var Msg = JSON.parse(data);
-                           if (Msg.code == "0"){
-                               layer.close(loginhtmlform);
-                               window.location.href=Msg.url;
-                           }else {
-                               layer.tips('账号或密码错误', '#accountMobile');
-                           }
-                       }
-                   })
-                   //按钮【按钮一】的回调
-               },
-               btn2: function(index, layero){
-                   console.log("sss");
-                   //按钮【按钮二】的回调
-                   return false //开启该代码可禁止点击该按钮关闭
-               },
-               cancel: function(){
-                   //右上角关闭回调
-                   //return false 开启该代码可禁止点击该按钮关闭
-               }
-           });
+                title: "登录",
+                type: 1,
+                shade: 0,
+                btnAlign: 'c',
+                skin: 'layui-layer-molv',
+                offset: '200px',
+                content: '<form> <div style="margin-top: 25px" class="layui-form-item">\n' +
+                '    <label class="layui-form-label">输入框</label>\n' +
+                '    <div class="layui-input-inline">\n' +
+                '      <input type="text" value="1593658137" id="accountMobile" name="accountMobile" required  lay-verify="required" placeholder="账号" autocomplete="off" class="layui-input">\n' +
+                '    </div>\n' +
+                '  </div>\n' +
+                '  <div class="layui-form-item">\n' +
+                '    <label class="layui-form-label">密码框</label>\n' +
+                '    <div class="layui-input-inline">\n' +
+                '      <input type="password" value="123" id="password" name="password" required lay-verify="required" placeholder="密码" autocomplete="off" class="layui-input">\n' +
+                '    </div>\n' +
+                '  </div></form>',
+                btn: ['登录', '重置'],
+                yes: function (index, layero) {
+                    var accountMobile = $("#accountMobile").val();
+                    var password = $("#password").val();
+                    if (accountMobile == "" || accountMobile == null) {
+                        layer.tips('输入账号', '#accountMobile');
+                        return false;
+                    }
+                    if (password == "" || password == null) {
+                        layer.tips('输入密码', '#password');
+                        return false;
+                    }
+                    $.ajax({
+                        type: 'post',
+                        url: '/',
+                        data: 'accountMobile=' + accountMobile + '&password=' + password,
+                        success: function (data) {//返回json结果'
+                            var Msg = JSON.parse(data);
+                            if (Msg.code == "0") {
+                                layer.close(loginhtmlform);
+                                window.location.href = Msg.url;
+                            } else {
+                                layer.tips('账号或密码错误', '#accountMobile');
+                            }
+                        }
+                    })
+                    //按钮【按钮一】的回调
+                },
+                btn2: function (index, layero) {
+                    console.log("sss");
+                    //按钮【按钮二】的回调
+                    return false //开启该代码可禁止点击该按钮关闭
+                },
+                cancel: function () {
+                    //右上角关闭回调
+                    //return false 开启该代码可禁止点击该按钮关闭
+                }
+            });
         });
     };
 </script>

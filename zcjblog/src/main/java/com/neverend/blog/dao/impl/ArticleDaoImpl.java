@@ -1,9 +1,9 @@
 package com.neverend.blog.dao.impl;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.neverend.blog.dao.ArticleDao;
-import com.neverend.blog.entity.Article;
-import com.neverend.blog.entity.ArticleExample;
-import com.neverend.blog.entity.ArticleWithBLOBs;
+import com.neverend.blog.entity.*;
 import com.neverend.blog.mapper.ArticleMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -75,5 +75,16 @@ public class ArticleDaoImpl implements ArticleDao {
     public String updateByArticle(ArticleWithBLOBs articleWithBLOBs) {
         articleMapper.updateByPrimaryKeySelective(articleWithBLOBs);
         return articleWithBLOBs.getArticleId();
+    }
+
+    @Override
+    public  PageInfo<Article>  orderByArcileB6(int pageStart, int pageNum) {
+        PageHelper.startPage(pageStart,pageNum);
+
+        ArticleExample articleExample = new ArticleExample();
+        articleExample.setOrderByClause(" CAST( bei_yong_liu as signed) ASC");
+        List<Article> articles = articleMapper.selectByExample(articleExample);
+        PageInfo<Article> personPageInfo = new PageInfo<>(articles);
+        return personPageInfo;
     }
 }

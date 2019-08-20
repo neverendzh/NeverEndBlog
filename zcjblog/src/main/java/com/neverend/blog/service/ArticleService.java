@@ -1,8 +1,12 @@
 package com.neverend.blog.service;
 
+import com.github.pagehelper.PageInfo;
 import com.neverend.blog.entity.Account;
+import com.neverend.blog.entity.Article;
 import com.neverend.blog.entity.ArticleWithBLOBs;
 import com.neverend.blog.moudel.Msg;
+
+import java.util.List;
 
 /**
  * @author zcj
@@ -24,4 +28,12 @@ public interface ArticleService {
      * @return msg
      */
     Msg saveArticle(Account account, ArticleWithBLOBs articleWithBLOBs, String s,String acid);
+
+    /**
+     * 根据热度排序文章
+     * @param pageStart
+     * @param pageNum
+     * @return
+     */
+    PageInfo<Article> getArticleHortAsc(int pageStart, int pageNum );
 }

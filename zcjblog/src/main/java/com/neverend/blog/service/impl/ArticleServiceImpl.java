@@ -2,6 +2,7 @@ package com.neverend.blog.service.impl;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
+import com.github.pagehelper.PageInfo;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.neverend.blog.dao.ArticleDao;
@@ -139,6 +140,13 @@ public class ArticleServiceImpl implements ArticleService {
         }
 
         return msg;
+    }
+
+    @Override
+    public PageInfo<Article>  getArticleHortAsc(int pageStart, int pageNum) {
+        PageInfo<Article> articles = articleDao.orderByArcileB6(pageStart,pageNum);
+        return articles;
+
     }
 
     /**

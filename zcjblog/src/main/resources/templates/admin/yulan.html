@@ -19,7 +19,9 @@
 
     <div class="layui-body">
         <!-- 内容主体区域 -->
-        <div id="bodyHtmlAdd" style="padding: 15px;">
+        <div  style="padding: 15px;">
+            <div  style="text-align: center;background: #00B0E8"><p id="acticName"></p></div>
+            <div style="background: #e4e8d7" id="bodyHtmlAdd"></div>
         </div>
     </div>
 
@@ -32,7 +34,8 @@
 <script th:inline="javascript">
     function appenBodyYuLanHt(){
         var type = [[${contextht}]];
-        console.log(type)
+        var acticleName = [[${articelName}]];
+        $("#acticName").append(acticleName);
         $("#bodyHtmlAdd").append(type);
     };
     appenBodyYuLanHt();
