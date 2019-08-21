@@ -36,4 +36,11 @@ public interface ArticleService {
      * @return
      */
     PageInfo<Article> getArticleHortAsc(int pageStart, int pageNum );
+
+    /**
+     * 把查询出的文章封装为msg对象
+     * @param articleList
+     * @return
+     */
+    Msg getArticleMsg(PageInfo<Article> articleList);
 }

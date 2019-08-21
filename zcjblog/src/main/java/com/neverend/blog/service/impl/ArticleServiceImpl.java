@@ -149,6 +149,17 @@ public class ArticleServiceImpl implements ArticleService {
 
     }
 
+    @Override
+    public Msg getArticleMsg(PageInfo<Article> articleList) {
+        Msg msg = new Msg();
+        msg.setCode(Code.sucess);
+        msg.setMsg(Code.sucessMsg);
+        msg.setObjectmsg(articleList.getList());
+        msg.setCount(articleList.getTotal()+"");
+        msg.setCount(articleList.getPages()+"");
+        return msg;
+    }
+
     /**
      * 根据文章隶属的分类id生成中间表
      *
