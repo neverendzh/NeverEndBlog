@@ -330,7 +330,7 @@ public class SuperArticleSortServiceImpl implements SuperArticleSortService {
      * @return
      */
     @Override
-    public Msg getClassTypeNameS() {
+    public Msg getClassTypeNameS(boolean checked) {
         Msg msg = new Msg();
         List<SuperArticleSort> articles = superArticleSortMapper.selArticleNameSTypeS();
         Map<String,List<SuperArticleSort>> treeMap = new HashMap<>();

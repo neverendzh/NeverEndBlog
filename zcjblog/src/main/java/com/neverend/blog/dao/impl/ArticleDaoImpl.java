@@ -87,4 +87,19 @@ public class ArticleDaoImpl implements ArticleDao {
         PageInfo<Article> personPageInfo = new PageInfo<>(articles);
         return personPageInfo;
     }
+
+    @Override
+    public PageInfo<Article> getArtilceFeiL(String artilceid, Integer pageStart, Integer pageSize,String state) {
+        PageHelper.startPage(pageStart,pageSize);
+        List<Article> articles = articleMapper.getArtilceFeiL(artilceid,state);
+        PageInfo<Article> personPageInfo = new PageInfo<>(articles);
+        return personPageInfo;
+    }
+
+    @Override
+    public List<Article> getAll() {
+        ArticleExample articleExample = new ArticleExample();
+        List<Article> articles = articleMapper.selectByExample(articleExample);
+        return articles;
+    }
 }

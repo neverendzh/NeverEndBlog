@@ -41,4 +41,9 @@ public interface ArticleDao {
      * @return
      */
     PageInfo<Article> orderByArcileB6(int pageStart, int pageNum);
+
+    PageInfo<Article> getArtilceFeiL(String artilceid, Integer pageNum, Integer pageSize,String state);
+
+    List<Article> getAll();
+
 }

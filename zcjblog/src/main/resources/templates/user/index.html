@@ -34,15 +34,15 @@
                 <div class="layui-form-item">
                     <div class="layui-input-inline">
                         <div class="layui-input-inline">
-                            <input style="width: 280px;border-radius: 42px;" type="search" name="keyword"
+                            <input id="searchName" style="width: 280px;border-radius: 42px;" type="search" name="keyword"
                                    autocomplete="off" class="layui-input" placeholder="标题关键字"/>
-                            <i class="layui-icon layui-icon-search"
+                            <i onclick="search()" class="layui-icon layui-icon-search"
                                style="position: absolute;top:8px;right: -76px;font-size: 24px;color: #1E9FFF;"></i>
                         </div>
                     </div>
                 </div>
                 <div class="layui-card" style="margin-top: -12px;border-radius: 8px;">
-                    <div class="layui-card-header">全部文章</div>
+                    <div class="layui-card-header">Hot_Top_10</div>
                     <div class="layui-card-body">
                         <ul id="allarticleName" class="layui-nav layui-nav-tree">
                         </ul>
@@ -55,7 +55,6 @@
     <!--Bottom information Text-->
     <div th:replace="../templates/user/include/footer :: footerHtml"></div>
 </div>
-
 
 <!--Bottom information js-->
 <div th:replace="../templates/user/include/footerjs :: footerJsCss"></div>
@@ -130,7 +129,7 @@
         if (getScrollHeight() == getWindowHeight() + getDocumentTop()) {
 
             if (pageStart < total) {
-                pageStart = pageStart+1;
+                pageStart = pageStart + 1;
                 $.ajax({
                     type: 'get',
                     url: '/user/index/articlesHort',
@@ -143,7 +142,6 @@
                         if (data.code == 200) {
                             var addarticel = "";
                             var dataArticle = data.objectmsg;
-                            var nameAll = "";
                             for (var i = 0; i < dataArticle.length; i++) {
                                 var art = dataArticle[i];
                                 addarticel = addarticel + " <div class=\"layui-card\" style=\"margin: 4px;border-radius: 8px;\">\n" +
@@ -161,18 +159,16 @@
                                     "                </div>\n" +
                                     "            </div>";
 
-                                nameAll = nameAll + " <li class=\"layui-nav-item\"><a href='/system/admin/fabu/yulan?articleId=" + art.articleId + "'>" + art.articleName + "</a></li>";
 
                             }
                             $("#articleAdds").append(addarticel);
-                            $("#allarticleName").append(nameAll);
                         }
                     }
                 });
             } else {
-                if (temp==0){
+                if (temp == 0) {
                     $("#articleAdds").append("<h4 style='text-align: center'>没有更多文章了<i class=\"layui-icon layui-icon-face-smile\" style=\"font-size: 14px; color: #1E9FFF;\"></i> </h4>");
-                    temp= temp+1;
+                    temp = temp + 1;
                 }
             }
 
@@ -187,6 +183,7 @@
         layer = layui.layer;
         var form = layui.form;
         tree = layui.tree;
+        //加载树形分类数据
         $.ajax({
             type: 'get',
             url: '/system/admin/acticle/tree',
@@ -198,14 +195,62 @@
                     var inst1 = tree.render({
                         elem: '#ztreeAticle',  //绑定元素
                         showLine: true,
-                        showCheckbox: true,
+                        showCheckbox: false,
                         data: datatree,
                         id: 'syId' //定义索引
+                        , click: function (obj) {
+                            var artilceid = obj.data.id; //得到当前点击的节点数据
+                            $.ajax({
+                                type: 'get',
+                                url: '/user/index/articlesHort/fenlei',
+                                data: {
+                                    "artilceid": artilceid,
+                                    "pageStart": pageStart,
+                                    "pageNum": pageNum,
+                                    "state": 0
+                                },
+                                success: function (data) {
+                                    if (data.code == 200) {
+                                        if (data.count >0){
+                                            $("#articleAdds").empty();
+                                            var addarticel = "";
+                                            var dataArticle = data.objectmsg;
+                                            for (var i = 0; i < dataArticle.length; i++) {
+                                                var art = dataArticle[i];
+                                                addarticel = addarticel + " <div class=\"layui-card\" style=\"margin: 4px;border-radius: 8px;\">\n" +
+                                                    "                <div class=\"layui-card-header\"><a href='/system/admin/fabu/yulan?articleId=" + art.articleId + "'><span style='color: #00B0E8'>" + art.articleName + "</span></a></div>\n" +
+                                                    "                <div class=\"layui-card-body\">\n" +
+                                                    "                    <div class=\"layui-row\" style=\"margin-top: 10px;\">\n" +
+                                                    "                        <div class=\"layui-col-xs6 layui-col-sm6 layui-col-md4\">\n" +
+                                                    "                            <img src=\"/static/res/img/banner.jpg\" style=\"width: 100%;height: 150px\">\n" +
+                                                    "                        </div>\n" +
+                                                    "                        <div class=\"layui-col-xs6 layui-col-sm6 layui-col-md8\">\n" +
+                                                    "                            <div style=\"margin-left: 6px;\">" + art.briefIntroduction + "</div>\n" +
+                                                    "                        </div>\n" +
+                                                    "\n" +
+                                                    "                    </div>\n" +
+                                                    "                </div>\n" +
+                                                    "            </div>";
+                                            }
+                                            $("#articleAdds").append(addarticel);
+                                        } else {
+                                            layer.msg("暂无该分类文章！");
+                                        }
+
+                                    }
+                                },
+                                error: function () {
+                                    layer.msg("服务异常！");
+                                }
+                            });
+
+                        }
                     });
                 }
             }
         });
 
+        //加载文章
         $.ajax({
             type: 'get',
             url: '/user/index/articlesHort',
@@ -219,7 +264,6 @@
                     total = data.count;
                     var addarticel = "";
                     var dataArticle = data.objectmsg;
-                    var nameAll = "";
                     for (var i = 0; i < dataArticle.length; i++) {
                         var art = dataArticle[i];
                         addarticel = addarticel + " <div class=\"layui-card\" style=\"margin: 4px;border-radius: 8px;\">\n" +
@@ -237,10 +281,31 @@
                             "                </div>\n" +
                             "            </div>";
 
-                        nameAll = nameAll + " <li class=\"layui-nav-item\"><a href='/system/admin/fabu/yulan?articleId=" + art.articleId + "'>" + art.articleName + "</a></li>";
 
                     }
                     $("#articleAdds").append(addarticel);
+                }
+            }
+        });
+
+        //前十热度文章
+        $.ajax({
+            type: 'get',
+            url: '/user/index/articlesHort',
+            data: {
+                "pageStart": 1,
+                "pageNum": 10
+            },
+            success: function (data) {
+
+                if (data.code == 200) {
+                    total = data.count;
+                    var dataArticle = data.objectmsg;
+                    var nameAll = "";
+                    for (var i = 0; i < dataArticle.length; i++) {
+                        var art = dataArticle[i];
+                        nameAll = nameAll + " <li class=\"layui-nav-item\"><a href='/system/admin/fabu/yulan?articleId=" + art.articleId + "'>" + art.articleName + "</a></li>";
+                    }
                     $("#allarticleName").append(nameAll);
                 }
             }
@@ -357,6 +422,61 @@
             });
         });
     };
+
+    // 搜索
+    function search() {
+        var searchname = $("#searchName").val().trim();
+        if (searchname.length>0){
+            $.ajax({
+                type: 'get',
+                url: '/user/index/search',
+                data: {
+                    "searchname": searchname,
+                },
+                success: function (data) {
+
+                    if (data.code == 200) {
+                        if (data.count >0){
+                            $("#articleAdds").empty();
+                            var addarticel = "";
+                            var dataArticle = data.objectmsg;
+                            for (var i = 0; i < dataArticle.length; i++) {
+                                var art = dataArticle[i];
+                                addarticel = addarticel + " <div class=\"layui-card\" style=\"margin: 4px;border-radius: 8px;\">\n" +
+                                    "                <div class=\"layui-card-header\"><a href='/system/admin/fabu/yulan?articleId=" + art.articleId + "'><span style='color: #00B0E8'>" + art.articleName + "</span></a></div>\n" +
+                                    "                <div class=\"layui-card-body\">\n" +
+                                    "                    <div class=\"layui-row\" style=\"margin-top: 10px;\">\n" +
+                                    "                        <div class=\"layui-col-xs6 layui-col-sm6 layui-col-md4\">\n" +
+                                    "                            <img src=\"/static/res/img/banner.jpg\" style=\"width: 100%;height: 150px\">\n" +
+                                    "                        </div>\n" +
+                                    "                        <div class=\"layui-col-xs6 layui-col-sm6 layui-col-md8\">\n" +
+                                    "                            <div style=\"margin-left: 6px;\">" + art.briefIntroduction + "</div>\n" +
+                                    "                        </div>\n" +
+                                    "\n" +
+                                    "                    </div>\n" +
+                                    "                </div>\n" +
+                                    "            </div>";
+
+
+                            }
+                            $("#articleAdds").append(addarticel);
+                        } else {
+                            layer.msg("无数据");
+                        }
+
+                    }
+                }
+            });
+        } else {
+            layer.msg("请输入内容");
+        }
+    }
+
+    $('#searchName').bind('keyup', function(event) {
+        if (event.keyCode == "13") {
+            search();
+        }
+    });
 </script>
 </body>
 </html>

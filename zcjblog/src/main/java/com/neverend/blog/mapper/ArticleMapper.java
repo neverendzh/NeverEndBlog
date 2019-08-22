@@ -36,4 +36,6 @@ public interface ArticleMapper {
     int updateByPrimaryKeyWithBLOBs(ArticleWithBLOBs record);
 
     int updateByPrimaryKey(Article record);
+
+    List<Article> getArtilceFeiL(@Param("artilceid") String artilceid,@Param("state") String state);
 }

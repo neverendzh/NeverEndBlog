@@ -74,9 +74,10 @@ public interface SuperArticleSortService {
     /**
      *
      * 获取所有分类和分类名称
+     * @param checked 是否开启选择框
      * @return
      */
-    Msg getClassTypeNameS();
+    Msg getClassTypeNameS(boolean checked);
 
     /**
      * 获取上级分类

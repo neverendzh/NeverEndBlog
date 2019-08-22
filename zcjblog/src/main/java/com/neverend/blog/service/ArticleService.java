@@ -43,4 +43,23 @@ public interface ArticleService {
      * @return
      */
     Msg getArticleMsg(PageInfo<Article> articleList);
+
+    /**
+     * 根据文章分类id查询下级所有的文章
+     * @param artilceid
+     * @param pageNum 开始页
+     * @param pageSize 条数
+     * @return
+     */
+    Msg getArtilceFeiL(String artilceid,Integer pageNum,Integer pageSize,String state);
+
+    /**
+     * 根据名称搜索 或者文章分类名称搜索
+     * @param searchname
+     * @param pageStart
+     * @param pageNum
+     * @param state
+     * @return
+     */
+    Msg getArtilcesearch(String searchname, Integer pageStart, Integer pageNum, String state);
 }

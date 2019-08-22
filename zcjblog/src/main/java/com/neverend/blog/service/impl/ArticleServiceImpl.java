@@ -160,6 +160,23 @@ public class ArticleServiceImpl implements ArticleService {
         return msg;
     }
 
+    @Override
+    public Msg getArtilceFeiL(String artilceid,Integer pageNum,Integer pageSize,String state) {
+        PageInfo<Article> articles = articleDao.getArtilceFeiL(artilceid,pageNum,pageSize,state);
+        Msg msg = new Msg();
+        msg.setCount(articles.getPages()+"");
+        msg.setCode(Code.sucess);
+        msg.setMsg(Code.sucessMsg);
+        msg.setObjectmsg(articles.getList());
+        return msg;
+    }
+
+    @Override
+    public Msg getArtilcesearch(String searchname, Integer pageStart, Integer pageNum, String state) {
+
+        return null;
+    }
+
     /**
      * 根据文章隶属的分类id生成中间表
      *

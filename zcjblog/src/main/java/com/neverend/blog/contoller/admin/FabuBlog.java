@@ -82,10 +82,15 @@ public class FabuBlog {
         return "admin/indexWenZhang";
     }
 
+    /**
+     * 树形分类菜单
+     * @param request
+     * @return
+     */
     @GetMapping("/admin/acticle/tree")
     @ResponseBody
     public Msg treeActicles(HttpServletRequest request){
-        Msg msg = superArticleSortService.getClassTypeNameS();
+        Msg msg = superArticleSortService.getClassTypeNameS(true);
         return msg;
     }
 

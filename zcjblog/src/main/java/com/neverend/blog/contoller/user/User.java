@@ -31,6 +31,12 @@ public class User {
         return "user/index";
     }
 
+    /**
+     * 文章排行
+     * @param pageStart
+     * @param pageNum
+     * @return
+     */
     @GetMapping("/index/articlesHort")
     @ResponseBody
     public Msg indexArticle(@RequestParam(name = "pageStart",defaultValue = "1")Integer pageStart,@RequestParam(name = "pageNum",defaultValue = "5") Integer pageNum){
@@ -39,6 +45,29 @@ public class User {
         return msg;
     }
 
+    /**
+     * 文章排行
+     * @param pageStart
+     * @param pageNum
+     * @return
+     */
+    @GetMapping("/index/articlesHort/fenlei")
+    @ResponseBody
+    public Msg getArtilceFeiL(@RequestParam(name = "artilceid")String artilceid,
+                              @RequestParam(name = "pageStart",defaultValue = "1")Integer pageStart,
+                              @RequestParam(name = "pageNum",defaultValue = "5") Integer pageNum,
+                              @RequestParam(name = "state",defaultValue = "0")String state){
+        Msg msg = articleService.getArtilceFeiL(artilceid,pageStart,pageNum,state);
+        return msg;
+    }
 
-
+    @GetMapping("/index/search")
+    @ResponseBody
+    public Msg search(@RequestParam(name = "searchname")String searchname,
+                              @RequestParam(name = "pageStart",defaultValue = "1")Integer pageStart,
+                              @RequestParam(name = "pageNum",defaultValue = "5") Integer pageNum,
+                              @RequestParam(name = "state",defaultValue = "0")String state){
+        Msg msg = articleService.getArtilcesearch(searchname,pageStart,pageNum,state);
+        return msg;
+    }
 }
