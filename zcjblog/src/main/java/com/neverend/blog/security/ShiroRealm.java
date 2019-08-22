@@ -30,17 +30,17 @@ public class ShiroRealm extends AuthorizingRealm {
     private RolePermissionService rolePermissionService;
 
     /**
-     * ÅĞ¶Ï½ÇÉ«ºÍÈ¨ÏŞ
+     * åˆ¤æ–­è§’è‰²å’Œæƒé™
      * @param principalCollection
      * @return
      */
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principalCollection) {
-        //»ñÈ¡µ±Ç°µÇÂ¼µÄ¶ÔÏó
+        //è·å–å½“å‰ç™»å½•çš„å¯¹è±¡
         Account account = (Account) principalCollection.getPrimaryPrincipal();
-        //»ñÈ¡µ±Ç°µÇÂ¼¶ÔÏóÓµÓĞµÄ½ÇÉ«
+        //è·å–å½“å‰ç™»å½•å¯¹è±¡æ‹¥æœ‰çš„è§’è‰²
         List<Roles> rolesList = rolePermissionService.findRolesByAccountId(account.getId());
-        //»ñÈ¡µ±Ç°µÇÂ¼¶ÔÏóÓµÓĞµÄÈ¨ÏŞ
+        //è·å–å½“å‰ç™»å½•å¯¹è±¡æ‹¥æœ‰çš„æƒé™
         List<RolePermission> permissionList = new ArrayList<>();
         for(Roles roles : rolesList) {
             List<RolePermission> rolesPermissionList = rolePermissionService.findAllPermissionByRolesId(roles.getRoleId());
@@ -58,15 +58,15 @@ public class ShiroRealm extends AuthorizingRealm {
         }
 
         SimpleAuthorizationInfo simpleAuthorizationInfo = new SimpleAuthorizationInfo();
-        //µ±Ç°ÓÃ»§ÓµÓĞµÄ½ÇÉ«£¨code£©
+        //å½“å‰ç”¨æˆ·æ‹¥æœ‰çš„è§’è‰²ï¼ˆcodeï¼‰
         simpleAuthorizationInfo.setRoles(rolesNameSet);
-        //µ±Ç°ÓÃ»§ÓµÓĞµÄÈ¨ÏŞ(code)
+        //å½“å‰ç”¨æˆ·æ‹¥æœ‰çš„æƒé™(code)
         simpleAuthorizationInfo.setStringPermissions(permissionNameSet);
         return simpleAuthorizationInfo;
     }
 
     /**
-     * ÅĞ¶ÏµÇÂ¼
+     * åˆ¤æ–­ç™»å½•
      * @param authenticationToken
      * @return
      * @throws AuthenticationException
@@ -78,11 +78,11 @@ public class ShiroRealm extends AuthorizingRealm {
         if(userMobile != null) {
             Account account = accountService.findByMobile(userMobile);
             if(account == null) {
-                throw new UnknownAccountException("ÕÒ²»µ½¸ÃÕËºÅ:" + userMobile);
+                throw new UnknownAccountException("æ‰¾ä¸åˆ°è¯¥è´¦å·:" + userMobile);
             } else {
                 if(Account.STATE_NORMAL.equals(account.getAccountState())) {
-                        logger.info("{} µÇÂ¼³É¹¦: {}",account,usernamePasswordToken.getHost());
-                        //±£´æµÇÂ¼ÈÕÖ¾
+                        logger.info("{} ç™»å½•æˆåŠŸ: {}",account,usernamePasswordToken.getHost());
+                        //ä¿å­˜ç™»å½•æ—¥å¿—
                         Date date = new Date();
                         Long lime = date.getTime();
                         AccountLoginLog accountLoginLog = new AccountLoginLog();
@@ -94,7 +94,7 @@ public class ShiroRealm extends AuthorizingRealm {
                         return new SimpleAuthenticationInfo(account,account.getUserPassword(),getName());
 
                 } else {
-                    throw new LockedAccountException("ÕËºÅ±»½ûÓÃ»òËø¶¨:" + account.getAccountState());
+                    throw new LockedAccountException("è´¦å·è¢«ç¦ç”¨æˆ–é”å®š:" + account.getAccountState());
                 }
             }
         }

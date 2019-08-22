@@ -26,7 +26,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * ÓÃ»§Ê×Ò³
+ * ç”¨æˆ·é¦–é¡µ
  * @author zcj
  */
 @Controller
@@ -37,7 +37,7 @@ public class IndexUser {
     private SuperLanMuService superLanMuService;
 
     /**
-     * Ê×Ò³Ä¬ÈÏµÇÂ¼
+     * é¦–é¡µé»˜è®¤ç™»å½•
      * @param accountMobile
      * @param password
      * @param rememberMe
@@ -51,21 +51,21 @@ public class IndexUser {
                         String rememberMe,
                         HttpServletRequest request,
                         RedirectAttributes redirectAttributes) {
-        // ´´½¨Subject¶ÔÏó
+        // åˆ›å»ºSubjectå¯¹è±¡
         Subject subject = SecurityUtils.getSubject();
-        // ¸ù¾İÕËºÅºÍÃÜÂë½øĞĞµÇÂ¼
+        // æ ¹æ®è´¦å·å’Œå¯†ç è¿›è¡Œç™»å½•
         String requestIp = request.getRemoteAddr();
         UsernamePasswordToken usernamePasswordToken =
                 new UsernamePasswordToken(accountMobile, DigestUtils.md5Hex(password), rememberMe != null, requestIp);
         try {
             subject.login(usernamePasswordToken);
 
-            //½«µÇÂ¼³É¹¦µÄ¶ÔÏó·ÅÈësession£¨Ã»±ØÒª£©
+            //å°†ç™»å½•æˆåŠŸçš„å¯¹è±¡æ”¾å…¥sessionï¼ˆæ²¡å¿…è¦ï¼‰
             Account account = accountService.findByMobile(accountMobile);
             Session session = subject.getSession();
             session.setAttribute("account", account);
 
-            //µÇÂ¼ºóÌø×ªÄ¿±êµÄÅĞ¶Ï
+            //ç™»å½•åè·³è½¬ç›®æ ‡çš„åˆ¤æ–­
             SavedRequest savedRequest = WebUtils.getSavedRequest(request);
             String url = "/user/index";
             if (savedRequest != null) {
@@ -74,19 +74,19 @@ public class IndexUser {
             return "redirect:" + url;
         } catch (UnknownAccountException | IncorrectCredentialsException ex) {
             ex.printStackTrace();
-            redirectAttributes.addFlashAttribute("message", "ÕËºÅ»òÃÜÂë´íÎó");
+            redirectAttributes.addFlashAttribute("message", "è´¦å·æˆ–å¯†ç é”™è¯¯");
         } catch (LockedAccountException ex) {
             ex.printStackTrace();
-            redirectAttributes.addFlashAttribute("message", "ÕËºÅ±»Ëø¶¨");
+            redirectAttributes.addFlashAttribute("message", "è´¦å·è¢«é”å®š");
         } catch (AuthenticationException ex) {
             ex.printStackTrace();
-            redirectAttributes.addFlashAttribute("message", "ÕËºÅ»òÃÜÂë´íÎó");
+            redirectAttributes.addFlashAttribute("message", "è´¦å·æˆ–å¯†ç é”™è¯¯");
         }
         return "redirect:/";
     }
 
     /**
-     * Ê×Ò³Ä¬ÈÏµÇÂ¼
+     * é¦–é¡µé»˜è®¤ç™»å½•
      * @param accountMobile
      * @param password
      * @param rememberMe
@@ -101,9 +101,9 @@ public class IndexUser {
                         String rememberMe,
                         HttpServletRequest request,
                         RedirectAttributes redirectAttributes) {
-        // ´´½¨Subject¶ÔÏó
+        // åˆ›å»ºSubjectå¯¹è±¡
         Subject subject = SecurityUtils.getSubject();
-        // ¸ù¾İÕËºÅºÍÃÜÂë½øĞĞµÇÂ¼
+        // æ ¹æ®è´¦å·å’Œå¯†ç è¿›è¡Œç™»å½•
         String requestIp = request.getRemoteAddr();
         UsernamePasswordToken usernamePasswordToken =
                 new UsernamePasswordToken(accountMobile, DigestUtils.md5Hex(password), rememberMe != null, requestIp);
@@ -112,12 +112,12 @@ public class IndexUser {
         try {
             subject.login(usernamePasswordToken);
 
-            //½«µÇÂ¼³É¹¦µÄ¶ÔÏó·ÅÈësession£¨Ã»±ØÒª£©
+            //å°†ç™»å½•æˆåŠŸçš„å¯¹è±¡æ”¾å…¥sessionï¼ˆæ²¡å¿…è¦ï¼‰
             Account account = accountService.findByMobile(accountMobile);
             Session session = subject.getSession();
             session.setAttribute("account", account);
 
-            //µÇÂ¼ºóÌø×ªÄ¿±êµÄÅĞ¶Ï
+            //ç™»å½•åè·³è½¬ç›®æ ‡çš„åˆ¤æ–­
             SavedRequest savedRequest = WebUtils.getSavedRequest(request);
             String url = "/user/index";
             if (savedRequest != null) {
@@ -128,13 +128,13 @@ public class IndexUser {
             return gson.toJson(msg);
         } catch (UnknownAccountException | IncorrectCredentialsException ex) {
             ex.printStackTrace();
-            redirectAttributes.addFlashAttribute("message", "ÕËºÅ»òÃÜÂë´íÎó");
+            redirectAttributes.addFlashAttribute("message", "è´¦å·æˆ–å¯†ç é”™è¯¯");
         } catch (LockedAccountException ex) {
             ex.printStackTrace();
-            redirectAttributes.addFlashAttribute("message", "ÕËºÅ±»Ëø¶¨");
+            redirectAttributes.addFlashAttribute("message", "è´¦å·è¢«é”å®š");
         } catch (AuthenticationException ex) {
             ex.printStackTrace();
-            redirectAttributes.addFlashAttribute("message", "ÕËºÅ»òÃÜÂë´íÎó");
+            redirectAttributes.addFlashAttribute("message", "è´¦å·æˆ–å¯†ç é”™è¯¯");
         }
         msg.setCode("1");
         msg.setUrl("/");
@@ -143,15 +143,15 @@ public class IndexUser {
 
 
     /**
-     * Ê×Ò³Í·²¿À¸Ä¿
+     * é¦–é¡µå¤´éƒ¨æ ç›®
      * @param topName
      * @return json
      *
      */
     @ResponseBody
     @PostMapping("/lan/mu/top")
-    public String indexLanMuTop(@RequestParam(name = "topName", defaultValue = "Ê×Ò³Í·²¿",required = false) String topName) {
-        // ´´½¨Subject¶ÔÏó
+    public String indexLanMuTop(@RequestParam(name = "topName", defaultValue = "é¦–é¡µå¤´éƒ¨",required = false) String topName) {
+        // åˆ›å»ºSubjectå¯¹è±¡
         Subject subject = SecurityUtils.getSubject();
         Session session = subject.getSession();
         Account account = (Account) session.getAttribute("account");
@@ -161,13 +161,13 @@ public class IndexUser {
     }
 
     /**
-     * Ê×Ò³Î²²¿À¸Ä¿
+     * é¦–é¡µå°¾éƒ¨æ ç›®
      * @param bName
      * @return json
      */
     @ResponseBody
     @PostMapping("/lan/mu/boom")
-    public String indexLanMuBottom(@RequestParam(name = "bName", defaultValue = "Ê×Ò³Î²²¿",required = false) String bName) {
+    public String indexLanMuBottom(@RequestParam(name = "bName", defaultValue = "é¦–é¡µå°¾éƒ¨",required = false) String bName) {
         Subject subject = SecurityUtils.getSubject();
         Session session = subject.getSession();
         Account account = (Account) session.getAttribute("account");

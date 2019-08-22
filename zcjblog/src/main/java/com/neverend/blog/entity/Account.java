@@ -8,60 +8,60 @@ import java.util.List;
  * @author 
  */
 public class Account implements Serializable {
-    public static final String STATE_NORMAL = "Õı³£";
-    public static final String STATE_DISABLE = "½ûÓÃ";
-    public static final String STATE_LOCKED = "Ëø¶¨";
+    public static final String STATE_NORMAL = "æ­£å¸¸";
+    public static final String STATE_DISABLE = "ç¦ç”¨";
+    public static final String STATE_LOCKED = "é”å®š";
     /**
-     * Ö÷¼ü
+     * ä¸»é”®
      */
     private String id;
 
     /**
-     * ÓÃ»§Ãû
+     * ç”¨æˆ·å
      */
     private String userName;
 
     /**
-     * ÃÜÂë
+     * å¯†ç 
      */
     private String userPassword;
 
     /**
-     * ÓÊÏä
+     * é‚®ç®±
      */
     private String userEmail;
 
     /**
-     * ÊÖ»ú
+     * æ‰‹æœº
      */
     private Integer cellphoneNumber;
 
     /**
-     * ÎÄÕÂid
+     * æ–‡ç« id
      */
     private String articleId;
 
     /**
-     * ´´½¨Ê±¼ä
+     * åˆ›å»ºæ—¶é—´
      */
     private Date creatTime;
 
     /**
-     * ×îºóµÇÂ¼Ê±¼ä
+     * æœ€åç™»å½•æ—¶é—´
      */
     private Date loginEndTime;
 
     /**
-     * ÕËºÅ×´Ì¬£ºÕı³£½ûÓÃËø¶¨
+     * è´¦å·çŠ¶æ€ï¼šæ­£å¸¸ç¦ç”¨é”å®š
      */
     private String accountState;
     /**
-     * ½ÇÉ«
+     * è§’è‰²
      */
     private List<Roles> rolesList;
 
     /**
-     * ÓÃ»§Éí·İ
+     * ç”¨æˆ·èº«ä»½
      */
     private String beiYongEr;
 

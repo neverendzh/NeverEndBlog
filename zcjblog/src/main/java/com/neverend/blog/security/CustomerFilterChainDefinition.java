@@ -34,39 +34,39 @@ public class CustomerFilterChainDefinition {
     }
 
     /**
-     * SpringÈİÆ÷Æô¶¯Ê±µ÷ÓÃ
+     * Springå®¹å™¨å¯åŠ¨æ—¶è°ƒç”¨
      */
     @PostConstruct
     public synchronized void init() {
-        logger.info("------³õÊ¼»¯URlÈ¨ÏŞ-----------");
-        //Çå³ıÔ­ÓĞµÄURLÈ¨ÏŞ
+        logger.info("------åˆå§‹åŒ–URlæƒé™-----------");
+        //æ¸…é™¤åŸæœ‰çš„URLæƒé™
         getFilterChainManager().getFilterChains().clear();
-        //¼ÓÔØÏÖÓĞµÄURLÈ¨ÏŞ
+        //åŠ è½½ç°æœ‰çš„URLæƒé™
         load();
-        logger.info("------³õÊ¼»¯URLÈ¨ÏŞ½áÊø-----------");
+        logger.info("------åˆå§‹åŒ–URLæƒé™ç»“æŸ-----------");
     }
 
     /**
-     * ÖØĞÂ¼ÓÔØURLÈ¨ÏŞ
+     * é‡æ–°åŠ è½½URLæƒé™
      */
     public synchronized void updateUrlPermission() {
-        logger.info("---------Ë¢ĞÂURLÈ¨ÏŞ-----------");
-        //Çå³ıÔ­ÓĞµÄURLÈ¨ÏŞ
+        logger.info("---------åˆ·æ–°URLæƒé™-----------");
+        //æ¸…é™¤åŸæœ‰çš„URLæƒé™
         getFilterChainManager().getFilterChains().clear();
-        //¼ÓÔØÏÖÓĞµÄURLÈ¨ÏŞ
+        //åŠ è½½ç°æœ‰çš„URLæƒé™
         load();
-        logger.info("------Ë¢ÏßURLÈ¨ÏŞ½áÊø-----------");
+        logger.info("------åˆ·çº¿URLæƒé™ç»“æŸ-----------");
     }
 
     /**
-     * ¼ÓÔØURLºÍÈ¨ÏŞµÄ¶ÔÓ¦¹ØÏµ
+     * åŠ è½½URLå’Œæƒé™çš„å¯¹åº”å…³ç³»
      */
     public synchronized void load() {
         LinkedHashMap<String,String> urlMap = new LinkedHashMap<>();
-        //¼ÓÔØ¾²Ì¬×ÊÔ´
+        //åŠ è½½é™æ€èµ„æº
         urlMap.putAll(filterChainDefinitions);
 
-        //´ÓÊı¾İ¿âÖĞ²éÕÒËùÓĞµÄÈ¨ÏŞ¶ÔÏó
+        //ä»æ•°æ®åº“ä¸­æŸ¥æ‰¾æ‰€æœ‰çš„æƒé™å¯¹è±¡
         List<RolePermission> permissionList = rolePermissionService.findAllPermission();
 
         for(RolePermission permission : permissionList) {
@@ -75,7 +75,7 @@ public class CustomerFilterChainDefinition {
         }
 //        urlMap.put("/**","user");
 
-        //URLºÍÈ¨ÏŞµÄ¹ØÏµÉèÖÃµ½shiroFilterÖĞ
+        //URLå’Œæƒé™çš„å…³ç³»è®¾ç½®åˆ°shiroFilterä¸­
         DefaultFilterChainManager defaultFilterChainManager = getFilterChainManager();
         for(Map.Entry<String,String> entry : urlMap.entrySet()) {
             defaultFilterChainManager.createChain(entry.getKey(),entry.getValue());

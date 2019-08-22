@@ -25,12 +25,12 @@ public class ShiroConfig {
     private Logger logger = LoggerFactory.getLogger(ShiroConfig.class);
 
     /**
-     * ´¦ÀíShiroÒì³£
+     * å¤„ç†Shiroå¼‚å¸¸
      */
     @ExceptionHandler(AuthorizationException.class)
     @ResponseStatus(HttpStatus.FORBIDDEN)
     public void authorizationExceptionHandler() {
-        logger.error("Ã»ÓĞÈ¨ÏŞ·ÃÎÊ¸Ã×ÊÔ´");
+        logger.error("æ²¡æœ‰æƒé™è®¿é—®è¯¥èµ„æº");
     }
 
 
