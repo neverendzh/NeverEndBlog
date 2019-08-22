@@ -4,6 +4,9 @@ import com.github.pagehelper.PageInfo;
 import com.neverend.blog.entity.Article;
 import com.neverend.blog.moudel.Msg;
 import com.neverend.blog.service.ArticleService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiOperation;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -17,6 +20,7 @@ import javax.servlet.http.HttpServletRequest;
 /**
  * @author zcg
  */
+@Api("客服接口")
 @Controller
 @RequestMapping("/user")
 public class User {
@@ -37,9 +41,12 @@ public class User {
      * @param pageNum
      * @return
      */
+    @ApiOperation(value="文章排行",httpMethod = "get",response = Msg.class,notes="默认根据热度排行")
+    @ApiImplicitParam(name = "pageStart", value = "1", required = true, dataType = "String")
     @GetMapping("/index/articlesHort")
     @ResponseBody
-    public Msg indexArticle(@RequestParam(name = "pageStart",defaultValue = "1")Integer pageStart,@RequestParam(name = "pageNum",defaultValue = "5") Integer pageNum){
+    public Msg indexArticle(@RequestParam(name = "pageStart",defaultValue = "1")Integer pageStart,
+                            @RequestParam(name = "pageNum",defaultValue = "5") Integer pageNum){
         PageInfo<Article> articleList = articleService.getArticleHortAsc(pageStart,pageNum);
         Msg msg = articleService.getArticleMsg(articleList);
         return msg;
