@@ -1,6 +1,5 @@
 package com.neverend.blog.contoller.admin;
 
-import com.google.gson.Gson;
 import com.neverend.blog.entity.Account;
 import com.neverend.blog.entity.ArticleWithBLOBs;
 import com.neverend.blog.moudel.ActicleTree;
@@ -18,9 +17,7 @@ import org.springframework.web.bind.annotation.*;
 import springfox.documentation.annotations.ApiIgnore;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -44,7 +41,7 @@ public class FabuBlog {
      * @param articleWithBLOBs
      * @return
      */
-    @ApiOperation(value = "保存文章进行预览页面", httpMethod = "post",
+    @ApiOperation(value = "保存文章进行预览页面", httpMethod = "POST",
             notes = "保存并且预览文章，返回信息中设置了跳转的url", protocols = "http")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "articleSortSuperId", value = "文章属于那些分类，是使用" +
@@ -76,7 +73,7 @@ public class FabuBlog {
      * @param articleSortId
      * @return
      */
-    @ApiOperation(value = "发布文章", httpMethod = "post",
+    @ApiOperation(value = "发布文章", httpMethod = "POST",
             notes = "发布文章", protocols = "http")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "articleSortSuperId", value = "文章属于那些分类，是使用" +
@@ -125,7 +122,7 @@ public class FabuBlog {
      * @param request
      * @return
      */
-    @ApiOperation(value = "树形分类菜单", httpMethod = "post",
+    @ApiOperation(value = "树形分类菜单", httpMethod = "GET",
             notes = "返回树形分类菜单数据", protocols = "http")
     @GetMapping("/admin/acticle/tree")
     @ResponseBody
@@ -148,7 +145,7 @@ public class FabuBlog {
         return "admin/yulan";
     }
 
-    @ApiOperation(value = "查看发布的文章", httpMethod = "post",
+    @ApiOperation(value = "查看发布的文章", httpMethod = "GET",
             notes = "查看发布的文章所有信息", protocols = "http")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "articleId", value = "文章唯一id",

@@ -43,7 +43,7 @@ public class User {
      * @param pageNum
      * @return
      */
-    @ApiOperation(value="博客首页展示文章内容排序",httpMethod = "get",
+    @ApiOperation(value="博客首页展示文章内容排序",httpMethod = "GET",
             notes="根据热度排序",protocols = "http")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "pageStart", value = "第几页", defaultValue = "1",
@@ -65,7 +65,7 @@ public class User {
      * @param pageNum
      * @return
      */
-    @ApiOperation(value="查询隶属当前传入文章分类id下的所有文章",httpMethod = "get",
+    @ApiOperation(value="查询隶属当前传入文章分类id下的所有文章",httpMethod = "GET",
             notes="根据点击率排序",protocols = "http")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "artilceid", value = "文章分类id",
@@ -97,7 +97,7 @@ public class User {
      * @param state
      * @return
      */
-    @ApiOperation(value="根据关键字搜索文章",httpMethod = "get",
+    @ApiOperation(value="根据关键字搜索文章",httpMethod = "GET",
             notes="根据关键字搜索文章",protocols = "http")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "searchname", value = "搜索名称",

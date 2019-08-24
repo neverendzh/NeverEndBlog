@@ -31,9 +31,9 @@ public class SwaggerConfig {
                 .title("neverend.blog-api文档")//标题
                 .description("详细描述")//详细描述
                 .version("1.0")//版本
-                .termsOfServiceUrl("http://127.0.0.1:80/swagger-ui.html")
+                .termsOfServiceUrl("http://www.neverend.cn/swagger-ui.html")
                 .contact(
-                        new Contact("neverend","http://127.0.0.1:80/swagger-ui.html",
+                        new Contact("neverend","http://www.neverend.cn/swagger-ui.html",
                                 "15936581373@163.com"))//作者的一些信息
                 .license("The Apache License, Version 2.0")//发布遵循协议
                 .licenseUrl("http://www.apache.org/licenses/LICENSE-2.0.html")//协议地址

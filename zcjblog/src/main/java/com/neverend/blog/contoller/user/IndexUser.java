@@ -155,7 +155,7 @@ public class IndexUser {
      * @param topName
      * @return json
      */
-    @ApiOperation(value = "博客首页头部栏目", httpMethod = "post",
+    @ApiOperation(value = "博客首页头部栏目", httpMethod = "POST",
             notes = "就是博客首页的导航栏标题", protocols = "http")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "topName", value = "设置是加载头部标题",
@@ -182,7 +182,7 @@ public class IndexUser {
      * @param bName
      * @return json
      */
-    @ApiOperation(value = "首页尾部栏目", httpMethod = "post",
+    @ApiOperation(value = "首页尾部栏目", httpMethod = "POST",
             notes = "首页尾部栏目导航标题", protocols = "http")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "bName", value = "设置是加载底部标题",

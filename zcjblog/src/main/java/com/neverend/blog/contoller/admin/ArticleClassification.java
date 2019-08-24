@@ -40,7 +40,7 @@ public class ArticleClassification {
      * @param type
      * @return
      */
-    @ApiOperation(value = "查询前分类层级的“下级”层级分类", httpMethod = "get",
+    @ApiOperation(value = "查询前分类层级的“下级”层级分类", httpMethod = "GET",
             notes = "根据当前Type字段值查询当前层级的下层的所有同级分类", protocols = "http")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "type", value = "表示在树节点中属于第几层节点，默认从0开始",
@@ -68,7 +68,7 @@ public class ArticleClassification {
      * @param request
      * @return
      */
-    @ApiOperation(value = "文章分类层级信息", httpMethod = "get",
+    @ApiOperation(value = "文章分类层级信息", httpMethod = "GET",
             notes = "根据type字段查询分类信息", protocols = "http")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "type", value = "表示在树节点中属于第几层节点，默认从0开始",
@@ -98,7 +98,7 @@ public class ArticleClassification {
      *
      * @return
      */
-    @ApiOperation(value = "共有几级分类", httpMethod = "post",
+    @ApiOperation(value = "共有几级分类", httpMethod = "POST",
             notes = "查询在树节点中共有几个层级的分类", protocols = "http")
     @PostMapping("/articles/classification/types/num")
     @ResponseBody
@@ -115,7 +115,7 @@ public class ArticleClassification {
      * @param request
      * @return
      */
-    @ApiOperation(value = "添加分类", httpMethod = "post",
+    @ApiOperation(value = "添加分类", httpMethod = "POST",
             notes = "通过选择父级节点，把新增的节点添加到父级节点下边", protocols = "http")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "type", value = "上级分类id和当前分类的树形关系；k表示分隔符；例如" +
@@ -142,7 +142,7 @@ public class ArticleClassification {
      * @param request
      * @return
      */
-    @ApiOperation(value = "修改分类名称", httpMethod = "post",
+    @ApiOperation(value = "修改分类名称", httpMethod = "POST",
             notes = "修改分类名称,传入的 articleId 是当前选择的分类的唯一id", protocols = "http")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "name", value = "分类名称",
@@ -168,7 +168,7 @@ public class ArticleClassification {
      * @param request
      * @return
      */
-    @ApiOperation(value = "删除分类", httpMethod = "post",
+    @ApiOperation(value = "删除分类", httpMethod = "POST",
             notes = "删除分类名称,传入的 articleId 是当前分类的唯一id", protocols = "http")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "articleId", value = "分类名称唯一id",
@@ -191,7 +191,7 @@ public class ArticleClassification {
      * @param request
      * @return
      */
-    @ApiOperation(value = "锁定分类", httpMethod = "post",
+    @ApiOperation(value = "锁定分类", httpMethod = "POST",
             notes = "搜定分类后该分类下文章不可查看，该分类在用户界面不可见", protocols = "http")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "type", value = "忘记了啥意思，卧槽，真尴尬，现在只能设置0。",
