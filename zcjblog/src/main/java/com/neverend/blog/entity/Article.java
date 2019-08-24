@@ -68,7 +68,10 @@ public class Article implements Serializable {
     @ApiModelProperty(value="文章最后跟新时间 为时间戳")
     private String beiYongYi;
 
-    @JsonIgnore
+    /**
+     * 文章级别 0,1，3,4 以此类推0表示最低级别
+     */
+    @ApiModelProperty(value="文章级别 0,1,3,4 以此类推0表示最低级别")
     private String beiYongEr;
     @JsonIgnore
     private String beiYongSi;

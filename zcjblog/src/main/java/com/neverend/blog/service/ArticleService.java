@@ -27,7 +27,7 @@ public interface ArticleService {
      * @param s 状态
      * @return msg
      */
-    Msg saveArticle(Account account, ArticleWithBLOBs articleWithBLOBs, String s,String acid);
+    Msg saveArticle(Account account, ArticleWithBLOBs articleWithBLOBs, String s,String acid,String articlelevel);
 
     /**
      * 根据热度排序文章

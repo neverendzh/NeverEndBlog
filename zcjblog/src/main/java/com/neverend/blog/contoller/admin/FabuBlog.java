@@ -22,6 +22,7 @@ import java.util.List;
 
 /**
  * 发布预览文章
+ *
  * @author zcj
  */
 @Controller
@@ -36,8 +37,10 @@ public class FabuBlog {
     @Autowired
     private SuperArticleSortService superArticleSortService;
 
-    /**context articleName briefIntroduction
+    /**
+     * context articleName briefIntroduction
      * 保存预览
+     *
      * @param articleWithBLOBs
      * @return
      */
@@ -49,25 +52,29 @@ public class FabuBlog {
                     required = true, dataType = "String", paramType = "query"),
 
             @ApiImplicitParam(name = "context", value = "富文本编辑器中的html文本内容",
-                    required = true, dataType = "String", paramType = "query",defaultValue = "0"),
+                    required = true, dataType = "String", paramType = "query", defaultValue = "0"),
 
             @ApiImplicitParam(name = "articleName", value = "文章名称",
                     required = true, dataType = "String", paramType = "query"),
 
             @ApiImplicitParam(name = "briefIntroduction", value = " 文章简介",
-                    required = true, dataType = "String", paramType = "query")})
+                    required = true, dataType = "String", paramType = "query"),
+            @ApiImplicitParam(name = "articlelevel", value = " 文章级别，数值越大级别越高",
+                    required = true, dataType = "String", paramType = "query", defaultValue = "0")})
     @PostMapping("/yulan")
     @ResponseBody
-    public Msg yulanBlog(HttpServletRequest request,ArticleWithBLOBs articleWithBLOBs,
-                         @RequestParam(name = "articleSortSuperId") String articleSortId){
+    public Msg yulanBlog(HttpServletRequest request, ArticleWithBLOBs articleWithBLOBs,
+                         @RequestParam(name = "articleSortSuperId") String articleSortId,
+                         @RequestParam(name = "articlelevel", defaultValue = "0") String articlelevel) {
         HttpSession httpSession = request.getSession();
         Account account = (Account) httpSession.getAttribute("account");
-        Msg msg = articleService.saveArticle(account,articleWithBLOBs,"-1",articleSortId);
+        Msg msg = articleService.saveArticle(account, articleWithBLOBs, "-1", articleSortId,articlelevel);
         return msg;
     }
 
     /**
      * 发布文章
+     *
      * @param request
      * @param articleWithBLOBs
      * @param articleSortId
@@ -81,21 +88,24 @@ public class FabuBlog {
                     required = true, dataType = "String", paramType = "query"),
 
             @ApiImplicitParam(name = "context", value = "富文本编辑器中的html文本内容",
-                    required = true, dataType = "String", paramType = "query",defaultValue = "0"),
+                    required = true, dataType = "String", paramType = "query", defaultValue = "0"),
 
             @ApiImplicitParam(name = "articleName", value = "文章名称",
                     required = true, dataType = "String", paramType = "query"),
 
             @ApiImplicitParam(name = "briefIntroduction", value = " 文章简介",
-                    required = true, dataType = "String", paramType = "query")})
+                    required = true, dataType = "String", paramType = "query"),
+            @ApiImplicitParam(name = "articlelevel", value = " 文章级别，数值越大级别越高",
+                    required = true, dataType = "String", paramType = "query", defaultValue = "0")})
 
     @PostMapping("/publish/articles")
     @ResponseBody
-    public Msg publishArticle(HttpServletRequest request,ArticleWithBLOBs articleWithBLOBs,
-                              @RequestParam(name = "articleSortSuperId") String articleSortId)  {
+    public Msg publishArticle(HttpServletRequest request, ArticleWithBLOBs articleWithBLOBs,
+                              @RequestParam(name = "articleSortSuperId") String articleSortId,
+                              @RequestParam(name = "articlelevel", defaultValue = "0") String articlelevel) {
         HttpSession httpSession = request.getSession();
         Account account = (Account) httpSession.getAttribute("account");
-        Msg msg = articleService.saveArticle(account,articleWithBLOBs,"0",articleSortId);
+        Msg msg = articleService.saveArticle(account, articleWithBLOBs, "0", articleSortId,articlelevel);
         return msg;
     }
     /**
@@ -107,18 +117,21 @@ public class FabuBlog {
         return "admin/fabu";
     }
 */
+
     /**
      * 发布文章页面2
+     *
      * @return
      */
     @ApiIgnore
     @GetMapping("/admin/fabu/wen")
-    public String AdminFabuWenZhang(HttpServletRequest request){
+    public String AdminFabuWenZhang(HttpServletRequest request) {
         return "admin/indexWenZhang";
     }
 
     /**
      * 树形分类菜单
+     *
      * @param request
      * @return
      */
@@ -126,21 +139,22 @@ public class FabuBlog {
             notes = "返回树形分类菜单数据", protocols = "http")
     @GetMapping("/admin/acticle/tree")
     @ResponseBody
-    public Msg<List<ActicleTree>> treeActicles(HttpServletRequest request){
+    public Msg<List<ActicleTree>> treeActicles(HttpServletRequest request) {
         Msg msg = superArticleSortService.getClassTypeNameS(true);
         return msg;
     }
 
     /**
      * 发布文章页面2
+     *
      * @return
      */
     @ApiIgnore
     @GetMapping("/admin/fabu/yulan")
-    public String Yulan(@RequestParam(name = "articleId",required = false) String articleId,HttpServletRequest request){
+    public String Yulan(@RequestParam(name = "articleId", required = false) String articleId, HttpServletRequest request) {
         ArticleWithBLOBs articleWithBLOBs = articleService.getArticle(articleId);
-        request.setAttribute("articelName",articleWithBLOBs.getArticleName());
-        request.setAttribute("contextht",articleWithBLOBs.getContext());
+        request.setAttribute("articelName", articleWithBLOBs.getArticleName());
+        request.setAttribute("contextht", articleWithBLOBs.getContext());
 
         return "admin/yulan";
     }
@@ -151,8 +165,8 @@ public class FabuBlog {
             @ApiImplicitParam(name = "articleId", value = "文章唯一id",
                     required = true, dataType = "String", paramType = "query")})
     @GetMapping("/admin/fabu/yulan/json")
-    public Msg<ArticleWithBLOBs> YulanApi(@RequestParam(name = "articleId",required = false)
-                                                      String articleId,HttpServletRequest request){
+    public Msg<ArticleWithBLOBs> YulanApi(@RequestParam(name = "articleId", required = false)
+                                                  String articleId, HttpServletRequest request) {
         ArticleWithBLOBs articleWithBLOBs = articleService.getArticle(articleId);
         Msg msg = new Msg();
         msg.setData(articleWithBLOBs);

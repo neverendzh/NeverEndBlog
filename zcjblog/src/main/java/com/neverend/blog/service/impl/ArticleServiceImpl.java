@@ -80,7 +80,7 @@ public class ArticleServiceImpl implements ArticleService {
      */
     @Override
     @Transactional(propagation=Propagation.REQUIRED)
-    public Msg saveArticle(Account account, ArticleWithBLOBs articleWithBLOBs, String state,String acid)  {
+    public Msg saveArticle(Account account, ArticleWithBLOBs articleWithBLOBs, String state,String acid,String articlelevel)  {
         Msg msg = new Msg();
         Date date = new Date();
         String uuid = GetUUID.uuid();
@@ -94,6 +94,7 @@ public class ArticleServiceImpl implements ArticleService {
 //                跟新时间
                     articleWithBLOBs.setBeiYongYi(Long.toString(System.currentTimeMillis()));
                     articleWithBLOBs.setState(state);
+                    articleWithBLOBs.setBeiYongEr(articlelevel);
                     String code =  articleDao.updateByArticle(articleWithBLOBs);
 
 //                    取出生成的文章隶属id
@@ -114,6 +115,7 @@ public class ArticleServiceImpl implements ArticleService {
                     articleWithBLOBs.setCreatTime(new Date());
                     articleWithBLOBs.setArticleSortId(uuid);
                     articleWithBLOBs.setState(state);
+                    articleWithBLOBs.setBeiYongEr(articlelevel);
                     int saveNum = articleDao.saveArticleDao(articleWithBLOBs);
 //                    获取隶属文章的id集合
                     List<String> acidss =  getArticeleSuperid(acid);

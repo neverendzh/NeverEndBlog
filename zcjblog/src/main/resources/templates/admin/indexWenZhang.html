@@ -24,6 +24,19 @@
             <div id="yulankuang">
                 <form method="post" class="layui-form">
                     <div style="margin-top: -1px;width: 200px;height: 738px;position: absolute;background: rgb(204, 234, 238)">
+
+                        <div class="layui-form-item">
+                                <select name="interest" lay-filter="articlelevel">
+                                    <option value="0" selected>选择文章级别</option>
+                                    <option value="0">最低</option>
+                                    <option value="1">普通</option>
+                                    <option value="2">中级</option>
+                                    <option value="3">高级</option>
+                                    <option value="4">最高</option>
+                                </select>
+                        </div>
+
+
                         <div class="layui-form-item">
                             <div style="width: 200px" class="layui-input-inline">
                                 <input id="acticleName" type="text" name="username" lay-verify="required" placeholder="文章标题" autocomplete="off" class="layui-input">
@@ -81,10 +94,14 @@
 
     var layer = "";
     var tree = "";
+    var articlelevel = false;
     layui.use(['layer', 'form', 'tree'], function () {
             layer = layui.layer;
             var  form = layui.form;
              tree = layui.tree;
+        form.on('select(articlelevel)', function(data){
+            articlelevel = data.value; //得到被选中的值
+        });
         $.ajax({
             type: 'get',
             url: '/system/admin/acticle/tree',
@@ -120,7 +137,8 @@
                 $.ajax({
                     type: 'post',
                     url: '/system/yulan',
-                    data: 'context=' + datauht + "&articleName="+encodeURI(acticelName)+"&articleSortSuperId="+checkData+"&briefIntroduction="+encodeURI(acticleZy),
+                    data: 'context=' + datauht + "&articleName="+encodeURI(acticelName)+"&articleSortSuperId="
+                    +checkData+"&briefIntroduction="+encodeURI(acticleZy)+"&articlelevel="+articlelevel,
                     success: function (data) {
                         if (data.code == "200") {
                             window.open(data.url);
@@ -163,7 +181,10 @@
                         $.ajax({
                             type: 'post',
                             url: '/system/publish/articles',
-                            data: 'context=' + datauht + "&articleName="+encodeURI(acticelName)+"&articleSortSuperId="+checkData+"&briefIntroduction="+encodeURI(acticleZy),
+                            data: 'context=' + datauht +
+                            "&articleName="+encodeURI(acticelName)+
+                            "&articleSortSuperId="+checkData+
+                            "&briefIntroduction="+encodeURI(acticleZy)+"&articlelevel="+articlelevel,
                             success: function (data) {
                                 layer.close(index1);
                                 if (data.code == "200") {
