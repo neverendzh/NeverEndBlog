@@ -120,7 +120,7 @@
 
                                 var opten = " <option value=\"\">默认一级分类</option>";
 
-                                var shangj = data.objectmsg;
+                                var shangj = data.data;
                                 for (var i=0;i<shangj.length;i++){
                                     opten = opten+"<option  value="+shangj[i].superArticleSortId+"k"+shangj[i].beiYongEr+">"+shangj[i].superArtilceName+"</option>";
                                 }
@@ -169,14 +169,14 @@
                             url:'/system/calss/ifcation/remove',
                             data:'articleId='+data.superArticleSortId+"&type="+type,
                             success:function(data){
-                                if (data.code == "1"){
+                                if (data.code == "200"){
                                     obj.del();
                                     layer.msg(data.msg)
                                 }
-                                if (data.code == "0"){
+                                if (data.code == "404"){
                                     layer.msg(data.msg)
                                 }
-                                if (data.code == "-1"){
+                                if (data.code == "500"){
                                     layer.msg(data.msg)
                                 }
                             },
@@ -225,15 +225,12 @@
                     url:'/system/calss/ifcation/lock',
                     data:'articleId='+this.value+"&type="+type+"&isLock="+obj.elem.checked,
                     success:function(data){
-                        if (data.code == "1"){
+                        if (data.code == "200"){
+                            layer.msg(data.msg)
+                        }else {
                             layer.msg(data.msg)
                         }
-                        if (data.code == "0"){
-                            layer.msg(data.msg)
-                        }
-                        if (data.code == "-1"){
-                            layer.msg(data.msg)
-                        }
+
                     },
                     error:function (data) {
                         layer.msg("服务暂停")
@@ -256,15 +253,15 @@
                         url:'/system/calss/ifcation/add',
                         data:'name='+name+"&type="+type,
                         success:function(data){
-                            if (data.code == "1"){
+                            if (data.code == "200"){
                                 layer.closeAll();
                                 window.location.href("/system/articles/classification");
                                 layer.msg(data.msg)
                             }
-                            if (data.code == "0"){
+                            if (data.code == "407"){
                                 layer.msg(data.msg)
                             }
-                            if (data.code == "-1"){
+                            if (data.code == "402"){
                                 layer.msg(data.msg)
                             }
                         },

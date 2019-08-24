@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import springfox.documentation.annotations.ApiIgnore;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -30,6 +31,7 @@ public class IndexAdmin {
      * 管理员首页
      * @return
      */
+    @ApiIgnore
     @RequestMapping("/admin/index")
     public String AdminIndex(){
        return "admin/index";
@@ -40,6 +42,7 @@ public class IndexAdmin {
      * 系统登录页面
      * @return
      */
+    @ApiIgnore
     @RequestMapping("/admin/login")
     public String  adminLogin(){
         return "admin/login";
@@ -102,6 +105,8 @@ public class IndexAdmin {
      * 系统登录页面
      * @return
      */
+
+    @ApiIgnore
     @GetMapping("/login")
     public String AdminLoginGetHtml(){
 

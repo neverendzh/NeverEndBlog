@@ -1,59 +1,80 @@
 package com.neverend.blog.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+
 import java.io.Serializable;
 import java.util.Date;
 
 /**
  * @author 
  */
+@ApiModel(value="文章信息", description="返回文章的信息数据")
 public class Article implements Serializable {
+    /**
+     * 文章唯一标示id
+     */
+    @ApiModelProperty(value="文章唯一标示id")
     private String articleId;
 
     /**
      * 发表用户id
      */
+    @ApiModelProperty(value="发表用户id")
     private String accountId;
 
     /**
      * 文章标题
      */
+    @ApiModelProperty(value="文章标题")
     private String articleName;
 
     /**
      * 文章摘要
      */
+    @ApiModelProperty(value="文章摘要")
     private String briefIntroduction;
 
     /**
      * 创建时间
      */
+    @ApiModelProperty(value="创建时间")
     private Date creatTime;
 
     /**
      * 二级分类id
      */
+    @ApiModelProperty(value="文章id用于关联文章隶属文章分类使用")
     private String articleSortId;
 
     /**
      * 是否禁用可看,文章状态
      * -1编辑状态
-     * 0已发布
+     * 0已发布，可用
      * 1禁止普通用户查看
      * 2删除
      */
+    @ApiModelProperty(value="是否禁用可看,文章状态;" +
+            "-1编辑状态;" +
+            "0已发布，可用;" +
+            "1禁止普通用户查看;" +
+            "2删除")
     private String state;
 
     /**
      * 文章最后跟新时间 为时间戳
      */
+    @ApiModelProperty(value="文章最后跟新时间 为时间戳")
     private String beiYongYi;
 
+    @JsonIgnore
     private String beiYongEr;
-
+    @JsonIgnore
     private String beiYongSi;
-
+    @JsonIgnore
     private String beiYongWu;
-
+    @JsonIgnore
     private String beiYongQi;
 
     private static final long serialVersionUID = 1L;

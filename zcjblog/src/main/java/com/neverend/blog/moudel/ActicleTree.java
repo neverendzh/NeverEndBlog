@@ -1,15 +1,33 @@
 package com.neverend.blog.moudel;
 
-import java.util.List;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+import springfox.documentation.annotations.ApiIgnore;
 
+import java.util.List;
+@ApiModel(value="树形插件所使用的数据", description="json格式树形插件所使用的数据")
 public class ActicleTree {
 
+    @ApiModelProperty(value = "节点标题")
     private String title;  //节点标题
+
+    @ApiModelProperty(value = "节点唯一索引，用于对指定节点进行各类操作")
     private String id;     //节点唯一索引，用于对指定节点进行各类操作
+
+    @ApiModelProperty(value = "子节点和兄弟节点")
     private List<ActicleTree> children; //子节点。支持设定选项同父节点
+
+    @JsonIgnore
     private String href;      //点击节点弹出新窗口对应的 url。
+
+    @ApiModelProperty(value = "节点是否初始展开，默认 false")
     private Boolean spread;//节点是否初始展开，默认 false
+
+    @ApiModelProperty(value = "节点是否初始为选中状态（如果开启复选框的话），默认 false")
     private Boolean checked;//节点是否初始为选中状态（如果开启复选框的话），默认 false
+
+    @ApiModelProperty(value = "节点是否为禁用状态。默认 false")
     private Boolean disabled;//节点是否为禁用状态。默认 false
 
     @Override

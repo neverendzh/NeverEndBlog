@@ -1,6 +1,7 @@
 package com.neverend.blog.contoller.admin;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -11,7 +12,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @RequestMapping("/upload")
 public class UploadController {
 
-   @RequestMapping("/file/img")
+   @PostMapping("/file/img")
    @ResponseBody
   public String uploadFileImg(){
 

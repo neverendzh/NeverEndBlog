@@ -27,6 +27,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -154,7 +155,7 @@ public class ArticleServiceImpl implements ArticleService {
         Msg msg = new Msg();
         msg.setCode(Code.sucess);
         msg.setMsg(Code.sucessMsg);
-        msg.setObjectmsg(articleList.getList());
+        msg.setData(articleList.getList());
         msg.setCount(articleList.getTotal()+"");
         msg.setCount(articleList.getPages()+"");
         return msg;
@@ -167,14 +168,14 @@ public class ArticleServiceImpl implements ArticleService {
         msg.setCount(articles.getPages()+"");
         msg.setCode(Code.sucess);
         msg.setMsg(Code.sucessMsg);
-        msg.setObjectmsg(articles.getList());
+        msg.setData(articles.getList());
         return msg;
     }
 
     @Override
     public Msg getArtilcesearch(String searchname, Integer pageStart, Integer pageNum, String state) {
-
-        return null;
+        Msg msg = new Msg();
+        return msg;
     }
 
     /**

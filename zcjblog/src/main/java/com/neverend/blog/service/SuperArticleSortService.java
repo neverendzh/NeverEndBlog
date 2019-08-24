@@ -39,21 +39,19 @@ public interface SuperArticleSortService {
     /**
      * 修改编辑
      * @param name
-     * @param type
      * @param account
      * @param articleId 文章id
      * @return
      */
-    Msg editAtricle(String name, String type, Account account,String articleId);
+    Msg editAtricle(String name, Account account,String articleId);
 
     /**
      * 根据分类 和 分类id删除
-     * @param type 属于几级分类
      * @param account
      * @param articleId
      * @return
      */
-    Msg removeAtricle(String type, Account account, String articleId);
+    Msg removeAtricle(Account account, String articleId);
 
     /**
      * 锁定

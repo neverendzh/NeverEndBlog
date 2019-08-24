@@ -1,6 +1,9 @@
 package com.neverend.blog.moudel;
 
+import com.neverend.blog.entity.Article;
 import com.neverend.blog.entity.SuperArticleSort;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 
 import java.util.List;
 
@@ -8,29 +11,40 @@ import java.util.List;
  * @author zcj
  * json返回信息
  */
-public class Msg {
+@ApiModel(value="返回的数据信息", description="大部分请求的返回的json数据信息")
+public class Msg<T>{
+    /**
+     * 返回状态码
+     */
+    @ApiModelProperty(value="返回状态码;200=ok;401=无权限;301=重新登陆;500=服务异常;407=重复;404=不存在")
     private String code;
+    /**
+     * 返回成功，或错误的异常提示信息
+     */
+    @ApiModelProperty(value="返回成功，或错误的异常提示信息")
     private String msg;
+    /**
+     * 如果是返回数据页数
+     */
+    @ApiModelProperty(value="如果是返回数据页数")
     private String count;
-    private List<SuperArticleSort> data;
+    /**
+     * 可能会用到，用于设置跳转的url
+     */
+    @ApiModelProperty(value="可能会用到，用于设置跳转的url")
     private String url;
-    private Object objectmsg;
+    /**
+     * 设置其他返回信息Object
+     */
+    @ApiModelProperty(value="通用数据信息")
+    private T data;
 
-
-    public Object getObjectmsg() {
-        return objectmsg;
+    public String getCode() {
+        return code;
     }
 
-    public void setObjectmsg(Object objectmsg) {
-        this.objectmsg = objectmsg;
-    }
-
-    public List<SuperArticleSort> getData() {
-        return data;
-    }
-
-    public void setData(List<SuperArticleSort> data) {
-        this.data = data;
+    public void setCode(String code) {
+        this.code = code;
     }
 
     public String getMsg() {
@@ -49,16 +63,6 @@ public class Msg {
         this.count = count;
     }
 
-
-
-    public String getCode() {
-        return code;
-    }
-
-    public void setCode(String code) {
-        this.code = code;
-    }
-
     public String getUrl() {
         return url;
     }
@@ -67,22 +71,13 @@ public class Msg {
         this.url = url;
     }
 
-    public Msg() {
+    public T getData() {
+        return data;
     }
 
-    public Msg(String code, String url) {
-        this.code = code;
-        this.url = url;
+    public void setData(T data) {
+        this.data = data;
     }
 
-    @Override
-    public String toString() {
-        return "Msg{" +
-                "code='" + code + '\'' +
-                ", msg='" + msg + '\'' +
-                ", count='" + count + '\'' +
-                ", data=" + data +
-                ", url='" + url + '\'' +
-                '}';
-    }
+
 }

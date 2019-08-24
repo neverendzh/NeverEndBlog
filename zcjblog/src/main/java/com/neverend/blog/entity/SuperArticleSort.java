@@ -1,60 +1,82 @@
 package com.neverend.blog.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+
 import java.io.Serializable;
 import java.util.Date;
 
 /**
  * @author 
  */
+@ApiModel(value="文章分类对象", description="文章分类对象数据集合")
 public class SuperArticleSort implements Serializable {
     public static final String YI_CLASS = "0";
     public static final String ER_CLASS = "1";
     public static final String SAN_CLASS = "2";
+    @JsonIgnore
     private String num;
 
+    @ApiModelProperty(value="文章分类唯一标示id")
     private String superArticleSortId;
 
     /**
-     * 一级分类名称
+     * 文章分类名称
      */
+    @ApiModelProperty(value="文章分类名称")
     private String superArtilceName;
 
     /**
-     * 新建用户id
+     * 新曾分类用户id
      */
+    @ApiModelProperty(value="新曾分类用户id")
     private String accountId;
 
     /**
      * 创建时间
      */
+    @ApiModelProperty(value="创建时间")
     private Date creatTime;
 
     /**
      * 更新时间
      */
+    @ApiModelProperty(value="更新修改时间")
     private Date toUpdate;
 
     /**
-     * 前边是主键id值,后边表示状态
-     * 1-false 删除
-     * 2-true 正常
-     * 3-3 锁定
-     * 4-true
-     * 5-true
-     * 6-true
+     * 前边是主键superArticleSortId值,后边表示状态
+     * 例如：1-false 删除
+     *      2-true 栏目是否可用
+     *      3-3 锁定
      *
-     * 栏目是否可用
-     * 锁定 beiYongYi 和 superArticleSortId 值一样是时锁定
+     * 锁定是 beiYongYi 和 superArticleSortId 值一样是时锁定
      * true 正常
      * false 已删除
      */
+    @ApiModelProperty(value="前边是主键superArticleSortId值,后边表示状态;" +
+            "例如：1-false 删除;" +
+            "     2-true 栏目是否可用;" +
+            "     3-3 锁定;" +
+            "锁定是 beiYongYi 和 superArticleSortId 值一样是时锁定")
     private String beiYongYi;
 
     /**
-     * 父级分类id和本级。对应关系
+     * 表示当前文章分类的层级关系
+     * 例如:1565172980628-1565172980628-1565173686704-
+     * 使用-分割 最后一个是当前分类id，倒数第二个是上级分类id，倒数第三个是上上级分类id，依次类推
+     *
      */
+    @ApiModelProperty(value="表示当前文章分类的层级关系;" +
+            "例如:1565172980628-1565172980628-1565173686704-;" +
+            "使用-分割 最后一个是当前分类id，倒数第二个是上级分类id，倒数第三个是上上级分类id，依次类推")
     private String beiYongEr;
 
+    /**
+     *  直属上级分类id
+     */
+    @ApiModelProperty(value="直属上级分类id")
     private String beiYongSan;
 
     private static final long serialVersionUID = 1L;

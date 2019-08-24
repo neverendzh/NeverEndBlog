@@ -7,6 +7,13 @@ public class   Code {
     public static String loginMsg = "重新登陆";
     public static String sucess = "200";
     public static String sucessMsg = "正常";
+    public static String securityNull = "401";
+    public static String securityNullMsg = "无权限";
+    public static String repeat = "407";
+    public static String repeatMsg = "重复";
+    public static String Nonexistent = "404";
+    public static String NonexistentMsg = "不存在";
+
 
 
 

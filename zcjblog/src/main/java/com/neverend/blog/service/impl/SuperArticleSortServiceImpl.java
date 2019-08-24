@@ -9,6 +9,7 @@ import com.neverend.blog.entity.SuperArticleSortExample;
 import com.neverend.blog.mapper.SuperArticleSortMapper;
 import com.neverend.blog.moudel.ActicleTree;
 import com.neverend.blog.moudel.Msg;
+import com.neverend.blog.moudel.NumSize;
 import com.neverend.blog.service.SuperArticleSortService;
 import org.hibernate.validator.constraints.URL;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -151,18 +152,18 @@ public class SuperArticleSortServiceImpl implements SuperArticleSortService {
             if (account!=null){
                 if (getSuperArticleSort(name.trim())){
                     save(name,type, account);
-                    msg.setCode("1");
+                    msg.setCode("200");
                     msg.setMsg("添加成功");
                 }else {
-                    msg.setCode("0");
+                    msg.setCode("407");
                     msg.setMsg("该分类已存在");
                 }
             }else {
-                msg.setCode("0");
+                msg.setCode("301");
                 msg.setMsg("请先登录");
             }
         }catch (Exception e){
-            msg.setCode("-1");
+            msg.setCode("500");
             msg.setMsg("服务暂停");
             e.printStackTrace();
         }
@@ -213,7 +214,7 @@ public class SuperArticleSortServiceImpl implements SuperArticleSortService {
      * @return
      */
     @Override
-    public Msg editAtricle(String name, String type, Account account,String articleId) {
+    public Msg editAtricle(String name, Account account,String articleId) {
 
         Msg msg  = new Msg();
         try {
@@ -239,7 +240,7 @@ public class SuperArticleSortServiceImpl implements SuperArticleSortService {
     }
 
     @Override
-    public Msg removeAtricle(String type, Account account, String articleId) {
+    public Msg removeAtricle(Account account, String articleId) {
         Msg msg = new Msg();
         try {
            SuperArticleSort superArticleSort = superArticleSortMapper.selectByPrimaryKey(articleId);
@@ -249,14 +250,14 @@ public class SuperArticleSortServiceImpl implements SuperArticleSortService {
                superArticleSort1.setBeiYongYi(articleId+"-false");
                int nums = superArticleSortMapper.updateByPrimaryKeySelective(superArticleSort1);
                msg.setMsg("已删除");
-               msg.setCode("1");
+               msg.setCode("200");
            }else {
                msg.setMsg("没有此分类");
-               msg.setCode("0");
+               msg.setCode("404");
            }
 
         }catch (Exception e){
-            msg.setCode("-1");
+            msg.setCode("500");
             msg.setMsg("服务中断");
             e.printStackTrace();
         }
@@ -273,25 +274,25 @@ public class SuperArticleSortServiceImpl implements SuperArticleSortService {
               superArticleSort.setSuperArticleSortId(articleIdAndLock[0]);
               superArticleSort.setBeiYongYi(articleIdAndLock[0]+"-true");
               int updateNmuber = superArticleSortMapper.updateByPrimaryKeySelective(superArticleSort);
-              msg.setCode("1");
+              msg.setCode("200");
               msg.setMsg("已解除锁定");
           }else if (articleIdAndLock.length==1 && isLock.equals("true")){
               superArticleSort.setSuperArticleSortId(articleIdAndLock[0]);
               superArticleSort.setBeiYongYi(articleIdAndLock[0]+"-"+articleIdAndLock[0]);
               int updateNmuber = superArticleSortMapper.updateByPrimaryKeySelective(superArticleSort);
-              msg.setCode("1");
+              msg.setCode("200");
               msg.setMsg("已锁定");
           }else if (articleIdAndLock.length==2 && isLock.equals("true")){
               superArticleSort.setSuperArticleSortId(articleIdAndLock[0]);
               superArticleSort.setBeiYongYi(articleIdAndLock[0]+"-"+articleIdAndLock[0]);
               int updateNmuber = superArticleSortMapper.updateByPrimaryKeySelective(superArticleSort);
-              msg.setCode("1");
+              msg.setCode("200");
               msg.setMsg("已锁定");
           }else if (articleIdAndLock.length==2 && isLock.equals("false")){
               superArticleSort.setSuperArticleSortId(articleIdAndLock[0]);
               superArticleSort.setBeiYongYi(articleIdAndLock[0]+"-"+"true");
               int updateNmuber = superArticleSortMapper.updateByPrimaryKeySelective(superArticleSort);
-              msg.setCode("1");
+              msg.setCode("200");
               msg.setMsg("已解除锁定");
           }
         }
@@ -315,10 +316,12 @@ public class SuperArticleSortServiceImpl implements SuperArticleSortService {
         if (jiji>0) {
             msg.setCode("0");
             msg.setCount(jiji+"");
+            msg.setData(new NumSize(jiji));
             msg.setMsg("正常");
         }else {
             msg.setCode("1");
             msg.setCount(jiji+"");
+            msg.setData(new NumSize(jiji));
             msg.setMsg("无数据");
         }
         return msg;
@@ -433,7 +436,7 @@ public class SuperArticleSortServiceImpl implements SuperArticleSortService {
             }
         }
 
-        msg.setObjectmsg(retunActicleTree);
+        msg.setData(retunActicleTree);
         msg.setCode("0");
         msg.setMsg("sucess");
         msg.setCount(retunActicleTree.size()+"");
@@ -458,7 +461,7 @@ public class SuperArticleSortServiceImpl implements SuperArticleSortService {
         }
         Msg msg = new Msg();
         msg.setCode("0");
-        msg.setObjectmsg(superArticleSorts);
+        msg.setData(superArticleSorts);
         return msg;
     }
 

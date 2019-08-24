@@ -1,5 +1,6 @@
 package com.neverend.blog.config;
 
+import com.neverend.blog.moudel.Msg;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import springfox.documentation.builders.ApiInfoBuilder;
