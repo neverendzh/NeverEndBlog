@@ -20,7 +20,7 @@ public class NewRelease {
      */
     @GetMapping("/rel/index")
     public String NewReleaseIndex(){
-         return "user/whisper";
+         return "user/index";
     }
 
 

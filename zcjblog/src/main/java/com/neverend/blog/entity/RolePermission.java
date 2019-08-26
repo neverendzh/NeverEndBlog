@@ -12,19 +12,39 @@ public class RolePermission implements Serializable {
     public static final String BUTTON_TYPE = "按钮";
 
     private String id;
-
+    /**
+     * 菜单权限名称
+     */
     private String permissionName;
 
+    /**
+     * 权限Code吗
+     */
     private String permissionCode;
 
+    /**
+     * 权限类型
+     */
     private String permissionType;
 
+    /**
+     *
+     */
     private String parentId;
 
+    /**
+     * 创建时间
+     */
     private Date creatTime;
 
+    /**
+     * 更新时间
+     */
     private Date updateTime;
 
+    /**
+     * 权限对应url
+     */
     private String url;
 
     private static final long serialVersionUID = 1L;

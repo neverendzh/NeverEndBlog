@@ -46,4 +46,5 @@ public interface ArticleDao {
 
     List<Article> getAll();
 
+    PageInfo<Article> getarticlelevel(String levelNum, Integer pageStart, Integer pageNum);
 }

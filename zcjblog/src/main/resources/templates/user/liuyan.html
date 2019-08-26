@@ -20,43 +20,19 @@
     <form class="layui-form" action="">
 
         <div class="layui-form-item layui-form-text">
-            <div style="text-align: center"><h1>日记</h1></div>
-
+            <div style="text-align: center"><h1>留言页面</h1></div>
+            <div class="layui-input-block" style="margin-left: 0px">
+                <textarea name="desc" placeholder="请输入内容" class="layui-textarea"></textarea>
+            </div>
         </div>
-
+        <div class="layui-form-item">
+            <div class="layui-input-block">
+                <button class="layui-btn" lay-submit lay-filter="formDemo">立即提交</button>
+                <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+            </div>
+        </div>
         <div>
-            <ul class="layui-timeline">
-                <li class="layui-timeline-item">
-                    <i class="layui-icon layui-icon-rate-solid" style="font-size: 20px; color: #1E9FFF;"></i>
-                    <div class="layui-timeline-content layui-text">
-                        <div class="layui-timeline-title">2018 test1</div>
-                    </div>
-                </li>
-                <li class="layui-timeline-item">
-                    <i class="layui-icon layui-icon-rate-solid" style="font-size: 20px; color: #1E9FFF;"></i>
-                    <div class="layui-timeline-content layui-text">
-                        <div class="layui-timeline-title">2017年test1</div>
-                    </div>
-                </li>
-                <li class="layui-timeline-item">
-                    <i class="layui-icon layui-icon-rate-solid" style="font-size: 20px; color: #1E9FFF;"></i>
-                    <div class="layui-timeline-content layui-text">
-                        <div class="layui-timeline-title">2016年，test1</div>
-                    </div>
-                </li>
-                <li class="layui-timeline-item">
-                    <i class="layui-icon layui-icon-rate-solid" style="font-size: 20px; color: #1E9FFF;"></i>
-                    <div class="layui-timeline-content layui-text">
-                        <div class="layui-timeline-title">2015年，test1</div>
-                    </div>
-                </li>
-                <li class="layui-timeline-item">
-                    <i class="layui-icon layui-icon-rate-solid" style="font-size: 20px; color: #1E9FFF;"></i>
-                    <div class="layui-timeline-content layui-text">
-                        <div class="layui-timeline-title">更久前</div>
-                    </div>
-                </li>
-            </ul>
+            <img src="/static/res/img/test/u12.png">
         </div>
     </form>
     <!--Bottom information Text-->
@@ -66,11 +42,11 @@
 <!--Bottom information js-->
 <div th:replace="../templates/user/include/footerjs :: footerJsCss"></div>
 <script type="text/javascript">
-    layui.use('form', function () {
+    layui.use('form', function(){
         var form = layui.form;
 
         //监听提交
-        form.on('submit(formDemo)', function (data) {
+        form.on('submit(formDemo)', function(data){
             layer.msg(JSON.stringify(data.field));
             return false;
         });

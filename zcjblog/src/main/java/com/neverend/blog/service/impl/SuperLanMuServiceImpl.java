@@ -26,11 +26,11 @@ public class SuperLanMuServiceImpl implements SuperLanMuService {
      * @return
      */
     @Override
-    public List<LanMuUi> getLanMus(Account account, String LanMuName) {
+    public List<LanMuUi> getLanMus(Account account, String LanMuName,String state) {
         if (account!=null && account.getId()!=null && !"".equals(account.getId())){
-            return superLanMuDao.getLanMus(account.getId(),LanMuName);
+            return superLanMuDao.getLanMus(account.getId(),LanMuName,state);
         }else {
-            return superLanMuDao.getLanMus("1",LanMuName);
+            return superLanMuDao.getLanMus("1",LanMuName,state);
         }
     }
 

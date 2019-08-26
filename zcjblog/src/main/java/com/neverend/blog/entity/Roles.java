@@ -19,12 +19,18 @@ public class Roles implements Serializable {
     private String rolesName;
 
     /**
-     *
+     *角色编码
      */
     private String rolesCode;
 
+    /**
+     * 创建时间
+     */
     private Date creatTime;
 
+    /**
+     * 跟新时间
+     */
     private Date updateTime;
 
     private List<RolePermission> rolePermissionList;

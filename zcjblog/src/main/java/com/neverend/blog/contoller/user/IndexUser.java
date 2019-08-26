@@ -160,15 +160,19 @@ public class IndexUser {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "topName", value = "设置是加载头部标题",
                     defaultValue = "首页头部",
+                    required = true, dataType = "String", paramType = "query"),
+            @ApiImplicitParam(name = "state", value = "菜单状态，flase加载可用菜单，true加载不可用菜单，null加载所有菜单",
+                    defaultValue = "false",
                     required = true, dataType = "String", paramType = "query")})
     @ResponseBody
     @PostMapping("/lan/mu/top")
-    public Msg<List<LanMuUi>>  indexLanMuTop(@RequestParam(name = "topName", defaultValue = "首页头部", required = false) String topName) {
+    public Msg<List<LanMuUi>>  indexLanMuTop(@RequestParam(name = "topName", defaultValue = "首页头部", required = false) String topName,
+                                             @RequestParam(name = "state",defaultValue = "false",required = false)String state) {
         // 创建Subject对象
         Subject subject = SecurityUtils.getSubject();
         Session session = subject.getSession();
         Account account = (Account) session.getAttribute("account");
-        List<LanMuUi> lanMuUis = superLanMuService.getLanMus(account, topName.trim());
+        List<LanMuUi> lanMuUis = superLanMuService.getLanMus(account, topName.trim(),state);
         Msg msg = new Msg();
         msg.setData(lanMuUis);
         msg.setCode(Code.sucess);
@@ -187,14 +191,18 @@ public class IndexUser {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "bName", value = "设置是加载底部标题",
                     defaultValue = "首页尾部",
+                    required = true, dataType = "String", paramType = "query"),
+            @ApiImplicitParam(name = "state", value = "菜单状态，flase加载可用菜单，true加载不可用菜单，null加载所有菜单",
+                    defaultValue = "false",
                     required = true, dataType = "String", paramType = "query")})
     @ResponseBody
     @PostMapping("/lan/mu/boom")
-    public Msg<List<LanMuUi>> indexLanMuBottom(@RequestParam(name = "bName", defaultValue = "首页尾部", required = false) String bName) {
+    public Msg<List<LanMuUi>> indexLanMuBottom(@RequestParam(name = "bName", defaultValue = "首页尾部", required = false) String bName,
+                                               @RequestParam(name = "state",defaultValue = "false",required = false)String state) {
         Subject subject = SecurityUtils.getSubject();
         Session session = subject.getSession();
         Account account = (Account) session.getAttribute("account");
-        List<LanMuUi> lanMus = superLanMuService.getLanMus(account, bName);
+        List<LanMuUi> lanMus = superLanMuService.getLanMus(account, bName,state);
         Msg msg = new Msg();
         msg.setData(lanMus);
         msg.setCode(Code.sucess);

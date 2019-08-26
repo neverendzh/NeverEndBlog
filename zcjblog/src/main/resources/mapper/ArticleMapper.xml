@@ -259,7 +259,7 @@
               tb_article_super_article_id.super_article_id = #{artilceid}
       )
       ORDER BY
-          CAST(tb_article.bei_yong_liu AS signed) DESC
+          CAST(tb_article.bei_yong_wu AS signed) DESC
     </select>
     <update id="updateByExampleSelective" parameterType="map">
     update tb_article

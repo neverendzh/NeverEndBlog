@@ -17,5 +17,5 @@ public interface SuperLanMuService {
      * @param LanMuName 例如传入‘首页头部’
      * @return
      */
-    List<LanMuUi> getLanMus(Account account,String LanMuName);
+    List<LanMuUi> getLanMus(Account account,String LanMuName,String state);
 }

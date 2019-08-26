@@ -26,98 +26,122 @@ import java.util.List;
 public class User {
     @Autowired
     private ArticleService articleService;
+
+
+    @ApiOperation(value = "置顶推荐文章列表", httpMethod = "GET",
+            notes = "可以选择性传递文章级别经行推荐，默认是最高界别值为4", protocols = "http")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "pageStart", value = "第几页", defaultValue = "1",
+                    required = true, dataType = "Integer", paramType = "query"),
+            @ApiImplicitParam(name = "pageNum", value = "每页数量", defaultValue = "5",
+                    required = true, dataType = "Integer", paramType = "query"),
+            @ApiImplicitParam(name = "levelNum", value = "推荐文章级别,数值范围(0-4),如果传递值在正常范围内则查询当前级别，根据流量次数排序，否则根据级别,浏览次数倒序返回", defaultValue = "4",
+                    required = false, dataType = "String", paramType = "query")})
+    @GetMapping("/index/articlelevel")
+    @ResponseBody
+    public Msg<List<Article>> getarticlelevel
+            (@RequestParam(name = "levelNum", defaultValue = "4", required = false) String levelNum,
+             @RequestParam(name = "pageStart", defaultValue = "1") Integer pageStart,
+             @RequestParam(name = "pageNum", defaultValue = "5") Integer pageNum) {
+        return articleService.getarticlelevel(levelNum,pageStart,pageNum);
+    }
+
     /**
      * 首页
+     *
      * @return
      */
     @GetMapping("/index")
     @ApiIgnore
-    public String index(HttpServletRequest request){
+    public String index(HttpServletRequest request) {
         return "user/index";
     }
 
     /**
      * 博客首页展示文章内容排序
      * 文章排行
+     *
      * @param pageStart
      * @param pageNum
      * @return
      */
-    @ApiOperation(value="博客首页展示文章内容排序",httpMethod = "GET",
-            notes="根据热度排序",protocols = "http")
+    @ApiOperation(value = "博客首页展示文章内容排序", httpMethod = "GET",
+            notes = "根据热度排序", protocols = "http")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "pageStart", value = "第几页", defaultValue = "1",
-                    required = true, dataType = "Integer",paramType = "query"),
-            @ApiImplicitParam(name = "pageNum", value = "每页数量",defaultValue = "5",
-                    required = true, dataType = "Integer",paramType = "query")})
+                    required = true, dataType = "Integer", paramType = "query"),
+            @ApiImplicitParam(name = "pageNum", value = "每页数量", defaultValue = "5",
+                    required = true, dataType = "Integer", paramType = "query")})
     @GetMapping("/index/articlesHort")
     @ResponseBody
-    public Msg<List<Article>> indexArticle(@RequestParam(name = "pageStart",defaultValue = "1")Integer pageStart,
-                            @RequestParam(name = "pageNum",defaultValue = "5") Integer pageNum){
-        PageInfo<Article> articleList = articleService.getArticleHortAsc(pageStart,pageNum);
+    public Msg<List<Article>> indexArticle(@RequestParam(name = "pageStart", defaultValue = "1") Integer pageStart,
+                                           @RequestParam(name = "pageNum", defaultValue = "5") Integer pageNum) {
+        PageInfo<Article> articleList = articleService.getArticleHortAsc(pageStart, pageNum);
         Msg msg = articleService.getArticleMsg(articleList);
         return msg;
     }
 
     /**
      * 文章点记率排行
+     *
      * @param pageStart
      * @param pageNum
      * @return
      */
-    @ApiOperation(value="查询隶属当前传入文章分类id下的所有文章",httpMethod = "GET",
-            notes="根据点击率排序",protocols = "http")
+    @ApiOperation(value = "查询隶属当前传入文章分类id下的所有文章", httpMethod = "GET",
+            notes = "根据点击率排序", protocols = "http")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "artilceid", value = "文章分类id",
-                    required = true, dataType = "String",paramType = "query"),
+                    required = true, dataType = "String", paramType = "query"),
             @ApiImplicitParam(name = "pageStart", value = "第几页", defaultValue = "1",
-                    required = true, dataType = "Integer",paramType = "query"),
-            @ApiImplicitParam(name = "pageNum", value = "每页数量",defaultValue = "5",
-                    required = true, dataType = "Integer",paramType = "query"),
+                    required = true, dataType = "Integer", paramType = "query"),
+            @ApiImplicitParam(name = "pageNum", value = "每页数量", defaultValue = "5",
+                    required = true, dataType = "Integer", paramType = "query"),
             @ApiImplicitParam(name = "state", value = "文章状态;" + "-1编辑状态;" +
                     "0已发布，可用;" +
                     "1禁止普通用户查看;" +
-                    "2删除",defaultValue = "0",
-                    required = true, dataType = "String",paramType = "query")})
+                    "2删除", defaultValue = "0",
+                    required = true, dataType = "String", paramType = "query")})
     @GetMapping("/index/articlesHort/fenlei")
     @ResponseBody
-    public  Msg<List<Article>>  getArtilceFeiL(@RequestParam(name = "artilceid")String artilceid,
-                              @RequestParam(name = "pageStart",defaultValue = "1")Integer pageStart,
-                              @RequestParam(name = "pageNum",defaultValue = "5") Integer pageNum,
-                              @RequestParam(name = "state",defaultValue = "0")String state){
-        Msg<List<Article>>  msg = articleService.getArtilceFeiL(artilceid,pageStart,pageNum,state);
+    public Msg<List<Article>> getArtilceFeiL(@RequestParam(name = "artilceid") String artilceid,
+                                             @RequestParam(name = "pageStart", defaultValue = "1") Integer pageStart,
+                                             @RequestParam(name = "pageNum", defaultValue = "5") Integer pageNum,
+                                             @RequestParam(name = "state", defaultValue = "0") String state) {
+        Msg<List<Article>> msg = articleService.getArtilceFeiL(artilceid, pageStart, pageNum, state);
         return msg;
     }
 
     /**
      * 根据关键字搜索文章
+     *
      * @param searchname
      * @param pageStart
      * @param pageNum
      * @param state
      * @return
      */
-    @ApiOperation(value="根据关键字搜索文章",httpMethod = "GET",
-            notes="根据关键字搜索文章",protocols = "http")
+    @ApiOperation(value = "根据关键字搜索文章", httpMethod = "GET",
+            notes = "根据关键字搜索文章", protocols = "http")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "searchname", value = "搜索名称",
-                    required = true, dataType = "String",paramType = "query"),
+                    required = true, dataType = "String", paramType = "query"),
             @ApiImplicitParam(name = "pageStart", value = "第几页", defaultValue = "1",
-                    required = false, dataType = "Integer",paramType = "query"),
-            @ApiImplicitParam(name = "pageNum", value = "每页数量",defaultValue = "5",
-                    required = false, dataType = "Integer",paramType = "query"),
+                    required = false, dataType = "Integer", paramType = "query"),
+            @ApiImplicitParam(name = "pageNum", value = "每页数量", defaultValue = "5",
+                    required = false, dataType = "Integer", paramType = "query"),
             @ApiImplicitParam(name = "state", value = "文章状态;" + "-1编辑状态;" +
                     "0已发布，可用;" +
                     "1禁止普通用户查看;" +
-                    "2删除",defaultValue = "0",
-                    required = true, dataType = "String",paramType = "query")})
+                    "2删除", defaultValue = "0",
+                    required = true, dataType = "String", paramType = "query")})
     @GetMapping("/index/search")
     @ResponseBody
-    public Msg<List<Article>> search(@RequestParam(name = "searchname")String searchname,
-                              @RequestParam(name = "pageStart",defaultValue = "1")Integer pageStart,
-                              @RequestParam(name = "pageNum",defaultValue = "5") Integer pageNum,
-                              @RequestParam(name = "state",defaultValue = "0")String state){
-        Msg msg = articleService.getArtilcesearch(searchname,pageStart,pageNum,state);
+    public Msg<List<Article>> search(@RequestParam(name = "searchname") String searchname,
+                                     @RequestParam(name = "pageStart", defaultValue = "1") Integer pageStart,
+                                     @RequestParam(name = "pageNum", defaultValue = "5") Integer pageNum,
+                                     @RequestParam(name = "state", defaultValue = "0") String state) {
+        Msg msg = articleService.getArtilcesearch(searchname, pageStart, pageNum, state);
         return msg;
     }
 }

@@ -14,7 +14,7 @@ public class RolesPermissionKey implements Serializable {
     private String rolesId;
 
     /**
-     * 权限id
+     * 关联RolePermission菜单权限表的id主键
      */
     private String permissionId;
 

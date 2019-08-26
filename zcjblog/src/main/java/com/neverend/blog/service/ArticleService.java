@@ -62,4 +62,14 @@ public interface ArticleService {
      * @return
      */
     Msg getArtilcesearch(String searchname, Integer pageStart, Integer pageNum, String state);
+
+
+    /**
+     * 根据传递的界别返回推荐文章
+     * @param levelNum
+     * @param pageStart
+     * @param pageNum
+     * @return
+     */
+    Msg<List<Article>> getarticlelevel(String levelNum, Integer pageStart, Integer pageNum);
 }

@@ -42,9 +42,17 @@
                     </div>
                 </div>
                 <div class="layui-card" style="margin-top: -12px;border-radius: 8px;">
-                    <div class="layui-card-header">Hot_Top_10</div>
+                    <div class="layui-card-header">热门文章</div>
                     <div class="layui-card-body">
                         <ul id="allarticleName" class="layui-nav layui-nav-tree">
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="layui-card" style="margin-top: -12px;border-radius: 8px;">
+                    <div class="layui-card-header">版主推荐</div>
+                    <div class="layui-card-body">
+                        <ul id="allarticleNameTj" class="layui-nav layui-nav-tree">
                         </ul>
                     </div>
                 </div>
@@ -183,6 +191,7 @@
         layer = layui.layer;
         var form = layui.form;
         tree = layui.tree;
+        layer.msg("您好^_^ ^_^ |本博客正在开发测试中！")
         //加载树形分类数据
         $.ajax({
             type: 'get',
@@ -307,6 +316,29 @@
                         nameAll = nameAll + " <li class=\"layui-nav-item\"><a href='/system/admin/fabu/yulan?articleId=" + art.articleId + "'>" + art.articleName + "</a></li>";
                     }
                     $("#allarticleName").append(nameAll);
+                }
+            }
+        });
+        //推荐文章
+        $.ajax({
+            type: 'get',
+            url: '/user/index/articlelevel',
+            data: {
+                "pageStart": 1,
+                "pageNum": 10,
+                "levelNum":-1
+            },
+            success: function (data) {
+
+                if (data.code == 200) {
+                    total = data.count;
+                    var dataArticle = data.data;
+                    var nameAll = "";
+                    for (var i = 0; i < dataArticle.length; i++) {
+                        var art = dataArticle[i];
+                        nameAll = nameAll + " <li class=\"layui-nav-item\"><a href='/system/admin/fabu/yulan?articleId=" + art.articleId + "'>" + art.articleName + "</a></li>";
+                    }
+                    $("#allarticleNameTj").append(nameAll);
                 }
             }
         });

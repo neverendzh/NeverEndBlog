@@ -17,7 +17,7 @@ public class LanMuUi implements Serializable {
     @ApiModelProperty(value = "栏目名称")
     private String lanMu;
 
-    @ApiModelProperty("栏目隶属角色id")
+    @ApiModelProperty("栏目的权限Code，根据当前用户的角色，加载权限菜单，菜单权限中有对应的url，如果当前用户没有所属的Code则没有对应权限")
     private String roleCode;
     @ApiModelProperty("访问栏目的url")
     private String lookUrl;

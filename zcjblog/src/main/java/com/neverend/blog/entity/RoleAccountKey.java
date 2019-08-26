@@ -6,10 +6,19 @@ import java.io.Serializable;
  * @author 
  */
 public class RoleAccountKey implements Serializable {
+    /**
+     * 主键
+     */
     private String id;
 
+    /**
+     * 角色id
+     */
     private String roleId;
 
+    /**
+     * 用户id
+     */
     private String accountId;
 
     private static final long serialVersionUID = 1L;

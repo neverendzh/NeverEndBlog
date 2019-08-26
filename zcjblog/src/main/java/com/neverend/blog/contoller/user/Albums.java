@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import springfox.documentation.annotations.ApiIgnore;
 
 /**
- * 相册
+ * 留言
  * @author zcg
  */
 @Controller
@@ -14,11 +14,11 @@ import springfox.documentation.annotations.ApiIgnore;
 @ApiIgnore
 public class Albums {
     /**
-     * 相册
+     * 留言
      * @return
      */
     @GetMapping("/index")
     public  String albumsIndex(){
-        return "user/album";
+        return "user/liuyan";
     }
 }

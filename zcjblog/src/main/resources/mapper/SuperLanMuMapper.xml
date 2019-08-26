@@ -173,6 +173,36 @@
       ORDER BY
 	tb_role_permission.creat_time ASC
   </select>
+  <select id="getLanMu" resultType="com.neverend.blog.moudel.LanMuUi">
+    SELECT
+        tb_super_lan_mu.lan_mu_name AS 'superName',
+        tb_lan_mu.lan_mu_name AS 'lanMu',
+        tb_role_permission.permission_code AS 'roleCode',
+        tb_role_permission.url AS 'lookUrl'
+    FROM
+        tb_lan_mu,
+        tb_role_permission,
+        tb_super_lan_mu
+    WHERE
+        tb_lan_mu.role_permission_id = tb_role_permission.id
+    AND tb_role_permission.id IN (
+        SELECT
+            tb_roles_permission_key.permission_id
+        FROM
+            tb_roles_permission_key,
+            tb_role_account_key
+        WHERE
+            tb_super_lan_mu.lan_mu_name = #{names}
+        AND tb_lan_mu.super_lan_mu_id = tb_super_lan_mu.super_lan_mu_id
+        AND tb_role_account_key.account_id = #{accountId}
+        <if test="state != null">
+            AND tb_lan_mu.bei_yong_er = "false"
+        </if>
+        AND tb_roles_permission_key.roles_id = tb_role_account_key.role_id
+    )
+    ORDER BY
+        tb_role_permission.creat_time ASC;
+  </select>
   <update id="updateByExampleSelective" parameterType="map">
     update tb_super_lan_mu
     <set>

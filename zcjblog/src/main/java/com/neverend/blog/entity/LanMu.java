@@ -12,17 +12,17 @@ public class LanMu implements Serializable {
     private String yiJiLanMuId;
 
     /**
-     * 二级栏目名称
+     * 菜单名称
      */
     private String lanMuName;
 
     /**
-     * 栏目总成
+     * 栏目属于顶部还是尾部，对应SuperLanMu中的主键
      */
     private String superLanMuId;
 
     /**
-     * 细粒度权限栏目id
+     * 对应RolePermission中的主键，关联权限id
      */
     private String rolePermissionId;
 
@@ -31,6 +31,9 @@ public class LanMu implements Serializable {
      */
     private String beiYongYi;
 
+    /**
+     * 栏目状态是否禁用 true禁用，false不禁用
+     */
     private String beiYongEr;
 
     private String beiYongSan;

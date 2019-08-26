@@ -15,7 +15,7 @@ import springfox.documentation.annotations.ApiIgnore;
 @ApiIgnore
 public class LeaveMessage {
     /**
-     * 留言
+     * 日记
      * @return
      */
     @GetMapping("/index")

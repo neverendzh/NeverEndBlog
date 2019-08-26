@@ -19,7 +19,13 @@ public class Classification {
     @GetMapping("/category/view")
     public String fenLeiArticle(@RequestParam(name = "type",defaultValue = "",required = false)String type){
         System.out.println(type);
-        return "user/index";
+        return "user/details";
+    }
+
+    @GetMapping("/category/about")
+    public String about(@RequestParam(name = "type",defaultValue = "",required = false)String type){
+
+        return "user/about";
     }
 
 }

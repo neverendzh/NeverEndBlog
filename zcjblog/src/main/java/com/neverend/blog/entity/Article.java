@@ -75,7 +75,10 @@ public class Article implements Serializable {
     private String beiYongEr;
     @JsonIgnore
     private String beiYongSi;
-    @JsonIgnore
+    /**
+     * 文章浏览次数
+     */
+    @ApiModelProperty(value="文章浏览次数")
     private String beiYongWu;
     @JsonIgnore
     private String beiYongQi;

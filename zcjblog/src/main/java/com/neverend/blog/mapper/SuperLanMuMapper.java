@@ -32,5 +32,21 @@ public interface SuperLanMuMapper {
 
     int updateByPrimaryKey(SuperLanMu record);
 
+    /**
+     * 此方法废除 推荐使用 getLanMu
+     * @param accountId
+     * @param names
+     * @return
+     */
+    @Deprecated
     List<LanMuUi> getsuperLanMuGetLan(@Param("accountId")String accountId,@Param("names")String names);
+
+    /**
+     *
+     * @param accountId 用户 id
+     * @param names 栏目名称
+     * @param state 栏目状态
+     * @return
+     */
+    List<LanMuUi> getLanMu(@Param("accountId")String accountId,@Param("names")String names,@Param("state") String state );
 }

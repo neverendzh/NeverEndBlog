@@ -82,7 +82,7 @@ public class ArticleDaoImpl implements ArticleDao {
         PageHelper.startPage(pageStart,pageNum);
 
         ArticleExample articleExample = new ArticleExample();
-        articleExample.setOrderByClause(" CAST( bei_yong_liu as signed) ASC");
+        articleExample.setOrderByClause(" CAST( bei_yong_wu as signed) ASC");
         List<Article> articles = articleMapper.selectByExample(articleExample);
         PageInfo<Article> personPageInfo = new PageInfo<>(articles);
         return personPageInfo;
@@ -101,5 +101,25 @@ public class ArticleDaoImpl implements ArticleDao {
         ArticleExample articleExample = new ArticleExample();
         List<Article> articles = articleMapper.selectByExample(articleExample);
         return articles;
+    }
+
+    @Override
+    public PageInfo<Article> getarticlelevel(String levelNum, Integer pageStart, Integer pageNum) {
+        PageHelper.startPage(pageStart,pageNum);
+        ArticleExample articleExample = new ArticleExample();
+
+        if (levelNum.equals("0")|| levelNum.equals("1")||levelNum.equals("2")
+                ||levelNum.equals("3")||levelNum.equals("4")){
+            articleExample.setOrderByClause(" CAST( bei_yong_wu as signed) DESC");
+            ArticleExample.Criteria criteria = articleExample.createCriteria();
+            criteria.andBeiYongErEqualTo(levelNum);
+        }else{
+            articleExample.setOrderByClause(" CAST( bei_yong_er as signed) DESC,CAST( bei_yong_wu as signed) DESC");
+        }
+        List<Article> articles = articleMapper.selectByExample(articleExample);
+        PageInfo<Article> personPageInfo = new PageInfo<>(articles);
+        return personPageInfo;
+
+
     }
 }

@@ -180,6 +180,18 @@ public class ArticleServiceImpl implements ArticleService {
         return msg;
     }
 
+    @Override
+    public Msg<List<Article>> getarticlelevel(String levelNum, Integer pageStart, Integer pageNum) {
+        Msg msg = new Msg();
+        PageInfo<Article> articles  = articleDao.getarticlelevel(levelNum,pageStart,pageNum);
+        msg.setCode(Code.sucess);
+        msg.setMsg(Code.sucessMsg);
+        msg.setData(articles.getList());
+        msg.setCount(articles.getPages()+"");
+        return msg;
+    }
+
+
     /**
      * 根据文章隶属的分类id生成中间表
      *

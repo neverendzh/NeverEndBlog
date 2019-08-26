@@ -12,5 +12,5 @@ public interface SuperLanMuDao {
      * @param LanMuName 例如传入‘首页头部’
      * @return
      */
-    List<LanMuUi> getLanMus(String accountId,String LanMuName);
+    List<LanMuUi> getLanMus(String accountId,String LanMuName,String state);
 }

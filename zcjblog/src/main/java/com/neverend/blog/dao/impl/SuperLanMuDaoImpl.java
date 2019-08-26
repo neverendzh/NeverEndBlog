@@ -27,9 +27,10 @@ public class SuperLanMuDaoImpl implements SuperLanMuDao {
      * @return
      */
     @Override
-    public List<LanMuUi> getLanMus(String accountId,String LanMuName) {
+    public List<LanMuUi> getLanMus(String accountId,String LanMuName,String state) {
         String names = LanMuName.trim();
-        List<LanMuUi> lanMuUis = superLanMuMapper.getsuperLanMuGetLan(accountId,names);
+//        List<LanMuUi> lanMuUis = superLanMuMapper.getsuperLanMuGetLan(accountId,names);
+        List<LanMuUi> lanMuUis  = superLanMuMapper.getLanMu(accountId,names,state);
        return lanMuUis;
     }
 }
