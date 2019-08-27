@@ -261,6 +261,20 @@
       ORDER BY
           CAST(tb_article.bei_yong_wu AS signed) DESC
     </select>
+    <select id="selectActilcNameLike" resultType="com.neverend.blog.entity.Article">
+        SELECT
+            tb_article.article_id,
+            tb_article.article_name,
+            tb_article.brief_introduction
+        FROM
+            `tb_article`
+        WHERE
+            state = #{state}
+      <foreach item="item" index="index" collection="list" open="AND" separator="AND" close="">
+         article_name LIKE  CONCAT(CONCAT('%', #{item}), '%')
+      </foreach>
+
+    </select>
     <update id="updateByExampleSelective" parameterType="map">
     update tb_article
     <set>

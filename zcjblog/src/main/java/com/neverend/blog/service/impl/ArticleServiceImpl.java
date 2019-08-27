@@ -17,6 +17,7 @@ import com.neverend.blog.moudel.Code;
 import com.neverend.blog.moudel.Msg;
 import com.neverend.blog.service.AccountService;
 import com.neverend.blog.service.ArticleService;
+import com.neverend.blog.util.email.FenCIUtil;
 import com.neverend.blog.util.email.GetUUID;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -33,6 +34,7 @@ import java.util.List;
 
 /**
  * 文章接口实现
+ *
  * @author zcj
  */
 @Service
@@ -47,16 +49,18 @@ public class ArticleServiceImpl implements ArticleService {
     @Autowired
     private ArticleSuperArticleIdDao articleIdDao;
 
-    public boolean getArticleName(ArticleWithBLOBs articleWithBLOBs){
-       if (articleWithBLOBs!=null || !"".equals(articleWithBLOBs.getContext().trim())|| !"".equals(articleWithBLOBs.getArticleSortId().trim())){
-           return true;
-       }else {
-           return false;
-       }
+    public boolean getArticleName(ArticleWithBLOBs articleWithBLOBs) {
+        if (articleWithBLOBs != null || !"".equals(articleWithBLOBs.getContext().trim()) || !"".equals(articleWithBLOBs.getArticleSortId().trim())) {
+            return true;
+        } else {
+            return false;
+        }
     }
+
     /**
      * 根据文章id查询
      * 进入预览
+     *
      * @param articleId
      * @return 返回的包含了大文本字段
      */
@@ -64,7 +68,7 @@ public class ArticleServiceImpl implements ArticleService {
     public ArticleWithBLOBs getArticle(String articleId) {
         List<ArticleWithBLOBs> articleWithBLOBsList = articleDao.selectArticleId(articleId);
         ArticleWithBLOBs articleWithBLOBs = null;
-        if (articleWithBLOBsList.size()>0){
+        if (articleWithBLOBsList.size() > 0) {
             articleWithBLOBs = articleWithBLOBsList.get(0);
         }
         return articleWithBLOBs;
@@ -72,41 +76,42 @@ public class ArticleServiceImpl implements ArticleService {
 
     /**
      * 发布文章
+     *
      * @param account
      * @param articleWithBLOBs
      * @param s                状态
-     * @param acid 文章隶属分类id
+     * @param acid             文章隶属分类id
      * @return msg
      */
     @Override
-    @Transactional(propagation=Propagation.REQUIRED)
-    public Msg saveArticle(Account account, ArticleWithBLOBs articleWithBLOBs, String state,String acid,String articlelevel)  {
+    @Transactional(propagation = Propagation.REQUIRED)
+    public Msg saveArticle(Account account, ArticleWithBLOBs articleWithBLOBs, String state, String acid, String articlelevel) {
         Msg msg = new Msg();
         Date date = new Date();
         String uuid = GetUUID.uuid();
-        Account accountIsTrue =  accountService.selectAccount(account);
-        if (accountIsTrue != null){
-            if (getArticleName(articleWithBLOBs)){
-                Article article = articleDao.selectAccountIdAndArticleName(articleWithBLOBs.getArticleName(),accountIsTrue.getId());
-                if (article !=null ){
+        Account accountIsTrue = accountService.selectAccount(account);
+        if (accountIsTrue != null) {
+            if (getArticleName(articleWithBLOBs)) {
+                Article article = articleDao.selectAccountIdAndArticleName(articleWithBLOBs.getArticleName(), accountIsTrue.getId());
+                if (article != null) {
 //                设置文章id
                     articleWithBLOBs.setArticleId(article.getArticleId());
 //                跟新时间
                     articleWithBLOBs.setBeiYongYi(Long.toString(System.currentTimeMillis()));
                     articleWithBLOBs.setState(state);
                     articleWithBLOBs.setBeiYongEr(articlelevel);
-                    String code =  articleDao.updateByArticle(articleWithBLOBs);
+                    String code = articleDao.updateByArticle(articleWithBLOBs);
 
 //                    取出生成的文章隶属id
-                    List<String> acids =  getArticeleSuperid(acid);
-                    List<ArticleSuperArticleId> articleSuperArticleId = setArticleSuperid(acids,article.getArticleId());
-                    int  del = articleIdDao.delid(articleWithBLOBs.getArticleId());
+                    List<String> acids = getArticeleSuperid(acid);
+                    List<ArticleSuperArticleId> articleSuperArticleId = setArticleSuperid(acids, article.getArticleId());
+                    int del = articleIdDao.delid(articleWithBLOBs.getArticleId());
                     int save = articleIdDao.save(articleSuperArticleId);
 
-                    msg.setUrl("/system/admin/fabu/yulan?articleId="+article.getArticleId());
+                    msg.setUrl("/system/admin/fabu/yulan?articleId=" + article.getArticleId());
                     msg.setCode(Code.sucess);
                     msg.setMsg(Code.sucessMsg);
-                }else {
+                } else {
 //                插入
                     articleWithBLOBs.setArticleId(uuid);
                     articleWithBLOBs.setAccountId(accountIsTrue.getId());
@@ -118,16 +123,16 @@ public class ArticleServiceImpl implements ArticleService {
                     articleWithBLOBs.setBeiYongEr(articlelevel);
                     int saveNum = articleDao.saveArticleDao(articleWithBLOBs);
 //                    获取隶属文章的id集合
-                    List<String> acidss =  getArticeleSuperid(acid);
+                    List<String> acidss = getArticeleSuperid(acid);
 //                   设置
-                    List<ArticleSuperArticleId> articleSuperArticleId = setArticleSuperid(acidss,uuid);
+                    List<ArticleSuperArticleId> articleSuperArticleId = setArticleSuperid(acidss, uuid);
                     int save = articleIdDao.save(articleSuperArticleId);
 
-                    if (saveNum>0){
-                        msg.setUrl("/system/admin/fabu/yulan?articleId="+articleWithBLOBs.getArticleId());
+                    if (saveNum > 0) {
+                        msg.setUrl("/system/admin/fabu/yulan?articleId=" + articleWithBLOBs.getArticleId());
                         msg.setCode(Code.sucess);
                         msg.setMsg(Code.sucessMsg);
-                    }else {
+                    } else {
 //                    插入失败
                         msg.setCode(Code.error);
                         msg.setCode(Code.errorMsg);
@@ -137,7 +142,7 @@ public class ArticleServiceImpl implements ArticleService {
                 }
 
             }
-        }else {
+        } else {
             msg.setCode(Code.login);
             msg.setMsg(Code.loginMsg);
         }
@@ -146,8 +151,8 @@ public class ArticleServiceImpl implements ArticleService {
     }
 
     @Override
-    public PageInfo<Article>  getArticleHortAsc(int pageStart, int pageNum) {
-        PageInfo<Article> articles = articleDao.orderByArcileB6(pageStart,pageNum);
+    public PageInfo<Article> getArticleHortAsc(int pageStart, int pageNum) {
+        PageInfo<Article> articles = articleDao.orderByArcileB6(pageStart, pageNum);
         return articles;
 
     }
@@ -158,36 +163,49 @@ public class ArticleServiceImpl implements ArticleService {
         msg.setCode(Code.sucess);
         msg.setMsg(Code.sucessMsg);
         msg.setData(articleList.getList());
-        msg.setCount(articleList.getTotal()+"");
-        msg.setCount(articleList.getPages()+"");
+        msg.setCount(articleList.getTotal() + "");
+        msg.setCount(articleList.getPages() + "");
         return msg;
     }
 
     @Override
-    public Msg getArtilceFeiL(String artilceid,Integer pageNum,Integer pageSize,String state) {
-        PageInfo<Article> articles = articleDao.getArtilceFeiL(artilceid,pageNum,pageSize,state);
+    public Msg getArtilceFeiL(String artilceid, Integer pageNum, Integer pageSize, String state) {
+        PageInfo<Article> articles = articleDao.getArtilceFeiL(artilceid, pageNum, pageSize, state);
         Msg msg = new Msg();
-        msg.setCount(articles.getPages()+"");
+        msg.setCount(articles.getPages() + "");
         msg.setCode(Code.sucess);
         msg.setMsg(Code.sucessMsg);
         msg.setData(articles.getList());
         return msg;
     }
 
+    /**
+     * @param searchname
+     * @param pageStart
+     * @param pageNum
+     * @param state      文章状态
+     * @return
+     */
     @Override
     public Msg getArtilcesearch(String searchname, Integer pageStart, Integer pageNum, String state) {
+        List<String> fneciLists = FenCIUtil.getFneciLists(searchname);
+        PageInfo<Article> articles = articleDao.selectActilcNameLike(pageStart, pageNum, state, fneciLists);
         Msg msg = new Msg();
+        msg.setCount(articles.getPages()+"");
+        msg.setData(articles.getList());
+        msg.setCode(Code.sucess);
+        msg.setCode(Code.sucessMsg);
         return msg;
     }
 
     @Override
     public Msg<List<Article>> getarticlelevel(String levelNum, Integer pageStart, Integer pageNum) {
         Msg msg = new Msg();
-        PageInfo<Article> articles  = articleDao.getarticlelevel(levelNum,pageStart,pageNum);
+        PageInfo<Article> articles = articleDao.getarticlelevel(levelNum, pageStart, pageNum);
         msg.setCode(Code.sucess);
         msg.setMsg(Code.sucessMsg);
         msg.setData(articles.getList());
-        msg.setCount(articles.getPages()+"");
+        msg.setCount(articles.getPages() + "");
         return msg;
     }
 
@@ -196,7 +214,7 @@ public class ArticleServiceImpl implements ArticleService {
      * 根据文章隶属的分类id生成中间表
      *
      * @param acidss 集合当前文章隶属的文章分类id
-     * @param uuid 当前文章的id
+     * @param uuid   当前文章的id
      * @return
      */
     private List<ArticleSuperArticleId> setArticleSuperid(List<String> acidss, String uuid) {
@@ -215,16 +233,16 @@ public class ArticleServiceImpl implements ArticleService {
         JSONArray objects = JSON.parseArray(acid);
         List<ActicleTree> acticleTrees = objects.toJavaList(ActicleTree.class);
         List<String> acaid = new ArrayList<>();
-        getforxhhuan(acticleTrees,acaid);
+        getforxhhuan(acticleTrees, acaid);
         return acaid;
     }
 
-    private void getforxhhuan(List<ActicleTree> acticleTrees,List<String> accid) {
+    private void getforxhhuan(List<ActicleTree> acticleTrees, List<String> accid) {
         for (ActicleTree acticleTree : acticleTrees) {
             accid.add(acticleTree.getId());
-            if (acticleTree.getChildren()!=null){
+            if (acticleTree.getChildren() != null) {
                 List<ActicleTree> children = acticleTree.getChildren();
-                getforxhhuan(children,accid);
+                getforxhhuan(children, accid);
             }
         }
     }

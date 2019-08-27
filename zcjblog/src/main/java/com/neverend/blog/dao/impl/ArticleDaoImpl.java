@@ -122,4 +122,20 @@ public class ArticleDaoImpl implements ArticleDao {
 
 
     }
+
+    /**
+     * 搜索文章
+     * @param pageStart
+     * @param pageNum
+     * @param state 文章状态
+     * @param fneciLists 分词后的集合
+     * @return
+     */
+    @Override
+    public PageInfo<Article> selectActilcNameLike(Integer pageStart, Integer pageNum, String state, List<String> fneciLists) {
+        PageHelper.startPage(pageStart,pageNum);
+        List<Article> articles = articleMapper.selectActilcNameLike(fneciLists,state);
+        PageInfo<Article> personPageInfo = new PageInfo<>(articles);
+        return personPageInfo;
+    }
 }
