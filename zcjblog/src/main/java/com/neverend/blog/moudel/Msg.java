@@ -16,7 +16,7 @@ public class Msg<T>{
     /**
      * 返回状态码
      */
-    @ApiModelProperty(value="返回状态码;200=ok;401=无权限;301=重新登陆;500=服务异常;407=重复;404=不存在")
+    @ApiModelProperty(value="返回状态码;200=ok;401=无权限;301=重新登陆;500=服务异常;407=重复;404=不存在,302=账号密码错误")
     private String code;
     /**
      * 返回成功，或错误的异常提示信息

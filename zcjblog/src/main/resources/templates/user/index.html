@@ -431,7 +431,7 @@
                         url: '/',
                         data: 'accountMobile=' + accountMobile + '&password=' + password,
                         success: function (data) {//返回json结果'
-                            var Msg = JSON.parse(data);
+                            var Msg = data;
                             if (Msg.code == "0") {
                                 layer.close(loginhtmlform);
                                 window.location.href = Msg.url;

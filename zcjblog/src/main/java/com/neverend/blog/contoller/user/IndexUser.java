@@ -51,44 +51,51 @@ public class IndexUser {
      * @param redirectAttributes
      * @return
      */
+    @ApiOperation(value = "首页默认登陆接口", httpMethod = "GET",
+            notes = "首页默认登陆返回首页", protocols = "http")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "accountMobile", value = "账号", defaultValue = "123",
+                    required = false, dataType = "String", paramType = "query"),
+            @ApiImplicitParam(name = "password", value = "密码", defaultValue = "123",
+                    required = false, dataType = "String", paramType = "query")})
     @GetMapping("/")
-    public String index(@RequestParam(defaultValue = "123", required = false) String accountMobile,
-                        @RequestParam(defaultValue = "123", required = false) String password,
+    public String index(@RequestParam(name = "accountMobile", defaultValue = "123", required = false) String accountMobile,
+                        @RequestParam(name = "password", defaultValue = "123", required = false) String password,
                         String rememberMe,
                         HttpServletRequest request,
                         RedirectAttributes redirectAttributes) {
         // 创建Subject对象
         Subject subject = SecurityUtils.getSubject();
-        // 根据账号和密码进行登录
-        String requestIp = request.getRemoteAddr();
-        UsernamePasswordToken usernamePasswordToken =
-                new UsernamePasswordToken(accountMobile, DigestUtils.md5Hex(password), rememberMe != null, requestIp);
-        try {
-            subject.login(usernamePasswordToken);
-
-            //将登录成功的对象放入session（没必要）
-            Account account = accountService.findByMobile(accountMobile);
-            Session session = subject.getSession();
-            session.setAttribute("account", account);
-
-            //登录后跳转目标的判断
-            SavedRequest savedRequest = WebUtils.getSavedRequest(request);
-            String url = "/user/index";
-            if (savedRequest != null) {
-                url = savedRequest.getRequestUrl();
+        Account accountend = (Account) subject.getPrincipal();
+        if (accountend != null) {
+            return "redirect:/user/index";
+        } else {
+            // 根据账号和密码进行登录
+            String requestIp = request.getRemoteAddr();
+            UsernamePasswordToken usernamePasswordToken =
+                    new UsernamePasswordToken(accountMobile, DigestUtils.md5Hex(password), rememberMe != null, requestIp);
+            try {
+                subject.login(usernamePasswordToken);
+                //登录后跳转目标的判断
+                SavedRequest savedRequest = WebUtils.getSavedRequest(request);
+                String url = "/user/index";
+                if (savedRequest != null) {
+                    url = savedRequest.getRequestUrl();
+                }
+                return "redirect:" + url;
+            } catch (UnknownAccountException | IncorrectCredentialsException ex) {
+                ex.printStackTrace();
+                redirectAttributes.addFlashAttribute("message", "账号或密码错误");
+            } catch (LockedAccountException ex) {
+                ex.printStackTrace();
+                redirectAttributes.addFlashAttribute("message", "账号被锁定");
+            } catch (AuthenticationException ex) {
+                ex.printStackTrace();
+                redirectAttributes.addFlashAttribute("message", "账号或密码错误");
             }
-            return "redirect:" + url;
-        } catch (UnknownAccountException | IncorrectCredentialsException ex) {
-            ex.printStackTrace();
-            redirectAttributes.addFlashAttribute("message", "账号或密码错误");
-        } catch (LockedAccountException ex) {
-            ex.printStackTrace();
-            redirectAttributes.addFlashAttribute("message", "账号被锁定");
-        } catch (AuthenticationException ex) {
-            ex.printStackTrace();
-            redirectAttributes.addFlashAttribute("message", "账号或密码错误");
+            return "redirect:/";
         }
-        return "redirect:/";
+
     }
 
     /**
@@ -101,10 +108,17 @@ public class IndexUser {
      * @param redirectAttributes
      * @return
      */
+    @ApiOperation(value = "首页默认登陆接口", httpMethod = "POST",
+            notes = "首页默认登陆返回首页", protocols = "http")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "accountMobile", value = "账号", defaultValue = "",
+                    required = true, dataType = "String", paramType = "query"),
+            @ApiImplicitParam(name = "password", value = "密码", defaultValue = "",
+                    required = true, dataType = "String", paramType = "query")})
     @PostMapping("/")
     @ResponseBody
-    public String indexPost(@RequestParam(defaultValue = "123", name = "accountMobile", required = false) String accountMobile,
-                            @RequestParam(defaultValue = "123", name = "password", required = false) String password,
+    public Msg indexPost(@RequestParam(name = "accountMobile", required = true) String accountMobile,
+                            @RequestParam(name = "password", required = true) String password,
                             String rememberMe,
                             HttpServletRequest request,
                             RedirectAttributes redirectAttributes) {
@@ -115,24 +129,18 @@ public class IndexUser {
         UsernamePasswordToken usernamePasswordToken =
                 new UsernamePasswordToken(accountMobile, DigestUtils.md5Hex(password), rememberMe != null, requestIp);
         Msg msg = new Msg();
-        Gson gson = new Gson();
         try {
             subject.login(usernamePasswordToken);
-
-            //将登录成功的对象放入session（没必要）
-            Account account = accountService.findByMobile(accountMobile);
-            Session session = subject.getSession();
-            session.setAttribute("account", account);
-
             //登录后跳转目标的判断
             SavedRequest savedRequest = WebUtils.getSavedRequest(request);
             String url = "/user/index";
             if (savedRequest != null) {
                 url = savedRequest.getRequestUrl();
             }
-            msg.setCode("0");
+            msg.setCode(Code.sucess);
+            msg.setMsg(Code.sucessMsg);
             msg.setUrl(url);
-            return gson.toJson(msg);
+            return msg;
         } catch (UnknownAccountException | IncorrectCredentialsException ex) {
             ex.printStackTrace();
             redirectAttributes.addFlashAttribute("message", "账号或密码错误");
@@ -143,9 +151,10 @@ public class IndexUser {
             ex.printStackTrace();
             redirectAttributes.addFlashAttribute("message", "账号或密码错误");
         }
-        msg.setCode("1");
+        msg.setCode(Code.loginAgin);
+        msg.setMsg(Code.loginAginMsg);
         msg.setUrl("/");
-        return gson.toJson(msg);
+        return msg;
     }
 
 
@@ -166,13 +175,13 @@ public class IndexUser {
                     required = true, dataType = "String", paramType = "query")})
     @ResponseBody
     @PostMapping("/lan/mu/top")
-    public Msg<List<LanMuUi>>  indexLanMuTop(@RequestParam(name = "topName", defaultValue = "首页头部", required = false) String topName,
-                                             @RequestParam(name = "state",defaultValue = "false",required = false)String state) {
+    public Msg<List<LanMuUi>> indexLanMuTop(@RequestParam(name = "topName", defaultValue = "首页头部", required = false) String topName,
+                                            @RequestParam(name = "state", defaultValue = "false", required = false) String state) {
         // 创建Subject对象
         Subject subject = SecurityUtils.getSubject();
         Session session = subject.getSession();
         Account account = (Account) session.getAttribute("account");
-        List<LanMuUi> lanMuUis = superLanMuService.getLanMus(account, topName.trim(),state);
+        List<LanMuUi> lanMuUis = superLanMuService.getLanMus(account, topName.trim(), state);
         Msg msg = new Msg();
         msg.setData(lanMuUis);
         msg.setCode(Code.sucess);
@@ -198,11 +207,11 @@ public class IndexUser {
     @ResponseBody
     @PostMapping("/lan/mu/boom")
     public Msg<List<LanMuUi>> indexLanMuBottom(@RequestParam(name = "bName", defaultValue = "首页尾部", required = false) String bName,
-                                               @RequestParam(name = "state",defaultValue = "false",required = false)String state) {
+                                               @RequestParam(name = "state", defaultValue = "false", required = false) String state) {
         Subject subject = SecurityUtils.getSubject();
         Session session = subject.getSession();
         Account account = (Account) session.getAttribute("account");
-        List<LanMuUi> lanMus = superLanMuService.getLanMus(account, bName,state);
+        List<LanMuUi> lanMus = superLanMuService.getLanMus(account, bName, state);
         Msg msg = new Msg();
         msg.setData(lanMus);
         msg.setCode(Code.sucess);

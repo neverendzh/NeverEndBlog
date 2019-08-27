@@ -13,8 +13,8 @@ public class   Code {
     public static String repeatMsg = "重复";
     public static String Nonexistent = "404";
     public static String NonexistentMsg = "不存在";
-
-
+    public static String loginAgin ="302";
+    public static String loginAginMsg ="账号密码错误";
 
 
 }
