@@ -109,17 +109,7 @@ public class FabuBlog {
         return msg;
     }
     /**
-     * 发布文章页面1
-     * @return
-     */
-  /*  @GetMapping("/admin/fabu/wen")
-    public String AdminFabuWenZhang(){
-        return "admin/fabu";
-    }
-*/
-
-    /**
-     * 发布文章页面2
+     * 发布文章页面
      *
      * @return
      */

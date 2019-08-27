@@ -56,22 +56,26 @@ CKEDITOR.editorConfig = function (config) {
             {name: 'tools', items: ['Maximize']}
         ];
     var editor = CKEDITOR.instances.editor1;
-    editor.on('fileUploadResponse', function (evt) {
+    /**
+     * 上传文件之后的回调处理，暂时不需要
+     */
+   /* editor.on('fileUploadResponse', function (evt) {
         // Prevent the default response handler.
         evt.stop();
-        debugger;
+        // debugger;
         // Get XHR and response.
         var data = evt.data,
             xhr = data.fileLoader.xhr,
             response = xhr.responseText;
          var datata  =  JSON.parse(response);
-        console.log(datata.fileName);
-       /* if (response[1]) {
+         console.log(datata);
+        console.log(datata.error.message);
+       /!* if (response[1]) {
             // An error occurred during upload.
             data.message = datata.fileName;
             evt.cancel();
-        } else {*/
-            data.url = "http:"+datata.url;
+        } else {*!/
+            data.url = datata.url;
         // }
-    });
+    });*/
 };

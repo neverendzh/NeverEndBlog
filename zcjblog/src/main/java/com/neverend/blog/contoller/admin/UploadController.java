@@ -1,9 +1,14 @@
 package com.neverend.blog.contoller.admin;
 
+import com.google.gson.Gson;
+import com.neverend.blog.moudel.UploadFileMsg;
+import com.neverend.blog.service.UploadService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
 
 /**
  * @author zcj
@@ -11,18 +16,16 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @Controller
 @RequestMapping("/upload")
 public class UploadController {
+    //    https://ckeditor.com/docs/ckeditor4/latest/guide/dev_file_upload.html
+    @Autowired
+    private UploadService uploadService;
 
-   @PostMapping("/file/img")
-   @ResponseBody
-  public String uploadFileImg(){
-
-//       TODO 文件上传方法
-       String msg = "{\n" +
-               "    \"uploaded\": 1,\n" +
-               "    \"fileName\": \"foo.jpg\",\n" +
-               "    \"url\": \"/static/res/img/banner.jpg\"\n" +
-               "}";
-     return msg;
-  }
+    @PostMapping("/file/img")
+    @ResponseBody
+    public String uploadFileImg(@RequestParam("upload") MultipartFile multipartFile) throws IOException {
+        UploadFileMsg uploadimg = uploadService.uploadimg(multipartFile);
+        Gson gson = new Gson();
+        return gson.toJson(uploadimg);
+    }
 
 }
