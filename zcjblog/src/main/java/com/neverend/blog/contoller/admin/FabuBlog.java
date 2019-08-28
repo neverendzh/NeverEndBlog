@@ -11,6 +11,8 @@ import com.neverend.blog.service.SuperArticleSortService;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -66,8 +68,7 @@ public class FabuBlog {
     public Msg yulanBlog(HttpServletRequest request, ArticleWithBLOBs articleWithBLOBs,
                          @RequestParam(name = "articleSortSuperId") String articleSortId,
                          @RequestParam(name = "articlelevel", defaultValue = "0") String articlelevel) {
-        HttpSession httpSession = request.getSession();
-        Account account = (Account) httpSession.getAttribute("account");
+        Account account = (Account) SecurityUtils.getSubject().getPrincipal();
         Msg msg = articleService.saveArticle(account, articleWithBLOBs, "-1", articleSortId,articlelevel);
         return msg;
     }
@@ -103,8 +104,7 @@ public class FabuBlog {
     public Msg publishArticle(HttpServletRequest request, ArticleWithBLOBs articleWithBLOBs,
                               @RequestParam(name = "articleSortSuperId") String articleSortId,
                               @RequestParam(name = "articlelevel", defaultValue = "0") String articlelevel) {
-        HttpSession httpSession = request.getSession();
-        Account account = (Account) httpSession.getAttribute("account");
+        Account account = (Account) SecurityUtils.getSubject().getPrincipal();
         Msg msg = articleService.saveArticle(account, articleWithBLOBs, "0", articleSortId,articlelevel);
         return msg;
     }

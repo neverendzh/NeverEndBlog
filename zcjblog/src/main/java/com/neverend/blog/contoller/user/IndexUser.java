@@ -179,8 +179,7 @@ public class IndexUser {
                                             @RequestParam(name = "state", defaultValue = "false", required = false) String state) {
         // 创建Subject对象
         Subject subject = SecurityUtils.getSubject();
-        Session session = subject.getSession();
-        Account account = (Account) session.getAttribute("account");
+        Account account = (Account) subject.getPrincipal();
         List<LanMuUi> lanMuUis = superLanMuService.getLanMus(account, topName.trim(), state);
         Msg msg = new Msg();
         msg.setData(lanMuUis);

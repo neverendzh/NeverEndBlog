@@ -432,7 +432,7 @@
                         data: 'accountMobile=' + accountMobile + '&password=' + password,
                         success: function (data) {//返回json结果'
                             var Msg = data;
-                            if (Msg.code == "0") {
+                            if (Msg.code == "200") {
                                 layer.close(loginhtmlform);
                                 window.location.href = Msg.url;
                             } else {
