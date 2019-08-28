@@ -2,7 +2,6 @@ package com.neverend.blog.entity;
 
 import java.io.Serializable;
 import java.util.Date;
-import java.util.List;
 
 /**
  * @author 
@@ -34,7 +33,7 @@ public class Account implements Serializable {
     /**
      * 手机
      */
-    private Integer cellphoneNumber;
+    private String cellphoneNumber;
 
     /**
      * 文章id
@@ -55,14 +54,7 @@ public class Account implements Serializable {
      * 账号状态：正常禁用锁定
      */
     private String accountState;
-    /**
-     * 角色
-     */
-    private List<Roles> rolesList;
 
-    /**
-     * 用户身份
-     */
     private String beiYongEr;
 
     private String beiYongSan;
@@ -111,11 +103,11 @@ public class Account implements Serializable {
         this.userEmail = userEmail;
     }
 
-    public Integer getCellphoneNumber() {
+    public String getCellphoneNumber() {
         return cellphoneNumber;
     }
 
-    public void setCellphoneNumber(Integer cellphoneNumber) {
+    public void setCellphoneNumber(String cellphoneNumber) {
         this.cellphoneNumber = cellphoneNumber;
     }
 
@@ -205,36 +197,5 @@ public class Account implements Serializable {
 
     public void setBeiYongBa(String beiYongBa) {
         this.beiYongBa = beiYongBa;
-    }
-
-    public List<Roles> getRolesList() {
-        return rolesList;
-    }
-
-    public void setRolesList(List<Roles> rolesList) {
-        this.rolesList = rolesList;
-    }
-
-    @Override
-    public String toString() {
-        return "Account{" +
-                "id='" + id + '\'' +
-                ", userName='" + userName + '\'' +
-                ", userPassword='" + userPassword + '\'' +
-                ", userEmail='" + userEmail + '\'' +
-                ", cellphoneNumber=" + cellphoneNumber +
-                ", articleId='" + articleId + '\'' +
-                ", creatTime=" + creatTime +
-                ", loginEndTime=" + loginEndTime +
-                ", accountState='" + accountState + '\'' +
-                ", rolesList=" + rolesList +
-                ", beiYongEr='" + beiYongEr + '\'' +
-                ", beiYongSan='" + beiYongSan + '\'' +
-                ", beiYongSi='" + beiYongSi + '\'' +
-                ", beiYongWu='" + beiYongWu + '\'' +
-                ", beiYongLiu='" + beiYongLiu + '\'' +
-                ", beiYongQi='" + beiYongQi + '\'' +
-                ", beiYongBa='" + beiYongBa + '\'' +
-                '}';
     }
 }

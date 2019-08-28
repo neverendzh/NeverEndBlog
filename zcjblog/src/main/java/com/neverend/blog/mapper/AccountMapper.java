@@ -6,27 +6,29 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
+import org.springframework.transaction.annotation.Transactional;
+
 @Mapper
 public interface AccountMapper {
-    long countByExample(AccountExample example);
+    public long countByExample(AccountExample example);
 
-    int deleteByExample(AccountExample example);
+    public int deleteByExample(AccountExample example);
 
-    int deleteByPrimaryKey(String id);
+    public int deleteByPrimaryKey(String id);
 
-    int insert(Account record);
+    public int insert(Account record);
 
-    int insertSelective(Account record);
+    public int insertSelective(Account record);
 
-    List<Account> selectByExample(AccountExample example);
+    public List<Account> selectByExample(AccountExample example);
 
-    Account selectByPrimaryKey(String id);
+    public Account selectByPrimaryKey(String id);
 
-    int updateByExampleSelective(@Param("record") Account record, @Param("example") AccountExample example);
+    public int updateByExampleSelective(@Param("record") Account record, @Param("example") AccountExample example);
 
-    int updateByExample(@Param("record") Account record, @Param("example") AccountExample example);
+    public int updateByExample(@Param("record") Account record, @Param("example") AccountExample example);
 
-    int updateByPrimaryKeySelective(Account record);
+    public int updateByPrimaryKeySelective(Account record);
 
-    int updateByPrimaryKey(Account record);
+    public int updateByPrimaryKey(Account record);
 }

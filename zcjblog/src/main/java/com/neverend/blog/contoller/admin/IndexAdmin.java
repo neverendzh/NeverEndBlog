@@ -102,10 +102,9 @@ public class IndexAdmin {
 
 
     /**
-     * 系统登录页面
+     * 管理员系统登录页面
      * @return
      */
-
     @ApiIgnore
     @GetMapping("/login")
     public String AdminLoginGetHtml(){

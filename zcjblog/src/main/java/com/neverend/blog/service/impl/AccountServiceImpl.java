@@ -3,12 +3,21 @@ package com.neverend.blog.service.impl;
 import com.neverend.blog.entity.Account;
 import com.neverend.blog.entity.AccountExample;
 import com.neverend.blog.entity.AccountLoginLog;
+import com.neverend.blog.entity.RoleAccountKey;
 import com.neverend.blog.mapper.AccountLoginLogMapper;
 import com.neverend.blog.mapper.AccountMapper;
+import com.neverend.blog.mapper.RoleAccountKeyMapper;
+import com.neverend.blog.moudel.Code;
+import com.neverend.blog.moudel.Msg;
 import com.neverend.blog.service.AccountService;
+import com.neverend.blog.util.email.GetUUID;
+import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Date;
 import java.util.List;
 
 @SuppressWarnings("ALL")
@@ -16,12 +25,15 @@ import java.util.List;
 public class AccountServiceImpl implements AccountService {
 
     @Autowired
-    private AccountMapper accountMapper;
+    public AccountMapper accountMapper;
     @Autowired
-    private AccountLoginLogMapper accountLoginLogMapper;
+    public RoleAccountKeyMapper roleAccountKeyMapper;
+    @Autowired
+    public AccountLoginLogMapper accountLoginLogMapper;
 
     /**
      * 根据手机号查询用户
+     *
      * @param userMobile
      * @return
      */
@@ -29,38 +41,97 @@ public class AccountServiceImpl implements AccountService {
     public Account findByMobile(String userMobile) {
         AccountExample accountExample = new AccountExample();
         AccountExample.Criteria criteria = accountExample.createCriteria();
-        criteria.andCellphoneNumberEqualTo(Integer.valueOf(userMobile));
+        criteria.andCellphoneNumberEqualTo(userMobile);
         List<Account> accounts = accountMapper.selectByExample(accountExample);
-        if (accounts.size()>0){
+        if (accounts.size() > 0) {
             return accounts.get(0);
-        }else {
+        } else {
             return null;
         }
     }
 
     /**
      * 保存登录日志信息
+     *
      * @param accountLoginLog
      */
     @Override
     public void saveAccountLoginLog(AccountLoginLog accountLoginLog) {
-          accountLoginLogMapper.insert(accountLoginLog);
+        accountLoginLogMapper.insert(accountLoginLog);
+    }
+
+    /**
+     * 账号注册
+     *
+     * @param userName
+     * @param accountNumber
+     * @param password
+     * @param isEncryption
+     * @return
+     */
+    @Transactional
+    @Override
+    public Msg registeredAccount(String userName, String accountNumber,
+                                 String password, String isEncryption,
+                                 String email) {
+        boolean account1 = isAccount(accountNumber);
+        Msg msg = new Msg();
+        if (account1) {
+            msg.setMsg(Code.repeatMsg);
+            msg.setCode(Code.repeat);
+            return msg;
+        } else {
+            Account account = new Account();
+            if (isEncryption.equals("false")){
+                account.setUserPassword(DigestUtils.md5Hex(password));
+            }else if ("true".equals(isEncryption)){
+                account.setUserPassword(password);
+            }else {
+                msg.setCode(Code.Paramerror);
+                msg.setMsg(Code.ParamerrorMsg);
+                return msg;
+            }
+            String uuid = GetUUID.uuid();
+            account.setAccountState("正常");
+            account.setCellphoneNumber(accountNumber);
+            account.setBeiYongEr("user");
+            account.setUserName(userName);
+            account.setId(uuid);
+            account.setUserEmail(email);
+            account.setCreatTime(new Date());
+            int i = accountMapper.insertSelective(account);
+//            int a = 10/0;
+            RoleAccountKey roleAccountKey = new RoleAccountKey();
+            roleAccountKey.setAccountId(uuid);
+            roleAccountKey.setRoleId("2");
+            roleAccountKey.setId(GetUUID.uuid());
+            int aroleKey = roleAccountKeyMapper.insertSelective(roleAccountKey);
+            if (i>0 && aroleKey>0){
+//              TODO 发送邮件激活
+                msg.setCode(Code.sucess);
+                msg.setMsg(Code.sucessMsg);
+            }
+            return msg;
+        }
+
+
     }
 
     /**
      * 根据id查询用户
+     *
      * @param account
      * @return
      */
     @Override
     public Account selectAccount(Account account) {
-        if (account != null && !"".equals(account.getId())){
+        if (account != null && !"".equals(account.getId())) {
             AccountExample accountExample = new AccountExample();
             AccountExample.Criteria criteria = accountExample.createCriteria();
             criteria.andIdEqualTo(account.getId());
             List<Account> accounts = accountMapper.selectByExample(accountExample);
-            if (accounts.size()>0){
-              return  accounts.get(0);
+            if (accounts.size() > 0) {
+                return accounts.get(0);
             }
         }
         return null;
@@ -68,20 +139,38 @@ public class AccountServiceImpl implements AccountService {
 
     /**
      * 根据id查询用户
+     *
      * @param account
      * @return
      */
     @Override
     public Account selectAccount(String accountId) {
-        if (accountId != null || !"".equals(accountId)){
+        if (accountId != null || !"".equals(accountId)) {
             AccountExample accountExample = new AccountExample();
             AccountExample.Criteria criteria = accountExample.createCriteria();
             criteria.andIdEqualTo(accountId);
             List<Account> accounts = accountMapper.selectByExample(accountExample);
-            if (accounts.size()>0){
-                return  accounts.get(0);
+            if (accounts.size() > 0) {
+                return accounts.get(0);
             }
         }
         return null;
+    }
+
+    /**
+     * 是否存在当前账号
+     *
+     * @return
+     */
+    public boolean isAccount(String accountNumber) {
+        AccountExample accountExample = new AccountExample();
+        AccountExample.Criteria criteria = accountExample.createCriteria();
+        criteria.andCellphoneNumberEqualTo(accountNumber);
+        List<Account> accounts = accountMapper.selectByExample(accountExample);
+        if (accounts.size() > 0) {
+            return true;
+        } else {
+            return false;
+        }
     }
 }

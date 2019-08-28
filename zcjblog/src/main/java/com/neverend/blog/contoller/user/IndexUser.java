@@ -152,7 +152,9 @@ public class IndexUser {
             redirectAttributes.addFlashAttribute("message", "账号或密码错误");
         }
         msg.setCode(Code.loginAgin);
-        msg.setMsg(Code.loginAginMsg);
+        Map<String, ?> flashAttributes = redirectAttributes.getFlashAttributes();
+
+        msg.setMsg((String) flashAttributes.get("message"));
         msg.setUrl("/");
         return msg;
     }

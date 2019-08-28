@@ -19,8 +19,7 @@ import java.io.UnsupportedEncodingException;
  */
 @Service
 public class MailServiceImpl implements MailService {
-    private final Logger logger = (Logger)
-            LoggerFactory.getLogger(this.getClass());
+    private final Logger logger = (Logger) LoggerFactory.getLogger(this.getClass());
 
     @Override
     public void sendSimpleMail() {
