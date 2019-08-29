@@ -71,6 +71,9 @@ public class ArticleServiceImpl implements ArticleService {
         if (articleWithBLOBsList.size() > 0) {
             articleWithBLOBs = articleWithBLOBsList.get(0);
         }
+        int BeiYongWu = Integer.valueOf(articleWithBLOBs.getBeiYongWu())+1;
+//        跟新浏览次数
+        int i = articleIdDao.updateBeiWu(BeiYongWu,articleWithBLOBs.getArticleId());
         return articleWithBLOBs;
     }
 
@@ -121,6 +124,7 @@ public class ArticleServiceImpl implements ArticleService {
                     articleWithBLOBs.setArticleSortId(uuid);
                     articleWithBLOBs.setState(state);
                     articleWithBLOBs.setBeiYongEr(articlelevel);
+                    articleWithBLOBs.setBeiYongWu("0");
                     int saveNum = articleDao.saveArticleDao(articleWithBLOBs);
 //                    获取隶属文章的id集合
                     List<String> acidss = getArticeleSuperid(acid);

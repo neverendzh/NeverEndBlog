@@ -25,5 +25,6 @@ public interface AccountService {
      * @param isEncryption
      * @return
      */
+    @Transactional
     public Msg registeredAccount(String userName, String accountNumber, String password, String isEncryption,String email);
 }

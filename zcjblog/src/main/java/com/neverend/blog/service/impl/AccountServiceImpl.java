@@ -69,8 +69,8 @@ public class AccountServiceImpl implements AccountService {
      * @param isEncryption
      * @return
      */
-    @Transactional
     @Override
+    @Transactional(rollbackFor = {Exception.class,RuntimeException.class,Throwable.class},propagation = Propagation.NOT_SUPPORTED)
     public Msg registeredAccount(String userName, String accountNumber,
                                  String password, String isEncryption,
                                  String email) {
@@ -100,7 +100,6 @@ public class AccountServiceImpl implements AccountService {
             account.setUserEmail(email);
             account.setCreatTime(new Date());
             int i = accountMapper.insertSelective(account);
-//            int a = 10/0;
             RoleAccountKey roleAccountKey = new RoleAccountKey();
             roleAccountKey.setAccountId(uuid);
             roleAccountKey.setRoleId("2");

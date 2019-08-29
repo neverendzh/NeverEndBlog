@@ -25,4 +25,11 @@ public interface ArticleSuperArticleIdDao {
      * @return
      */
     int delid(String articleId);
+
+    /**
+     * 跟新浏览次数
+     * @param beiYongWu
+     * @return
+     */
+    int updateBeiWu(int beiYongWu,String id);
 }
