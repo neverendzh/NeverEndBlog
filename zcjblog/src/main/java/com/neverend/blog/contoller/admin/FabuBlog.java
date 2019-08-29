@@ -155,8 +155,9 @@ public class FabuBlog {
             @ApiImplicitParam(name = "articleId", value = "文章唯一id",
                     required = true, dataType = "String", paramType = "query")})
     @GetMapping("/admin/fabu/yulan/json")
-    public Msg<ArticleWithBLOBs> YulanApi(@RequestParam(name = "articleId", required = false)
-                                                  String articleId, HttpServletRequest request) {
+    @ResponseBody
+    public Msg<ArticleWithBLOBs> YulanApi(@RequestParam(name = "articleId", required = true)
+                                                  String articleId) {
         ArticleWithBLOBs articleWithBLOBs = articleService.getArticle(articleId);
         Msg msg = new Msg();
         msg.setData(articleWithBLOBs);
