@@ -2,11 +2,15 @@
     <div class="layui-layout layui-layout-admin">
         <div class="layui-header" id="topCaiDan">
             <div class="layui-logo">NeverEnd_Blog</div>
+            <ul>
+                <div shiro:hasAnyRoles="2,3,4"><img style="width: 30px;height: 30px;float: right;margin-right: 131px;margin-top: 14px;" src="http://pwsp9j66o.bkt.clouddn.com/acountmsg.jpg"></div>
+            </ul>
             <ul class="layui-nav layui-layout-right" style="margin-top: 16px;">
                 <button onclick="loginUserAccount()" type="button" id="longinId"
                         class="layui-btn layui-btn-sm"
                         shiro:hasRole="1">登录
                 </button>
+
                 <a href="/registered/account" class="layui-btn layui-btn-sm"
                    shiro:hasRole="1">注册</a>
                 <a href="/system/logout" class="layui-btn layui-btn-sm"

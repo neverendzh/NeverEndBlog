@@ -99,6 +99,7 @@ public class AccountServiceImpl implements AccountService {
             account.setId(uuid);
             account.setUserEmail(email);
             account.setCreatTime(new Date());
+            account.setBeiYongSan("http://pwsp9j66o.bkt.clouddn.com/acountmsg.jpg");
             int i = accountMapper.insertSelective(account);
             RoleAccountKey roleAccountKey = new RoleAccountKey();
             roleAccountKey.setAccountId(uuid);

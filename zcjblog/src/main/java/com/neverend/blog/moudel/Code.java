@@ -17,6 +17,8 @@ public class   Code {
     public static String loginAginMsg ="账号密码错误";
     public static String Paramerror = "303";
     public static String ParamerrorMsg = "传递参数错误，请查看API文档参数说明";
+    public static  String Prohibit = "304";
+    public static  String ProhibitMsg = "账号禁用";
 
 
 }
