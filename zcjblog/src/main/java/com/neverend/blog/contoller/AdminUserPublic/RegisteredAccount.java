@@ -6,6 +6,7 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mobile.device.Device;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -52,11 +53,11 @@ public class RegisteredAccount {
             @ApiImplicitParam(name = "email", value = "邮箱",
                     required = true, dataType = "String", paramType = "query")})
     @PostMapping("/registered/account")
-    public Msg RegisteredAccount(@RequestParam(name = "userName") String userName,
+    public Msg RegisteredAccountjson(@RequestParam(name = "userName") String userName,
                                  @RequestParam(name = "accountNumber") String accountNumber,
                                  @RequestParam(name = "password") String password,
                                  @RequestParam(name = "isEncryption") String isEncryption,
-                                 @RequestParam(name = "email") String email) {
+                                 @RequestParam(name = "email") String email, Device device) {
         Msg msg = accountService.registeredAccount(userName, accountNumber, password, isEncryption, email);
 
         return msg;

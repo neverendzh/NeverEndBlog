@@ -14,6 +14,7 @@ import io.swagger.annotations.ApiOperation;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mobile.device.Device;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import springfox.documentation.annotations.ApiIgnore;
@@ -65,9 +66,10 @@ public class FabuBlog {
                     required = true, dataType = "String", paramType = "query", defaultValue = "0")})
     @PostMapping("/yulan")
     @ResponseBody
-    public Msg yulanBlog(HttpServletRequest request, ArticleWithBLOBs articleWithBLOBs,
+    public Msg yulanBlogjson(HttpServletRequest request, ArticleWithBLOBs articleWithBLOBs,
                          @RequestParam(name = "articleSortSuperId") String articleSortId,
-                         @RequestParam(name = "articlelevel", defaultValue = "0") String articlelevel) {
+                         @RequestParam(name = "articlelevel", defaultValue = "0")
+                                         String articlelevel, Device device) {
         Account account = (Account) SecurityUtils.getSubject().getPrincipal();
         Msg msg = articleService.saveArticle(account, articleWithBLOBs, "-1", articleSortId,articlelevel);
         return msg;
@@ -101,9 +103,10 @@ public class FabuBlog {
 
     @PostMapping("/publish/articles")
     @ResponseBody
-    public Msg publishArticle(HttpServletRequest request, ArticleWithBLOBs articleWithBLOBs,
+    public Msg publishArticlejson(HttpServletRequest request, ArticleWithBLOBs articleWithBLOBs,
                               @RequestParam(name = "articleSortSuperId") String articleSortId,
-                              @RequestParam(name = "articlelevel", defaultValue = "0") String articlelevel) {
+                              @RequestParam(name = "articlelevel", defaultValue = "0") String articlelevel
+            , Device device) {
         Account account = (Account) SecurityUtils.getSubject().getPrincipal();
         Msg msg = articleService.saveArticle(account, articleWithBLOBs, "0", articleSortId,articlelevel);
         return msg;
@@ -129,7 +132,7 @@ public class FabuBlog {
             notes = "返回树形分类菜单数据", protocols = "http")
     @GetMapping("/admin/acticle/tree")
     @ResponseBody
-    public Msg<List<ActicleTree>> treeActicles(HttpServletRequest request) {
+    public Msg<List<ActicleTree>> treeActiclesjson(HttpServletRequest request, Device device) {
         Msg msg = superArticleSortService.getClassTypeNameS(true);
         return msg;
     }
@@ -156,8 +159,8 @@ public class FabuBlog {
                     required = true, dataType = "String", paramType = "query")})
     @GetMapping("/admin/fabu/yulan/json")
     @ResponseBody
-    public Msg<ArticleWithBLOBs> YulanApi(@RequestParam(name = "articleId", required = true)
-                                                  String articleId) {
+    public Msg<ArticleWithBLOBs> YulanApijson(@RequestParam(name = "articleId", required = true)
+                                                  String articleId, Device device) {
         ArticleWithBLOBs articleWithBLOBs = articleService.getArticle(articleId);
         Msg msg = new Msg();
         msg.setData(articleWithBLOBs);

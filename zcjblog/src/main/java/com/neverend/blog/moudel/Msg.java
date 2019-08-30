@@ -38,6 +38,16 @@ public class Msg<T>{
      */
     @ApiModelProperty(value="通用数据信息")
     private T data;
+    @ApiModelProperty(value="客户端类型")
+    private String mobile;
+
+    public String getMobile() {
+        return mobile;
+    }
+
+    public void setMobile(String mobile) {
+        this.mobile = mobile;
+    }
 
     public String getCode() {
         return code;

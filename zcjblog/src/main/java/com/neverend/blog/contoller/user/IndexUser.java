@@ -18,6 +18,7 @@ import org.apache.shiro.subject.Subject;
 import org.apache.shiro.web.util.SavedRequest;
 import org.apache.shiro.web.util.WebUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mobile.device.Device;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -117,11 +118,12 @@ public class IndexUser {
                     required = true, dataType = "String", paramType = "query")})
     @PostMapping("/")
     @ResponseBody
-    public Msg indexPost(@RequestParam(name = "accountMobile", required = true) String accountMobile,
+    public Msg indexPostjson(@RequestParam(name = "accountMobile", required = true) String accountMobile,
                             @RequestParam(name = "password", required = true) String password,
                             String rememberMe,
                             HttpServletRequest request,
-                            RedirectAttributes redirectAttributes) {
+                            RedirectAttributes redirectAttributes,
+                             Device device) {
         // 创建Subject对象
         Subject subject = SecurityUtils.getSubject();
         // 根据账号和密码进行登录
@@ -177,8 +179,9 @@ public class IndexUser {
                     required = true, dataType = "String", paramType = "query")})
     @ResponseBody
     @PostMapping("/lan/mu/top")
-    public Msg<List<LanMuUi>> indexLanMuTop(@RequestParam(name = "topName", defaultValue = "首页头部", required = false) String topName,
-                                            @RequestParam(name = "state", defaultValue = "false", required = false) String state) {
+    public Msg<List<LanMuUi>> indexLanMuTopjson(@RequestParam(name = "topName", defaultValue = "首页头部", required = false) String topName,
+                                            @RequestParam(name = "state", defaultValue = "false", required = false) String state,
+                                                Device device) {
         // 创建Subject对象
         Subject subject = SecurityUtils.getSubject();
         Account account = (Account) subject.getPrincipal();
@@ -207,8 +210,9 @@ public class IndexUser {
                     required = true, dataType = "String", paramType = "query")})
     @ResponseBody
     @PostMapping("/lan/mu/boom")
-    public Msg<List<LanMuUi>> indexLanMuBottom(@RequestParam(name = "bName", defaultValue = "首页尾部", required = false) String bName,
-                                               @RequestParam(name = "state", defaultValue = "false", required = false) String state) {
+    public Msg<List<LanMuUi>> indexLanMuBottomjson(@RequestParam(name = "bName", defaultValue = "首页尾部", required = false) String bName,
+                                               @RequestParam(name = "state", defaultValue = "false", required = false) String state,
+                                                   Device device) {
         Subject subject = SecurityUtils.getSubject();
         Session session = subject.getSession();
         Account account = (Account) session.getAttribute("account");

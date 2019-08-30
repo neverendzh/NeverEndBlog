@@ -7,6 +7,8 @@ import com.neverend.blog.service.ArticleService;
 import io.swagger.annotations.*;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mobile.device.Device;
+import org.springframework.mobile.device.DevicePlatform;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,7 +25,7 @@ import java.util.List;
 @Api(value = "博客首页加载内容的请求地址都位于user请求路径下")
 @Controller
 @RequestMapping("/user")
-public class User {
+public class UserController {
     @Autowired
     private ArticleService articleService;
 
@@ -39,10 +41,10 @@ public class User {
                     required = false, dataType = "String", paramType = "query")})
     @GetMapping("/index/articlelevel")
     @ResponseBody
-    public Msg<List<Article>> getarticlelevel
+    public Msg<List<Article>> getarticleleveljson
             (@RequestParam(name = "levelNum", defaultValue = "4", required = false) String levelNum,
              @RequestParam(name = "pageStart", defaultValue = "1") Integer pageStart,
-             @RequestParam(name = "pageNum", defaultValue = "5") Integer pageNum) {
+             @RequestParam(name = "pageNum", defaultValue = "5") Integer pageNum,Device device) {
         return articleService.getarticlelevel(levelNum,pageStart,pageNum);
     }
 
@@ -74,8 +76,9 @@ public class User {
                     required = true, dataType = "Integer", paramType = "query")})
     @GetMapping("/index/articlesHort")
     @ResponseBody
-    public Msg<List<Article>> indexArticle(@RequestParam(name = "pageStart", defaultValue = "1") Integer pageStart,
-                                           @RequestParam(name = "pageNum", defaultValue = "5") Integer pageNum) {
+    public Msg<List<Article>> indexArticlejson(@RequestParam(name = "pageStart", defaultValue = "1") Integer pageStart,
+                                           @RequestParam(name = "pageNum", defaultValue = "5") Integer pageNum,
+                                               Device device) {
         PageInfo<Article> articleList = articleService.getArticleHortAsc(pageStart, pageNum);
         Msg msg = articleService.getArticleMsg(articleList);
         return msg;
@@ -104,10 +107,11 @@ public class User {
                     required = true, dataType = "String", paramType = "query")})
     @GetMapping("/index/articlesHort/fenlei")
     @ResponseBody
-    public Msg<List<Article>> getArtilceFeiL(@RequestParam(name = "artilceid") String artilceid,
+    public Msg<List<Article>> getArtilceFeiLjson(@RequestParam(name = "artilceid") String artilceid,
                                              @RequestParam(name = "pageStart", defaultValue = "1") Integer pageStart,
                                              @RequestParam(name = "pageNum", defaultValue = "5") Integer pageNum,
-                                             @RequestParam(name = "state", defaultValue = "0") String state) {
+                                             @RequestParam(name = "state", defaultValue = "0") String state,
+            Device device) {
         Msg<List<Article>> msg = articleService.getArtilceFeiL(artilceid, pageStart, pageNum, state);
         return msg;
     }
@@ -137,10 +141,10 @@ public class User {
                     required = true, dataType = "String", paramType = "query")})
     @GetMapping("/index/search")
     @ResponseBody
-    public Msg<List<Article>> search(@RequestParam(name = "searchname") String searchname,
+    public Msg<List<Article>> searchjson(@RequestParam(name = "searchname") String searchname,
                                      @RequestParam(name = "pageStart", defaultValue = "1") Integer pageStart,
                                      @RequestParam(name = "pageNum", defaultValue = "5") Integer pageNum,
-                                     @RequestParam(name = "state", defaultValue = "0") String state) {
+                                     @RequestParam(name = "state", defaultValue = "0") String state, Device device) {
         Msg msg = articleService.getArtilcesearch(searchname, pageStart, pageNum, state);
         return msg;
     }

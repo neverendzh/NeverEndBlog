@@ -8,6 +8,7 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mobile.device.Device;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import springfox.documentation.annotations.ApiIgnore;
@@ -43,7 +44,8 @@ public class Albums {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "leavingMsg", value = "留言信息",
                     required = true, dataType = "String", paramType = "query")})
-    public  Msg leavingMessage(@RequestParam(name = "leavingMsg")String leavingMsg){
+    public  Msg leavingMessagejson(@RequestParam(name = "leavingMsg")String leavingMsg,
+                                   Device device){
         Msg insertmsg = replyleavingService.insertmsg(leavingMsg);
         return insertmsg;
     }
@@ -61,8 +63,9 @@ public class Albums {
                     required = true, dataType = "String", paramType = "query"),
             @ApiImplicitParam(name = "replymsgid", value = "回复留言的id",
                     required = true, dataType = "String", paramType = "query")})
-    public  Msg ReplyleavingMessage(@RequestParam(name = "leavingMsg")String leavingMsg,
-                                       @RequestParam(name = "replymsgid")String replymsgid){
+    public  Msg ReplyleavingMessagejson(@RequestParam(name = "leavingMsg")String leavingMsg,
+                                       @RequestParam(name = "replymsgid")String replymsgid,
+                                        Device device){
 
         Msg insertmsg = replyleavingService.insertmsg(leavingMsg,replymsgid);
         return insertmsg;
@@ -82,8 +85,9 @@ public class Albums {
                     required = false, dataType = "Integer", paramType = "query"),
             @ApiImplicitParam(name = "pageSize", value = "每页数量", defaultValue = "10",
                     required = false, dataType = "Integer", paramType = "query")})
-    public  Msg<PageMsg> seeleavingMessage(@RequestParam(name = "pageStart",defaultValue = "1",required = false)Integer pageStart,
-                                           @RequestParam(name = "pageSize",defaultValue = "10",required = false) Integer pageSize){
+    public  Msg<PageMsg> seeleavingMessagejson(@RequestParam(name = "pageStart",defaultValue = "1",required = false)Integer pageStart,
+                                           @RequestParam(name = "pageSize",defaultValue = "10",required = false) Integer pageSize,
+                                               Device device){
         Msg msg = replyleavingService.geseeleavingMessage(pageStart,pageSize);
         return msg;
     }
@@ -103,9 +107,10 @@ public class Albums {
                     required = false, dataType = "Integer", paramType = "query"),
             @ApiImplicitParam(name = "replymsgid", value = "当前留言id",
                     required = true, dataType = "String", paramType = "query")})
-    public  Msg<RepMessage> seeRepleavingMessage(@RequestParam(name = "pageStart",defaultValue = "1",required = false)Integer pageStart,
+    public  Msg<RepMessage> seeRepleavingMessagejson(@RequestParam(name = "pageStart",defaultValue = "1",required = false)Integer pageStart,
                                                  @RequestParam(name = "pageSize",defaultValue = "10",required = false) Integer pageSize,
-                                                 @RequestParam(name = "replymsgid")String replymsgid){
+                                                 @RequestParam(name = "replymsgid")String replymsgid,
+                                                     Device device){
 
         Msg msg = replyleavingService.getRepLeavingMsg(pageStart,pageSize,replymsgid);
         return msg;

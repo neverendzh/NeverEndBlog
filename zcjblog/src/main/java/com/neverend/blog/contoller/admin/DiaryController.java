@@ -1,6 +1,5 @@
 package com.neverend.blog.contoller.admin;
 
-import com.neverend.blog.entity.Diary;
 import com.neverend.blog.moudel.Msg;
 import com.neverend.blog.moudel.PageMsg;
 import com.neverend.blog.service.DiaryService;
@@ -8,6 +7,7 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mobile.device.Device;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -23,7 +23,7 @@ public class DiaryController {
             @ApiImplicitParam(name = "textContext", value = "日记内容",
                     required = true, dataType = "String", paramType = "query")})
     @PostMapping("/admin/save/diary")
-    public Msg setDiary(@RequestParam(name = "textContext") String textContext){
+    public Msg setDiaryjson(@RequestParam(name = "textContext") String textContext, Device device){
         Msg msg = diaryService.insertDiary(textContext);
         return msg;
     }
@@ -39,9 +39,10 @@ public class DiaryController {
             @ApiImplicitParam(name = "pageSize", value = "每页数量",
                     required = true, dataType = "Integer", paramType = "query", defaultValue = "10")})
     @PostMapping("/admin/sel/diary")
-    public Msg<PageMsg> getDiarys(@RequestParam(name = "sortName",defaultValue = "creat_Time",required = false) String sortName,
+    public Msg<PageMsg> getDiarysjson(@RequestParam(name = "sortName",defaultValue = "creat_Time",required = false) String sortName,
                                   @RequestParam(name = "pageStart",defaultValue = "1",required = false)  Integer pageStart,
-                                  @RequestParam(name = "pageSize",defaultValue = "10",required = false) Integer pageSize){
+                                  @RequestParam(name = "pageSize",defaultValue = "10",required = false) Integer pageSize
+                                  , Device device){
         Msg msg = diaryService.getDiary(sortName,pageStart,pageSize);
         return msg;
     }

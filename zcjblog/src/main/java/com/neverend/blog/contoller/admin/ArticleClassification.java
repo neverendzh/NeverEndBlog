@@ -11,6 +11,7 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mobile.device.Device;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import springfox.documentation.annotations.ApiIgnore;
@@ -47,7 +48,9 @@ public class ArticleClassification {
                     required = true, defaultValue = "0", dataType = "String", paramType = "query")})
     @GetMapping("/calss/ifcation/type")
     @ResponseBody
-    public Msg<List<SuperArticleSort>> AddArticleType(HttpServletRequest request, @RequestParam(name = "type", defaultValue = "0") String type) {
+    public Msg<List<SuperArticleSort>> AddArticleTypejson(HttpServletRequest request,
+                                                          @RequestParam(name = "type", defaultValue = "0") String type,
+                                                          Device device) {
         Msg msg = superArticleSortService.getType(type);
         return msg;
     }
@@ -79,11 +82,11 @@ public class ArticleClassification {
                     required = true, dataType = "String", paramType = "query")})
     @GetMapping("/articles/classification/all/Articles")
     @ResponseBody
-    public Msg<List<SuperArticleSort>> AddArticleClassificationJson(
+    public Msg<List<SuperArticleSort>> AddArticleClassificationjson(
             @RequestParam(name = "type", defaultValue = "0") String type,
             @RequestParam(name = "pageStart", defaultValue = "1") String pageStart,
             @RequestParam(value = "pageNum", defaultValue = "10") String pageNum,
-            HttpServletRequest request) {
+            HttpServletRequest request, Device device) {
         PageInfo<SuperArticleSort> superArticleSortList = superArticleSortService.getSuperArticleSorts(pageStart, pageNum, type);
         Msg msg = new Msg();
         msg.setCode("0");
@@ -102,7 +105,7 @@ public class ArticleClassification {
             notes = "查询在树节点中共有几个层级的分类", protocols = "http")
     @PostMapping("/articles/classification/types/num")
     @ResponseBody
-    public Msg<NumSize> getClsssType() {
+    public Msg<NumSize> getClsssTypejson(Device device) {
         Msg msg = superArticleSortService.getClassType();
         return msg;
     }
@@ -125,9 +128,9 @@ public class ArticleClassification {
                     required = true, dataType = "String", paramType = "query")})
     @PostMapping("/calss/ifcation/add")
     @ResponseBody
-    public Msg andArticleClass(@RequestParam(name = "name") String name,
+    public Msg andArticleClassjson(@RequestParam(name = "name") String name,
                                @RequestParam(name = "type") String type,
-                               HttpServletRequest request) {
+                               HttpServletRequest request, Device device) {
         HttpSession session = request.getSession();
         Account account = (Account) session.getAttribute("account");
         Msg msg = superArticleSortService.addAtricle(name, type, account);
@@ -152,9 +155,9 @@ public class ArticleClassification {
 
     @PostMapping("/calss/ifcation/edit")
     @ResponseBody
-    public Msg editArticleClass(@RequestParam(name = "name") String name,
+    public Msg editArticleClassjson(@RequestParam(name = "name") String name,
                                 @RequestParam(name = "articleId") String articleId,
-                                HttpServletRequest request) {
+                                HttpServletRequest request, Device device) {
         HttpSession session = request.getSession();
         Account account = (Account) session.getAttribute("account");
         Msg msg = superArticleSortService.editAtricle(name, account, articleId);
@@ -175,8 +178,8 @@ public class ArticleClassification {
                     required = true, dataType = "String", paramType = "query")})
     @PostMapping("/calss/ifcation/remove")
     @ResponseBody
-    public Msg romoveArticleClass(@RequestParam(name = "articleId") String articleId,
-                                  HttpServletRequest request) {
+    public Msg romoveArticleClassjson(@RequestParam(name = "articleId") String articleId,
+                                  HttpServletRequest request, Device device) {
         HttpSession session = request.getSession();
         Account account = (Account) session.getAttribute("account");
         Msg msg = superArticleSortService.removeAtricle(account, articleId);
@@ -202,10 +205,10 @@ public class ArticleClassification {
             required = true, dataType = "String", paramType = "query")})
     @PostMapping("/calss/ifcation/lock")
     @ResponseBody
-    public Msg romoveArticleLock(@RequestParam(name = "type") String type,
-                                 @RequestParam(name = "articleId") String articleId,
-                                 @RequestParam(name = "isLock") String isLock,
-                                 HttpServletRequest request) {
+    public Msg romoveArticleLockjson(@RequestParam(name = "type") String type,
+                                     @RequestParam(name = "articleId") String articleId,
+                                     @RequestParam(name = "isLock") String isLock,
+                                     HttpServletRequest request, Device device) {
         HttpSession session = request.getSession();
         Account account = (Account) session.getAttribute("account");
         Msg msg = superArticleSortService.removeAtricleLock(type, account, articleId, isLock);
