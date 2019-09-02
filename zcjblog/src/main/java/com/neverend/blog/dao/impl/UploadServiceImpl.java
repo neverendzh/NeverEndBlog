@@ -4,8 +4,8 @@ import com.google.gson.Gson;
 import com.neverend.blog.dao.QiNiuKeyDao;
 import com.neverend.blog.entity.Account;
 import com.neverend.blog.entity.QiNiuKey;
+import com.neverend.blog.exception.ServiceException;
 import com.neverend.blog.moudel.ErrorMsg;
-import com.neverend.blog.moudel.MyServiceException;
 import com.neverend.blog.moudel.UploadFileMsg;
 import com.neverend.blog.security.CustomerFilterChainDefinition;
 import com.neverend.blog.service.UploadService;
@@ -18,7 +18,6 @@ import com.qiniu.storage.model.DefaultPutRet;
 import com.qiniu.storage.persistent.FileRecorder;
 import com.qiniu.util.Auth;
 import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.session.Session;
 import org.apache.shiro.subject.Subject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -89,12 +88,12 @@ public class UploadServiceImpl implements UploadService {
                     return seErroMsg(uploadFileMsg, ex);
                 }
             }else {
-                return seErroMsg(uploadFileMsg,new MyServiceException("您没有无权限"));
+                return seErroMsg(uploadFileMsg,new ServiceException("您没有无权限"));
             }
 
         } else {
             logger.error("获取七牛 ak sk 失败");
-            return seErroMsg(uploadFileMsg, new MyServiceException("获取七牛 ak sk 失败"));
+            return seErroMsg(uploadFileMsg, new ServiceException("获取七牛 ak sk 失败"));
         }
     }
 

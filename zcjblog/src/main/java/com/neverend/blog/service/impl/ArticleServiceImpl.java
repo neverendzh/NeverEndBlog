@@ -3,32 +3,26 @@ package com.neverend.blog.service.impl;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.github.pagehelper.PageInfo;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
 import com.neverend.blog.dao.ArticleDao;
 import com.neverend.blog.dao.ArticleSuperArticleIdDao;
 import com.neverend.blog.entity.Account;
 import com.neverend.blog.entity.Article;
 import com.neverend.blog.entity.ArticleSuperArticleId;
 import com.neverend.blog.entity.ArticleWithBLOBs;
-import com.neverend.blog.mapper.AccountMapper;
 import com.neverend.blog.moudel.ActicleTree;
 import com.neverend.blog.moudel.Code;
 import com.neverend.blog.moudel.Msg;
 import com.neverend.blog.service.AccountService;
 import com.neverend.blog.service.ArticleService;
+import com.neverend.blog.service.mq.MsgSend;
 import com.neverend.blog.util.email.FenCIUtil;
 import com.neverend.blog.util.email.GetUUID;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.TransactionDefinition;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.RequestParam;
 
-import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -48,6 +42,8 @@ public class ArticleServiceImpl implements ArticleService {
     private AccountService accountService;
     @Autowired
     private ArticleSuperArticleIdDao articleIdDao;
+    @Autowired
+    private MsgSend msgSend;
 
     public boolean getArticleName(ArticleWithBLOBs articleWithBLOBs) {
         if (articleWithBLOBs != null || !"".equals(articleWithBLOBs.getContext().trim()) || !"".equals(articleWithBLOBs.getArticleSortId().trim())) {
@@ -114,6 +110,8 @@ public class ArticleServiceImpl implements ArticleService {
                     msg.setUrl("/system/admin/fabu/yulan?articleId=" + article.getArticleId());
                     msg.setCode(Code.sucess);
                     msg.setMsg(Code.sucessMsg);
+                    msgSend.send(articleWithBLOBs.getArticleName());
+
                 } else {
 //                插入
                     articleWithBLOBs.setArticleId(uuid);
@@ -136,6 +134,7 @@ public class ArticleServiceImpl implements ArticleService {
                         msg.setUrl("/system/admin/fabu/yulan?articleId=" + articleWithBLOBs.getArticleId());
                         msg.setCode(Code.sucess);
                         msg.setMsg(Code.sucessMsg);
+                        msgSend.send(articleWithBLOBs.getArticleName());
                     } else {
 //                    插入失败
                         msg.setCode(Code.error);

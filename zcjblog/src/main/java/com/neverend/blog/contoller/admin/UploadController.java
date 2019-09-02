@@ -23,7 +23,7 @@ public class UploadController {
     @Autowired
     private UploadService uploadService;
 
-    @ApiOperation(value = "上传图片", httpMethod = " POST",
+    @ApiOperation(value = "上传图片", httpMethod = "POST",
             notes = "富文本编辑器中上传图片接口，需要管理员权限，或超级管理员", protocols = "http")
     @PostMapping("/file/img")
     @ResponseBody

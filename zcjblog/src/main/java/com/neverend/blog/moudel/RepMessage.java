@@ -17,10 +17,20 @@ public class RepMessage {
     private String messagePid;
     @ApiModelProperty(value = "信息详情")
     private String message;
-    @ApiModelProperty(value = "时间")
+    @ApiModelProperty(value = "留言或回复时间")
     private Date time;
     @ApiModelProperty(value = "该信息的用户名称")
     private String hfname;
+    @ApiModelProperty(value = "当前回复或发布留言用户头像地址网络地址")
+    private String accountImg;
+
+    public String getAccountImg() {
+        return accountImg;
+    }
+
+    public void setAccountImg(String accountImg) {
+        this.accountImg = accountImg;
+    }
 
     @Override
     public String toString() {

@@ -266,7 +266,8 @@
           msg.respond_to_messages_id_id AS messagePid,
           msg.message,
           msg.time,
-          ac.user_name AS hfname
+          ac.user_name AS hfname,
+          ac.bei_yong_san AS accountImg
       FROM
           tb_artilce_respond_to_messages AS msg,
           tb_account AS ac
@@ -285,7 +286,8 @@
         msg.respond_to_messages_id_id AS messagePid,
         msg.message,
         msg.time,
-        ac.user_name AS hfname
+        ac.user_name AS hfname,
+        ac.bei_yong_san AS accountImg
     FROM
         tb_artilce_respond_to_messages AS msg,
         tb_account AS ac

@@ -25,6 +25,13 @@
     </properties>
 
     <dependencies>
+        <!--OKHttp-->
+        <dependency>
+            <groupId>com.squareup.okhttp3</groupId>
+            <artifactId>okhttp</artifactId>
+            <version>3.9.1</version>
+        </dependency>
+
         <!--手机端 电脑端检测jar-->
         <dependency>
             <groupId>org.springframework.mobile</groupId>
@@ -149,15 +156,22 @@
             <version>2.0.0</version>
         </dependency>
 
+        <!--邮件-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-mail</artifactId>
         </dependency>
-
+        <!--热部署-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-devtools</artifactId>
             <optional>true</optional>
+        </dependency>
+
+        <!--消息队列 amqp-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-amqp</artifactId>
         </dependency>
 
     </dependencies>

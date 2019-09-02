@@ -38,7 +38,7 @@ public class Msg<T>{
      */
     @ApiModelProperty(value="通用数据信息")
     private T data;
-    @ApiModelProperty(value="客户端类型")
+    @ApiModelProperty(value="客户端类型 mobile=手机，tablet=平板，desktop=桌面")
     private String mobile;
 
     public String getMobile() {
@@ -89,5 +89,15 @@ public class Msg<T>{
         this.data = data;
     }
 
-
+    @Override
+    public String toString() {
+        return "Msg{" +
+                "code='" + code + '\'' +
+                ", msg='" + msg + '\'' +
+                ", count='" + count + '\'' +
+                ", url='" + url + '\'' +
+                ", data=" + data +
+                ", mobile='" + mobile + '\'' +
+                '}';
+    }
 }

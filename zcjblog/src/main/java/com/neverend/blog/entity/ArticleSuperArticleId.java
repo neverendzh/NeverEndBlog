@@ -103,4 +103,21 @@ public class ArticleSuperArticleId implements Serializable {
     public void setBeiYongLiu(String beiYongLiu) {
         this.beiYongLiu = beiYongLiu;
     }
+
+    @Override
+    public String toString() {
+        return "ArticleSuperArticleId{" +
+                "id='" + id + '\'' +
+                ", articleId='" + articleId + '\'' +
+                ", superArticleId='" + superArticleId + '\'' +
+                ", beiYongYi='" + beiYongYi + '\'' +
+                ", beiYongEr='" + beiYongEr + '\'' +
+                ", beiYongSan='" + beiYongSan + '\'' +
+                ", beiYongSi='" + beiYongSi + '\'' +
+                ", beiYongWu='" + beiYongWu + '\'' +
+                ", beiYongLiu='" + beiYongLiu + '\'' +
+                '}';
+    }
+
+
 }
