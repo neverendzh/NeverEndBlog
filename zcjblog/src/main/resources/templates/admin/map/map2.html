@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+    <title>GD Map </title>
+    <link rel="stylesheet" type="text/css" href="/static/res/layui/css/layui.css">
+    <style type="text/css">
+        #container {
+            width: 1400px;
+            height: 700px;
+        }
+    </style>
+</head>
+<body>
+<div id="container"></div>
+<div id="addvive"></div>
+<script type="text/javascript" src="/static/res/admin/js/jquery.min.js"></script>
+<script type="text/javascript" src="/static/res/layui/layui.js"></script>
+<!--GD 地图API-->
+<script src="https://webapi.amap.com/maps?v=1.4.15&key=1d57dd86c1b568780da4299996596ef6"></script>
+<!--需要标记的经纬度坐标点-->
+<script src="https://a.amap.com/jsapi_demos/static/citys.js"></script>
+<!--<script src="https://a.amap.com/jsapi_demos/static/china.js"></script>-->
+<script src="/static/res/map/echarts.min.js"></script>
+<script type="text/javascript">
+    var layer = null;
+    layui.use('layer', function(){
+        layer = layui.layer;
+    });
+    var map = new AMap.Map('container', {
+        resizeEnable: true,
+        center: [116.397428, 39.90923],
+        zoom: 13
+    });
+    var style = [{
+        url: 'https://a.amap.com/jsapi_demos/static/images/mass0.png',
+        anchor: new AMap.Pixel(6, 6),
+        size: new AMap.Size(11, 11)
+    }];
+    var mass = new AMap.MassMarks(citys , {
+        opacity: 0.8,
+        zIndex: 111,
+        cursor: 'pointer',
+        style: style
+    });
+    var marker = new AMap.Marker({content: ' ', map: map});
+    mass.on('click', function (e) {
+        var jw = e.data.lnglat.toString();
+        var name = e.data.name;
+        var indexz = layer.msg(jw+name+";图形数据加载中");
+        // 点击标记节点后 如果需要渲染不同的图形数据，那就发送多个请求获取 图形需要渲染的数据
+        //发送请求 1  这个请求都是模拟的假数据  上边弹出
+        var id1 =  uuid();
+        var  id2 = uuid();
+        $("#addvive").append("<div id='"+id1+"' style='display: none'><div id='"+id2+"' style='width: 400px;height: 250px'></div></div>");
+      //
+        $.ajax({
+            type: 'post',
+            url: '/bl/map2/tuxig/msg1',
+            //数据格式是json串，商品信息
+            data: {"name":name,
+                   "jw":jw},
+            success: function (data) {//返回json结果'
+                layer.close(indexz);
+                var dx = data.data.strings;
+                var xs = data.data.strings1;
+                var name = data.msg;
+                inittuxin(id2,name,name,dx,name,xs);
+
+                alertTtxingg(id1,"rt");
+            }
+
+        })
+    });
+    mass.setMap(map);
+     // 弹出层函数
+    /**
+     * @param idname 需要弹出的html 的id
+     * @param  弹出位置 坐标  详情查看 layer的官方文档
+     * */
+    function alertTtxingg(idname,offset){
+        layer.open({
+            type: 1,
+            area: ['400px', '300px'],
+            skin: 'layui-layer-lan', //样式类名
+            closeBtn: 1, //不显示关闭按钮
+            offset: [ //为了演示，随机坐标
+            Math.random()*($(window).height()-300)
+            ,Math.random()*($(window).width()-390)
+            ],
+           zIndex: layer.zIndex //重点1
+          ,success: function(layero){
+            layer.setTop(layero); //重点2
+        },
+            shade:0,
+            anim: 4,
+            content: $("#"+idname)
+    });
+    }
+    /**
+     * 初始化图形函数
+     * @param idname id值
+     * @param textname 图例名称
+     * @param legendtext
+     * @param xAxistext x坐标轴的 名称
+     * @param yAxis
+     * @param series y轴数据 对应x轴中的名称
+     */
+    function inittuxin(idname,textname,legendtext,xAxistext,yAxis,series) {
+        var myChart = echarts.init(document.getElementById(idname));
+
+        // 指定图表的配置项和数据
+        var option = {
+            title: {
+                text: textname
+            },
+            tooltip: {},
+            legend: {
+                data:[textname]
+            },
+            xAxis: {
+                data: xAxistext
+            },
+            yAxis: {},
+            series: [{
+                name: textname,
+                type: 'bar',
+                data: series
+            }]
+        };
+
+        // 使用刚指定的配置项和数据显示图表。
+        myChart.setOption(option);
+    }
+    function uuid() {
+        var s = [];
+        var hexDigits = "0123456789abcdef";
+        for (var i = 0; i < 36; i++) {
+            s[i] = hexDigits.substr(Math.floor(Math.random() * 0x10), 1);
+        }
+        s[14] = "4"; // bits 12-15 of the time_hi_and_version field to 0010
+        s[19] = hexDigits.substr((s[19] & 0x3) | 0x8, 1); // bits 6-7 of the clock_seq_hi_and_reserved to 01
+        s[8] = s[13] = s[18] = s[23] = "-";
+
+        var uuid = s.join("");
+        return uuid;
+    }
+</script>
+</body>
+</html>

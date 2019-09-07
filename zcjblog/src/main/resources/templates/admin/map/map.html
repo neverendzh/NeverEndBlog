@@ -9,84 +9,84 @@
 <body>
 
 <div id="chart-panel" style="width: 100%;height:900px;background-color: white"></div>
-<script src="/static/js/jquery.min.js"></script>
-<script src="/static/js/echarts.min.js"></script>
+<script src="/static/res/jquery/jquery-3.3.1.js"></script>
+<script src="/static/res/map/echarts.min.js"></script>
 <script>
     var myChart = echarts.init(document.getElementById('chart-panel'));
-    var zhongguo = "/static/china-geojson-master/china5.json";
+    var zhongguo = "/static/json/res/china-geojson-master/china5.json";
     //北京
-    var beijing  = "/static/mapjson/data-beijing.json";
-    var hainan   = "/static/mapjson/data-henan.json";
-    var xizang   = "/static/mapjson/data-xizang.json";
-    var zhejiang = "/static/mapjson/data-zhejiang.json";
-    var yunnan   = "/static/mapjson/data-yunnan.json";
-    var xinjiang = "/static/mapjson/data-xinjiang.json";
-    var tianjin  = "/static/mapjson/data-tianjin.json";
+    var beijing  = "/static/res/json/mapjson/data-beijing.json";
+    var hainan   = "/static/res/json/mapjson/data-henan.json";
+    var xizang   = "/static/res/json/mapjson/data-xizang.json";
+    var zhejiang = "/static/res/json/mapjson/data-zhejiang.json";
+    var yunnan   = "/static/res/json/mapjson/data-yunnan.json";
+    var xinjiang = "/static/res/json/mapjson/data-xinjiang.json";
+    var tianjin  = "/static/res/json/mapjson/data-tianjin.json";
 
 
     // var sichuan  = "static/mapjson/data-sichuan.json";
-    var shanxi   = "/static/mapjson/data-shanxi.json";
-    var shangxi  = "/static/mapjson/data-shangxi.json";
-    var shanghai = "/static/mapjson/data-shanghai.json";
-    var shangdong= "/static/mapjson/data-shangdong.json";
-    var qinghai  = "/static/mapjson/data-qinghai.json";
-    var ningxia  = "/static/mapjson/data-ningxia.json";
-    var neimenggu= "/static/mapjson/data-neimenggu.json";
-    var liaoning = "/static/mapjson/data-liaoning.json";
-    var jilin    = "/static/mapjson/data-jilin.json";
-    var jiangsu  = "/static/mapjson/data-jiangsu.json";
-    var hunan    = "/static/mapjson/data-hunan.json";
-    var hubei    = "/static/mapjson/data-hubei.json";
-    var henan    = "/static/mapjson/data-henan.json";
-    var hebei    = "/static/mapjson/data-hebei.json";
-    var guizhou  = "/static/mapjson/data-guizhou.json";
-    var guangxi  = "/static/mapjson/data-guangxi.json";
-    var guangdong= "/static/mapjson/data-guangdong.json";
-    var gansu    = "/static/mapjson/data-gansu.json";
-    var chongqing= "/static/mapjson/data-chongqing.json";
-    var aomen    = "/static/mapjson/data-aomen.json";
-    var anhui    = "/static/mapjson/data-anhui.json";
-    var fujian   = "/static/mapjson/data-fujian.json";
-    var xianggang= "/static/mapjson/data-xianggang.json";
-    var heilongjiang = "/static/mapjson/data-heilongjiang.json";
+    var shanxi   = "/static/res/json/mapjson/data-shanxi.json";
+    var shangxi  = "/static/res/json/mapjson/data-shangxi.json";
+    var shanghai = "/static/res/json/mapjson/data-shanghai.json";
+    var shangdong= "/static/res/json/mapjson/data-shangdong.json";
+    var qinghai  = "/static/res/json/mapjson/data-qinghai.json";
+    var ningxia  = "/static/res/json/mapjson/data-ningxia.json";
+    var neimenggu= "/static/res/json/mapjson/data-neimenggu.json";
+    var liaoning = "/static/res/json/mapjson/data-liaoning.json";
+    var jilin    = "/static/res/json/mapjson/data-jilin.json";
+    var jiangsu  = "/static/res/json/mapjson/data-jiangsu.json";
+    var hunan    = "/static/res/json/mapjson/data-hunan.json";
+    var hubei    = "/static/res/json/mapjson/data-hubei.json";
+    var henan    = "/static/res/json/mapjson/data-henan.json";
+    var hebei    = "/static/res/json/mapjson/data-hebei.json";
+    var guizhou  = "/static/res/json/mapjson/data-guizhou.json";
+    var guangxi  = "/static/res/json/mapjson/data-guangxi.json";
+    var guangdong= "/static/res/json/mapjson/data-guangdong.json";
+    var gansu    = "/static/res/json/mapjson/data-gansu.json";
+    var chongqing= "/static/res/json/mapjson/data-chongqing.json";
+    var aomen    = "/static/res/json/mapjson/data-aomen.json";
+    var anhui    = "/static/res/json/mapjson/data-anhui.json";
+    var fujian   = "/static/res/json/mapjson/data-fujian.json";
+    var xianggang= "/static/res/json/mapjson/data-xianggang.json";
+    var heilongjiang = "/static/res/json/mapjson/data-heilongjiang.json";
 
     //江西
-    var jiangxi  = "/static/mapjson/data-jiangxi.json";
-    var yingtan    = "/static/jxi/data-1518338860057-By447tpLf.json";
-    var yichun     = "/static/jxi/data-1518338852969-Hy677KTIf.json";
-    var xinyu      = "/static/jxi/data-1518338838010-SyAzQYTIf.json";
-    var shangrao   = "/static/jxi/data-1518338829670-H1UfQYa8G.json";
-    var pingxiang  = "/static/jxi/data-1518338823093-HkyMQtpUf.json";
-    var nanchang   = "/static/jxi/data-1518338805373-S1Temta8G.json";
-    var jiujiang   = "/static/jxi/data-1518338799987-S1deQFTLz.json";
-    var jingdezhen = "/static/jxi/data-1518338783915-HJOJXtaLf.json";
-    var jian       = "/static/jxi/data-1518338772507-BJnAMKTIz.json";
-    var ganzhou    = "/static/jxi/data-1518338763250-S17RfKpLM.json";
-    var fuzhou     = "/static/jxi/data-1518338684239-S1EFGtp8f.json";
+    var jiangxi  = "/static/res/json/mapjson/data-jiangxi.json";
+    var yingtan    = "/static/res/json/jxi/data-1518338860057-By447tpLf.json";
+    var yichun     = "/static/res/json/jxi/data-1518338852969-Hy677KTIf.json";
+    var xinyu      = "/static/res/json/jxi/data-1518338838010-SyAzQYTIf.json";
+    var shangrao   = "/static/res/json/jxi/data-1518338829670-H1UfQYa8G.json";
+    var pingxiang  = "/static/res/json/jxi/data-1518338823093-HkyMQtpUf.json";
+    var nanchang   = "/static/res/json/jxi/data-1518338805373-S1Temta8G.json";
+    var jiujiang   = "/static/res/json/jxi/data-1518338799987-S1deQFTLz.json";
+    var jingdezhen = "/static/res/json/jxi/data-1518338783915-HJOJXtaLf.json";
+    var jian       = "/static/res/json/jxi/data-1518338772507-BJnAMKTIz.json";
+    var ganzhou    = "/static/res/json/jxi/data-1518338763250-S17RfKpLM.json";
+    var fuzhou     = "/static/res/json/jxi/data-1518338684239-S1EFGtp8f.json";
 
     //四川 甘孜藏族自治州
-    var sichuan  = "/static/china-geojson-master/geometryProvince/51.json";
-    var asabeier = "/static/china-geojson-master/geometryCouties/513200.json";
-    var ganZiZangZuZiZhiZhou = "/static/china-geojson-master/geometryCouties/513300.json";
-    var daBiXian = "/static/china-geojson-master/geometryCouties/510100.json";
-    var ziGongShi = "/static/china-geojson-master/geometryCouties/510300.json";
-    var panZhiHuaShi = "/static/china-geojson-master/geometryCouties/510400.json";
-    var luZhouShi = "/static/china-geojson-master/geometryCouties/510500.json";
-    var deYangShi = "/static/china-geojson-master/geometryCouties/510600.json";
-    var miYangShi = "/static/china-geojson-master/geometryCouties/510700.json";
-    var guangYanShi = "/static/china-geojson-master/geometryCouties/510800.json";
-    var suiNingShi = "/static/china-geojson-master/geometryCouties/510900.json";
-    var neiJiangShi = "/static/china-geojson-master/geometryCouties/511000.json";
-    var leShanShi = "/static/china-geojson-master/geometryCouties/511100.json";
-    var nanChongShi ="/static/china-geojson-master/geometryCouties/511300.json";
-    var meiShanShi = "/static/china-geojson-master/geometryCouties/511400.json";
-    var yiBinShi = "/static/china-geojson-master/geometryCouties/511500.json";
-    var guangAnShi = "/static/china-geojson-master/geometryCouties/511600.json";
-    var dazhoushi = "/static/china-geojson-master/geometryCouties/511700.json";
-    var yanAnshi = "/static/china-geojson-master/geometryCouties/511800.json";
-    var bazhongshi =  "/static/china-geojson-master/geometryCouties/511900.json";
-    var ziYangShi = "/static/china-geojson-master/geometryCouties/512000.json";
-    var liangShanYiZuZiZhiZhou = "/static/china-geojson-master/geometryCouties/513400.json";
+    var sichuan  = "/static/res/json/china-geojson-master/geometryProvince/51.json";
+    var asabeier = "/static/res/json/china-geojson-master/geometryCouties/513200.json";
+    var ganZiZangZuZiZhiZhou = "/static/res/json/china-geojson-master/geometryCouties/513300.json";
+    var daBiXian = "/static/res/json/china-geojson-master/geometryCouties/510100.json";
+    var ziGongShi = "/static/res/json/china-geojson-master/geometryCouties/510300.json";
+    var panZhiHuaShi = "/static/res/json/china-geojson-master/geometryCouties/510400.json";
+    var luZhouShi = "/static/res/json/china-geojson-master/geometryCouties/510500.json";
+    var deYangShi = "/static/res/json/china-geojson-master/geometryCouties/510600.json";
+    var miYangShi = "/static/res/json/china-geojson-master/geometryCouties/510700.json";
+    var guangYanShi = "/static/res/json/china-geojson-master/geometryCouties/510800.json";
+    var suiNingShi = "/static/res/json/china-geojson-master/geometryCouties/510900.json";
+    var neiJiangShi = "/static/res/json/china-geojson-master/geometryCouties/511000.json";
+    var leShanShi = "/static/res/json/china-geojson-master/geometryCouties/511100.json";
+    var nanChongShi ="/static/res/json/china-geojson-master/geometryCouties/511300.json";
+    var meiShanShi = "/static/res/json/china-geojson-master/geometryCouties/511400.json";
+    var yiBinShi = "/static/res/json/china-geojson-master/geometryCouties/511500.json";
+    var guangAnShi = "/static/res/json/china-geojson-master/geometryCouties/511600.json";
+    var dazhoushi = "/static/res/json/china-geojson-master/geometryCouties/511700.json";
+    var yanAnshi = "/static/res/json/china-geojson-master/geometryCouties/511800.json";
+    var bazhongshi =  "/static/res/json/china-geojson-master/geometryCouties/511900.json";
+    var ziYangShi = "/static/res/json/china-geojson-master/geometryCouties/512000.json";
+    var liangShanYiZuZiZhiZhou = "/static/res/json/china-geojson-master/geometryCouties/513400.json";
     var provinces = {
         '中国': zhongguo,
         '上海': shanghai,
@@ -306,7 +306,7 @@
             ydata.push(allData[i].name);
         }
     })();
-    loadMap('/static/china-geojson-master/china5.json', '中国');//初始化全国地图
+    loadMap('/static/res/json/china-geojson-master/china5.json', '中国');//初始化全国地图
 
     var timeFn = null;
 
@@ -332,7 +332,7 @@
         clearTimeout(timeFn);
         nameJiBie="";
         //返回全国地图
-        loadMap('/static/china-geojson-master/china5.json', '中国');
+        loadMap('/static/res/json/china-geojson-master/china5.json', '中国');
     });
 
     /**
