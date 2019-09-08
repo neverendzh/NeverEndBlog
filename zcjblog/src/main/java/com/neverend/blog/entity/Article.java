@@ -58,6 +58,7 @@ public class Article implements Serializable {
     @ApiModelProperty(value="是否禁用可看,文章状态;" +
             "-1编辑状态;" +
             "0已发布，可用;" +
+            "3待审核"+
             "1禁止普通用户查看;" +
             "2删除")
     private String state;

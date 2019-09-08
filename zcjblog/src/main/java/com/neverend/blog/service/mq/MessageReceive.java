@@ -1,9 +1,6 @@
 package com.neverend.blog.service.mq;
 
-import com.neverend.blog.entity.Account;
-import com.neverend.blog.service.weixin.impl.WeiXinServiceImpl;
 import com.neverend.blog.util.email.weixin.WeiXinUtil;
-import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

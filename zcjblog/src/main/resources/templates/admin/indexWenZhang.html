@@ -15,7 +15,7 @@
     <div th:replace="../templates/admin/include/top :: topHeader"></div>
 
     <!--Navigation Bar-->
-    <div th:replace="../templates/admin/include/left :: lefthtml"></div>
+    <div th:replace="../templates/admin/include/left :: #leftinclude(selAddClass=fwbu)"></div>
 
     <div class="layui-body">
 
@@ -95,10 +95,11 @@
     var layer = "";
     var tree = "";
     var articlelevel = 0;
-    layui.use(['layer', 'form', 'tree'], function () {
+    layui.use(['layer', 'form', 'tree','element'], function () {
             layer = layui.layer;
             var  form = layui.form;
              tree = layui.tree;
+            var element = layui.element;
         form.on('select(articlelevel)', function(data){
             articlelevel = data.value; //得到被选中的值
         });

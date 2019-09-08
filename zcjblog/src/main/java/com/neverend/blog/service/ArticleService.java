@@ -72,4 +72,13 @@ public interface ArticleService {
      * @return
      */
     Msg<List<Article>> getarticlelevel(String levelNum, Integer pageStart, Integer pageNum);
+
+    /**
+     * 根据文章状态搜索
+     * @param statId
+     * @param pageStart
+     * @param pageNum
+     * @return
+     */
+    Msg getArticleState(String statId, Integer pageStart, Integer pageNum);
 }

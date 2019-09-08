@@ -108,7 +108,7 @@ public class FabuBlog {
                               @RequestParam(name = "articlelevel", defaultValue = "0") String articlelevel
             , Device device) {
         Account account = (Account) SecurityUtils.getSubject().getPrincipal();
-        Msg msg = articleService.saveArticle(account, articleWithBLOBs, "0", articleSortId,articlelevel);
+        Msg msg = articleService.saveArticle(account, articleWithBLOBs, "3", articleSortId,articlelevel);
         return msg;
     }
     /**
@@ -168,4 +168,7 @@ public class FabuBlog {
         msg.setMsg(Code.sucessMsg);
         return msg;
     }
+
+
+
 }

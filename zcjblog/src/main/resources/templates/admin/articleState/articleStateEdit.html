@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>Never_End</title>
+    <!--header——js-->
+    <div th:replace="../templates/admin/include/header :: headerJsCss"></div>
+</head>
+<body class="layui-layout-body">
+<div class="layui-layout layui-layout-admin">
+    <!--Navigation Bar-->
+    <div th:replace="../templates/admin/include/top :: topHeader"></div>
+
+    <!--Navigation Bar-->
+    <div th:replace="../templates/admin/include/left :: #leftinclude(selAddClass=wzztlb)"></div>
+
+    <div class="layui-body">
+        <div style="padding: 15px;">
+            <div class="layui-tab layui-tab-card" lay-filter="TabStateAr">
+                <ul class="layui-tab-title">
+                    <li class="layui-this">编辑</li>
+                    <li>正常</li>
+                    <li>Advanced permissions</li>
+                    <li>删除</li>
+                    <li>审核</li>
+                </ul>
+                <div class="layui-tab-content" style="height: 100px;">
+                    <div class="layui-tab-item layui-show">
+                         <table id="bianji" lay-filter="bianjifilter"></table>
+                    </div>
+                    <div class="layui-tab-item">
+                        <table id="zhengchang" lay-filter="zhengchangfilter"></table>
+                    </div>
+                    <div class="layui-tab-item">
+                        <table id="jinzhpt" lay-filter="jinzhptfilter"></table>
+                    </div>
+                    <div class="layui-tab-item">
+                        <table id="shanchu" lay-filter="shanchufilter"></table>
+                    </div>
+                    <div class="layui-tab-item">
+                        <table id="shenhe" lay-filter="shenhefilter"></table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!--Bottom information Text-->
+    <div th:replace="../templates/admin/include/footer :: footerHtml"></div>
+</div>
+<!--Bottom information js-->
+<div th:replace="../templates/admin/include/footerjs :: footerJsCss"></div>
+<script type="text/javascript" src="/static/res/js/util/NumberToChinese.js"></script>
+<script type="text/javascript" th:inline="none">
+    layui.use(['table', 'element'], function () {
+        var type = 0;
+        var table = layui.table;
+        var form = layui.form;
+        var element = layui.element;
+        table.render({
+            elem: '#bianji'
+            ,url:'/system/edit/article/state?statId='+-1
+            ,cellMinWidth: 80
+            ,cols: [[
+                {type:'numbers'}
+                ,{type: 'checkbox'}
+                ,{field:'articleId', title:'ID', width:100, unresize: true, sort: true}
+                ,{field:'articleName', title:'文章标题',sort: true}
+                ,{field:'accountId', title:'创建用户',sort: true}
+                ,{field:'creatTime', title: '创建时间',templet: function(d){
+                        return  new Date(d.creatTime).Format("yyyy-MM-dd hh:mm:ss")
+                    }, minWidth:120, sort: true}
+                ,{field:'beiYongYi', title:'更新时间',templet: function(d){
+                        if (d.beiYongYi == null){
+                            console.log("++"+d.beiYongYi);
+                            return "暂无跟新";
+                        } else {
+                            console.log("----"+typeof  d.beiYongYi);
+                            return  new Date(parseInt(d.beiYongYi)).Format("yyyy-MM-dd hh:mm:ss");
+                        }
+                    },
+                    sort: true}
+                ,{field:'state', title:'状态', width:110,templet: function(d){
+                        if (d.state == -1){
+                            return "编辑";
+                        } else  if (d.state == 0){
+                            return  "正常";
+                        } else  if (d.state == 1){
+                            return  "需高级权限" ;
+                        } else  if (d.state == 2){
+                            return  "已删除";
+                        }else  if (d.state == 3){
+                            return "待审核" ;
+                        }else {
+                            return "异常"
+                        }
+                    }
+                }
+                ,{field: 'beiYongEr', title:'文章级别', width:150}
+            ]]
+            ,page: { //支持传入 laypage 组件的所有参数（某些参数除外，如：jump/elem） - 详见文档
+                layout: ['limit', 'count', 'prev', 'page', 'next', 'skip'] //自定义分页布局
+                //,curr: 5 //设定初始在第 5 页
+                ,groups: 7 //只显示 1 个连续页码
+                ,first: false //不显示首页
+                ,last: false //不显示尾页,
+                ,prev:"上一页"
+                ,next:"下一页"
+            }
+        });
+        element.on('tab(TabStateAr)', function(data){
+            var indexnum = data.index;
+            if (indexnum==0){
+                table.render({
+                    elem: '#bianji'
+                    ,url:'/system/edit/article/state?statId='+-1
+                    ,cellMinWidth: 80
+                    ,cols: [[
+                        {type:'numbers'}
+                        ,{type: 'checkbox'}
+                        ,{field:'articleId', title:'ID', width:100, unresize: true, sort: true}
+                        ,{field:'articleName', title:'文章标题',sort: true}
+                        ,{field:'accountId', title:'创建用户',sort: true}
+                        ,{field:'creatTime', title: '创建时间',templet: function(d){
+                                return  new Date(d.creatTime).Format("yyyy-MM-dd hh:mm:ss")
+                            }, minWidth:120, sort: true}
+                        ,{field:'beiYongYi', title:'更新时间',templet: function(d){
+                                if (d.beiYongYi == null){
+                                    console.log("++"+d.beiYongYi);
+                                    return "暂无跟新";
+                                } else {
+                                    console.log("----"+typeof  d.beiYongYi);
+                                    return  new Date(parseInt(d.beiYongYi)).Format("yyyy-MM-dd hh:mm:ss");
+                                }
+                            },
+                            sort: true}
+                        ,{field:'state', title:'状态', width:110,templet: function(d){
+                                if (d.state == -1){
+                                    return "编辑";
+                                } else  if (d.state == 0){
+                                    return  "正常";
+                                } else  if (d.state == 1){
+                                    return  "需高级权限" ;
+                                } else  if (d.state == 2){
+                                    return  "已删除";
+                                }else  if (d.state == 3){
+                                    return "待审核" ;
+                                }else {
+                                    return "异常"
+                                }
+                            }
+                            }
+                        ,{field: 'beiYongEr', title:'文章级别', width:150}
+                    ]]
+                    ,page: { //支持传入 laypage 组件的所有参数（某些参数除外，如：jump/elem） - 详见文档
+                        layout: ['limit', 'count', 'prev', 'page', 'next', 'skip'] //自定义分页布局
+                        //,curr: 5 //设定初始在第 5 页
+                        ,groups: 7 //只显示 1 个连续页码
+                        ,first: false //不显示首页
+                        ,last: false //不显示尾页,
+                        ,prev:"上一页"
+                        ,next:"下一页"
+                    }
+                });
+            } else if (indexnum==1){
+                table.render({
+                    elem: '#zhengchang'
+                    ,url:'/system/edit/article/state?statId='+0
+                    ,cellMinWidth: 80
+                    ,cols: [[
+                        {type:'numbers'}
+                        ,{type: 'checkbox'}
+                        ,{field:'articleId', title:'ID', width:100, unresize: true, sort: true}
+                        ,{field:'articleName', title:'文章标题',sort: true}
+                        ,{field:'accountId', title:'创建用户',sort: true}
+                        ,{field:'creatTime', title: '创建时间',templet: function(d){
+                                return  new Date(d.creatTime).Format("yyyy-MM-dd hh:mm:ss")
+                            }, minWidth:120, sort: true}
+                        ,{field:'beiYongYi', title:'更新时间',templet: function(d){
+                                if (d.beiYongYi == null){
+                                    console.log("++"+d.beiYongYi);
+                                    return "暂无跟新";
+                                } else {
+                                    console.log("----"+typeof  d.beiYongYi);
+                                    return  new Date(parseInt(d.beiYongYi)).Format("yyyy-MM-dd hh:mm:ss");
+                                }
+                            },
+                            sort: true}
+                        ,{field:'state', title:'状态', width:110,templet: function(d){
+                                if (d.state == -1){
+                                    return "编辑";
+                                } else  if (d.state == 0){
+                                    return  "正常";
+                                } else  if (d.state == 1){
+                                    return  "需高级权限" ;
+                                } else  if (d.state == 2){
+                                    return  "已删除";
+                                }else  if (d.state == 3){
+                                    return "待审核" ;
+                                }else {
+                                    return "异常"
+                                }
+                            }
+                        }
+                        ,{field: 'beiYongEr', title:'文章级别', width:150}
+                    ]]
+                    ,page: { //支持传入 laypage 组件的所有参数（某些参数除外，如：jump/elem） - 详见文档
+                        layout: ['limit', 'count', 'prev', 'page', 'next', 'skip'] //自定义分页布局
+                        //,curr: 5 //设定初始在第 5 页
+                        ,groups: 7 //只显示 1 个连续页码
+                        ,first: false //不显示首页
+                        ,last: false //不显示尾页,
+                        ,prev:"上一页"
+                        ,next:"下一页"
+                    }
+                });
+            } else if (indexnum==2){
+                table.render({
+                    elem: '#jinzhpt'
+                    ,url:'/system/edit/article/state?statId='+1
+                    ,cellMinWidth: 80
+                    ,cols: [[
+                        {type:'numbers'}
+                        ,{type: 'checkbox'}
+                        ,{field:'articleId', title:'ID', width:100, unresize: true, sort: true}
+                        ,{field:'articleName', title:'文章标题',sort: true}
+                        ,{field:'accountId', title:'创建用户',sort: true}
+                        ,{field:'creatTime', title: '创建时间',templet: function(d){
+                                return  new Date(d.creatTime).Format("yyyy-MM-dd hh:mm:ss")
+                            }, minWidth:120, sort: true}
+                        ,{field:'beiYongYi', title:'更新时间',templet: function(d){
+                                if (d.beiYongYi == null){
+                                    console.log("++"+d.beiYongYi);
+                                    return "暂无跟新";
+                                } else {
+                                    console.log("----"+typeof  d.beiYongYi);
+                                    return  new Date(parseInt(d.beiYongYi)).Format("yyyy-MM-dd hh:mm:ss");
+                                }
+                            },
+                            sort: true}
+                        ,{field:'state', title:'状态', width:110,templet: function(d){
+                                if (d.state == -1){
+                                    return "编辑";
+                                } else  if (d.state == 0){
+                                    return  "正常";
+                                } else  if (d.state == 1){
+                                    return  "需高级权限" ;
+                                } else  if (d.state == 2){
+                                    return  "已删除";
+                                }else  if (d.state == 3){
+                                    return "待审核" ;
+                                }else {
+                                    return "异常"
+                                }
+                            }
+                        }
+                        ,{field: 'beiYongEr', title:'文章级别', width:150}
+                    ]]
+                    ,page: { //支持传入 laypage 组件的所有参数（某些参数除外，如：jump/elem） - 详见文档
+                        layout: ['limit', 'count', 'prev', 'page', 'next', 'skip'] //自定义分页布局
+                        //,curr: 5 //设定初始在第 5 页
+                        ,groups: 7 //只显示 1 个连续页码
+                        ,first: false //不显示首页
+                        ,last: false //不显示尾页,
+                        ,prev:"上一页"
+                        ,next:"下一页"
+                    }
+                });
+            } else if (indexnum==3){
+                table.render({
+                    elem: '#shanchu'
+                    ,url:'/system/edit/article/state?statId='+2
+                    ,cellMinWidth: 80
+                    ,cols: [[
+                        {type:'numbers'}
+                        ,{type: 'checkbox'}
+                        ,{field:'articleId', title:'ID', width:100, unresize: true, sort: true}
+                        ,{field:'articleName', title:'文章标题',sort: true}
+                        ,{field:'accountId', title:'创建用户',sort: true}
+                        ,{field:'creatTime', title: '创建时间',templet: function(d){
+                                return  new Date(d.creatTime).Format("yyyy-MM-dd hh:mm:ss")
+                            }, minWidth:120, sort: true}
+                        ,{field:'beiYongYi', title:'更新时间',templet: function(d){
+                                if (d.beiYongYi == null){
+                                    console.log("++"+d.beiYongYi);
+                                    return "暂无跟新";
+                                } else {
+                                    console.log("----"+typeof  d.beiYongYi);
+                                    return  new Date(parseInt(d.beiYongYi)).Format("yyyy-MM-dd hh:mm:ss");
+                                }
+                            },
+                            sort: true}
+                        ,{field:'state', title:'状态', width:110,templet: function(d){
+                                if (d.state == -1){
+                                    return "编辑";
+                                } else  if (d.state == 0){
+                                    return  "正常";
+                                } else  if (d.state == 1){
+                                    return  "需高级权限" ;
+                                } else  if (d.state == 2){
+                                    return  "已删除";
+                                }else  if (d.state == 3){
+                                    return "待审核" ;
+                                }else {
+                                    return "异常"
+                                }
+                            }
+                        }
+                        ,{field: 'beiYongEr', title:'文章级别', width:150}
+                    ]]
+                    ,page: { //支持传入 laypage 组件的所有参数（某些参数除外，如：jump/elem） - 详见文档
+                        layout: ['limit', 'count', 'prev', 'page', 'next', 'skip'] //自定义分页布局
+                        //,curr: 5 //设定初始在第 5 页
+                        ,groups: 7 //只显示 1 个连续页码
+                        ,first: false //不显示首页
+                        ,last: false //不显示尾页,
+                        ,prev:"上一页"
+                        ,next:"下一页"
+                    }
+                });
+            } else if (indexnum==4){
+                table.render({
+                    elem: '#shenhe'
+                    ,url:'/system/edit/article/state?statId='+3
+                    ,cellMinWidth: 80
+                    ,cols: [[
+                        {type:'numbers'}
+                        ,{type: 'checkbox'}
+                        ,{field:'articleId', title:'ID', width:100, unresize: true, sort: true}
+                        ,{field:'articleName', title:'文章标题',sort: true}
+                        ,{field:'accountId', title:'创建用户',sort: true}
+                        ,{field:'creatTime', title: '创建时间',templet: function(d){
+                                return  new Date(d.creatTime).Format("yyyy-MM-dd hh:mm:ss")
+                            }, minWidth:120, sort: true}
+                        ,{field:'beiYongYi', title:'更新时间',templet: function(d){
+                                if (d.beiYongYi == null){
+                                    console.log("++"+d.beiYongYi);
+                                    return "暂无跟新";
+                                } else {
+                                    console.log("----"+typeof  d.beiYongYi);
+                                    return  new Date(parseInt(d.beiYongYi)).Format("yyyy-MM-dd hh:mm:ss");
+                                }
+                            },
+                            sort: true}
+                        ,{field:'state', title:'状态', width:110,templet: function(d){
+                                if (d.state == -1){
+                                    return "编辑";
+                                } else  if (d.state == 0){
+                                    return  "正常";
+                                } else  if (d.state == 1){
+                                    return  "需高级权限" ;
+                                } else  if (d.state == 2){
+                                    return  "已删除";
+                                }else  if (d.state == 3){
+                                    return "待审核" ;
+                                }else {
+                                    return "异常"
+                                }
+                            }
+                        }
+                        ,{field: 'beiYongEr', title:'文章级别', width:150}
+                    ]]
+                    ,page: { //支持传入 laypage 组件的所有参数（某些参数除外，如：jump/elem） - 详见文档
+                        layout: ['limit', 'count', 'prev', 'page', 'next', 'skip'] //自定义分页布局
+                        //,curr: 5 //设定初始在第 5 页
+                        ,groups: 7 //只显示 1 个连续页码
+                        ,first: false //不显示首页
+                        ,last: false //不显示尾页,
+                        ,prev:"上一页"
+                        ,next:"下一页"
+                    }
+                });
+            }
+
+        });
+    });
+    function timestampToTime(timestamp) {
+        var date = new Date(timestamp);//时间戳为10位需*1000，时间戳为13位的话不需乘1000
+        Y = date.getFullYear() + '-';
+        M = (date.getMonth()+1 < 10 ? '0'+(date.getMonth()+1) : date.getMonth()+1) + '-';
+        D = date.getDate() + ' ';
+        h = date.getHours() + ':';
+        m = date.getMinutes() + ':';
+        s = date.getSeconds();
+        return Y+M+D+h+m+s;
+    }
+
+</script>
+
+</body>
+</html>

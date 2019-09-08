@@ -16,6 +16,7 @@ import com.neverend.blog.service.AccountService;
 import com.neverend.blog.service.ArticleService;
 import com.neverend.blog.service.mq.MsgSend;
 import com.neverend.blog.util.email.FenCIUtil;
+import com.neverend.blog.util.email.GetMsg;
 import com.neverend.blog.util.email.GetUUID;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -210,6 +211,23 @@ public class ArticleServiceImpl implements ArticleService {
         msg.setData(articles.getList());
         msg.setCount(articles.getPages() + "");
         return msg;
+    }
+
+    @Override
+    public Msg getArticleState(String statId, Integer pageStart, Integer pageNum) {
+        Msg msg = GetMsg.getMsg();
+        if (!"".equals(statId.trim())){
+            PageInfo<Article> articlePageInfo = articleDao.selArticleState(statId,pageStart,pageNum);
+            msg.setCode("0");
+            msg.setMsg(Code.sucessMsg);
+            msg.setData(articlePageInfo.getList());
+            msg.setCount(articlePageInfo.getTotal()+"");
+            return msg;
+        }else {
+            msg.setCode(Code.Paramerror);
+            msg.setMsg(Code.ParamerrorMsg);
+            return msg;
+        }
     }
 
 

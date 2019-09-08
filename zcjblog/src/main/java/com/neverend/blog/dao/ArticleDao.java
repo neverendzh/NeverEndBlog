@@ -49,4 +49,6 @@ public interface ArticleDao {
     PageInfo<Article> getarticlelevel(String levelNum, Integer pageStart, Integer pageNum);
 
     PageInfo<Article> selectActilcNameLike(Integer pageStart, Integer pageNum, String state, List<String> fneciLists);
+
+    PageInfo<Article> selArticleState(String statId, Integer pageStart, Integer pageNum);
 }
