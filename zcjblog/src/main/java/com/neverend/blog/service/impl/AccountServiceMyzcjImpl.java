@@ -9,7 +9,7 @@ import com.neverend.blog.mapper.AccountMapper;
 import com.neverend.blog.mapper.RoleAccountKeyMapper;
 import com.neverend.blog.moudel.Code;
 import com.neverend.blog.moudel.Msg;
-import com.neverend.blog.service.AccountService;
+import com.neverend.blog.service.AccountServiceMyzcj;
 import com.neverend.blog.util.email.GetUUID;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +22,7 @@ import java.util.List;
 
 @SuppressWarnings("ALL")
 @Service
-public class AccountServiceImpl implements AccountService {
+public class AccountServiceMyzcjImpl implements AccountServiceMyzcj {
 
     @Autowired
     public AccountMapper accountMapper;
@@ -70,7 +70,7 @@ public class AccountServiceImpl implements AccountService {
      * @return
      */
     @Override
-    @Transactional(rollbackFor = {Exception.class,RuntimeException.class,Throwable.class},propagation = Propagation.NOT_SUPPORTED)
+    @Transactional
     public Msg registeredAccount(String userName, String accountNumber,
                                  String password, String isEncryption,
                                  String email) {

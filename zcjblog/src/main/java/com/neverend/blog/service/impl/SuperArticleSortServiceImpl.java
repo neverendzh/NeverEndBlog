@@ -10,6 +10,7 @@ import com.neverend.blog.mapper.SuperArticleSortMapper;
 import com.neverend.blog.moudel.ActicleTree;
 import com.neverend.blog.moudel.Msg;
 import com.neverend.blog.moudel.NumSize;
+import com.neverend.blog.service.AccountServiceMyzcj;
 import com.neverend.blog.service.SuperArticleSortService;
 import org.hibernate.validator.constraints.URL;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,7 +34,7 @@ public class SuperArticleSortServiceImpl implements SuperArticleSortService {
     @Autowired
     private SuperArticleSortMapper superArticleSortMapper;
     @Autowired
-    private AccountServiceImpl accountService;
+    private AccountServiceMyzcj accountServiceMyzcj;
 
     /**
      * 获取所有一级分类
@@ -107,7 +108,7 @@ public class SuperArticleSortServiceImpl implements SuperArticleSortService {
                                superArticleSort.setBeiYongYi(superArticleSort.getSuperArticleSortId());
                        }
                     }
-                      Account account = accountService.selectAccount(superArticleSort.getAccountId().toString());
+                      Account account = accountServiceMyzcj.selectAccount(superArticleSort.getAccountId().toString());
                     if (account != null){
                        superArticleSort.setAccountId(account.getUserName());
                     }else {

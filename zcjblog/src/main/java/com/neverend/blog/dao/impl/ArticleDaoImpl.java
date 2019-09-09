@@ -80,9 +80,10 @@ public class ArticleDaoImpl implements ArticleDao {
     @Override
     public  PageInfo<Article>  orderByArcileB6(int pageStart, int pageNum) {
         PageHelper.startPage(pageStart,pageNum);
-
         ArticleExample articleExample = new ArticleExample();
         articleExample.setOrderByClause(" CAST( bei_yong_wu as signed) ASC");
+        ArticleExample.Criteria criteria = articleExample.createCriteria();
+        criteria.andStateEqualTo("0");
         List<Article> articles = articleMapper.selectByExample(articleExample);
         PageInfo<Article> personPageInfo = new PageInfo<>(articles);
         return personPageInfo;
@@ -107,14 +108,16 @@ public class ArticleDaoImpl implements ArticleDao {
     public PageInfo<Article> getarticlelevel(String levelNum, Integer pageStart, Integer pageNum) {
         PageHelper.startPage(pageStart,pageNum);
         ArticleExample articleExample = new ArticleExample();
-
         if (levelNum.equals("0")|| levelNum.equals("1")||levelNum.equals("2")
                 ||levelNum.equals("3")||levelNum.equals("4")){
             articleExample.setOrderByClause(" CAST( bei_yong_wu as signed) DESC");
             ArticleExample.Criteria criteria = articleExample.createCriteria();
+            criteria.andStateEqualTo("0");
             criteria.andBeiYongErEqualTo(levelNum);
         }else{
             articleExample.setOrderByClause(" CAST( bei_yong_er as signed) DESC,CAST( bei_yong_wu as signed) DESC");
+            ArticleExample.Criteria criteria = articleExample.createCriteria();
+            criteria.andStateEqualTo("0");
         }
         List<Article> articles = articleMapper.selectByExample(articleExample);
         PageInfo<Article> personPageInfo = new PageInfo<>(articles);
@@ -148,5 +151,16 @@ public class ArticleDaoImpl implements ArticleDao {
         List<Article> articles = articleMapper.selectByExample(articleExample);
         PageInfo<Article> articlePageInfo = new PageInfo<>(articles);
         return articlePageInfo;
+    }
+
+    @Override
+    public int editState(String state, String articleID) {
+        ArticleWithBLOBs article = new ArticleWithBLOBs();
+        article.setState(state);
+        ArticleExample articleExample  = new ArticleExample();
+        ArticleExample.Criteria criteria = articleExample.createCriteria();
+        criteria.andArticleIdEqualTo(articleID);
+        int i = articleMapper.updateByExampleSelective(article, articleExample);
+        return i;
     }
 }

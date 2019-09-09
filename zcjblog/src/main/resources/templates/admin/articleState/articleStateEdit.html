@@ -24,8 +24,9 @@
                     <li>Advanced permissions</li>
                     <li>删除</li>
                     <li>审核</li>
+                    <li>违规</li>
                 </ul>
-                <div class="layui-tab-content" style="height: 100px;">
+                <div class="layui-tab-content" style="height: 200px;">
                     <div class="layui-tab-item layui-show">
                          <table id="bianji" lay-filter="bianjifilter"></table>
                     </div>
@@ -41,10 +42,65 @@
                     <div class="layui-tab-item">
                         <table id="shenhe" lay-filter="shenhefilter"></table>
                     </div>
+                    <div class="layui-tab-item">
+                        <table id="weigui" lay-filter="weiguifilter"></table>
+                    </div>
                 </div>
             </div>
         </div>
+        <script type="text/html" id="bianj">
+            <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="ck">查看</a>
+            <a class="layui-btn layui-btn-xs" lay-event="tg">正常</a>
+            <a class="layui-btn layui-btn-xs" lay-event="wg">违规</a>
+            <a class="layui-btn layui-btn-xs" lay-event="gj">高级</a>
+            <a class="layui-btn layui-btn-xs" lay-event="sh">审核</a>
+            <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="sc">删除</a>
+        </script>
 
+        <script type="text/html" id="zhengc">
+            <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="ck">查看</a>
+            <a class="layui-btn layui-btn-xs" lay-event="wg">违规</a>
+            <a class="layui-btn layui-btn-xs" lay-event="gj">高级</a>
+            <a class="layui-btn layui-btn-xs" lay-event="bj">编辑</a>
+            <a class="layui-btn layui-btn-xs" lay-event="sh">审核</a>
+            <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="sc">删除</a>
+        </script>
+
+        <script type="text/html" id="gaoj">
+            <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="ck">查看</a>
+            <a class="layui-btn layui-btn-xs" lay-event="tg">正常</a>
+            <a class="layui-btn layui-btn-xs" lay-event="wg">违规</a>
+            <a class="layui-btn layui-btn-xs" lay-event="bj">编辑</a>
+            <a class="layui-btn layui-btn-xs" lay-event="sh">审核</a>
+            <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="sc">删除</a>
+        </script>
+
+        <script type="text/html" id="shanc">
+            <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="ck">查看</a>
+            <a class="layui-btn layui-btn-xs" lay-event="tg">正常</a>
+            <a class="layui-btn layui-btn-xs" lay-event="wg">违规</a>
+            <a class="layui-btn layui-btn-xs" lay-event="gj">高级</a>
+            <a class="layui-btn layui-btn-xs" lay-event="bj">编辑</a>
+            <a class="layui-btn layui-btn-xs" lay-event="sh">审核</a>
+        </script>
+
+        <script type="text/html" id="shenh">
+            <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="ck">查看</a>
+            <a class="layui-btn layui-btn-xs" lay-event="tg">正常</a>
+            <a class="layui-btn layui-btn-xs" lay-event="wg">违规</a>
+            <a class="layui-btn layui-btn-xs" lay-event="gj">高级</a>
+            <a class="layui-btn layui-btn-xs" lay-event="bj">编辑</a>
+            <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="sc">删除</a>
+        </script>
+
+        <script type="text/html" id="weitg">
+            <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="ck">查看</a>
+            <a class="layui-btn layui-btn-xs" lay-event="tg">正常</a>
+            <a class="layui-btn layui-btn-xs" lay-event="gj">高级</a>
+            <a class="layui-btn layui-btn-xs" lay-event="bj">编辑</a>
+            <a class="layui-btn layui-btn-xs" lay-event="sh">审核</a>
+            <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="sc">删除</a>
+        </script>
     </div>
 
     <!--Bottom information Text-->
@@ -74,10 +130,8 @@
                     }, minWidth:120, sort: true}
                 ,{field:'beiYongYi', title:'更新时间',templet: function(d){
                         if (d.beiYongYi == null){
-                            console.log("++"+d.beiYongYi);
                             return "暂无跟新";
                         } else {
-                            console.log("----"+typeof  d.beiYongYi);
                             return  new Date(parseInt(d.beiYongYi)).Format("yyyy-MM-dd hh:mm:ss");
                         }
                     },
@@ -98,7 +152,22 @@
                         }
                     }
                 }
-                ,{field: 'beiYongEr', title:'文章级别', width:150}
+                ,{field: 'beiYongEr', title:'文章级别',templet: function(d){
+                        if (d.beiYongEr ==0){
+                            return  "最低";
+                        } else if(d.beiYongEr ==1){
+                            return  "普通";
+                        }else if(d.beiYongEr ==2){
+                            return  "中级";
+                        }else if(d.beiYongEr ==3){
+                            return  "高级";
+                        }else if(d.beiYongEr ==4){
+                            return  "最高";
+                        }else {
+                            return "ERROR";
+                        }
+                        }, width:150}
+                ,{fixed: 'right', width:340, align:'center', toolbar: '#bianj'}
             ]]
             ,page: { //支持传入 laypage 组件的所有参数（某些参数除外，如：jump/elem） - 详见文档
                 layout: ['limit', 'count', 'prev', 'page', 'next', 'skip'] //自定义分页布局
@@ -128,10 +197,8 @@
                             }, minWidth:120, sort: true}
                         ,{field:'beiYongYi', title:'更新时间',templet: function(d){
                                 if (d.beiYongYi == null){
-                                    console.log("++"+d.beiYongYi);
                                     return "暂无跟新";
                                 } else {
-                                    console.log("----"+typeof  d.beiYongYi);
                                     return  new Date(parseInt(d.beiYongYi)).Format("yyyy-MM-dd hh:mm:ss");
                                 }
                             },
@@ -152,7 +219,22 @@
                                 }
                             }
                             }
-                        ,{field: 'beiYongEr', title:'文章级别', width:150}
+                        ,{field: 'beiYongEr', title:'文章级别',templet: function(d){
+                                if (d.beiYongEr ==0){
+                                    return  "最低";
+                                } else if(d.beiYongEr ==1){
+                                    return  "普通";
+                                }else if(d.beiYongEr ==2){
+                                    return  "中级";
+                                }else if(d.beiYongEr ==3){
+                                    return  "高级";
+                                }else if(d.beiYongEr ==4){
+                                    return  "最高";
+                                }else {
+                                    return "ERROR";
+                                }
+                            }, width:150}
+                        ,{fixed: 'right', width:340, align:'center', toolbar: '#bianj'}
                     ]]
                     ,page: { //支持传入 laypage 组件的所有参数（某些参数除外，如：jump/elem） - 详见文档
                         layout: ['limit', 'count', 'prev', 'page', 'next', 'skip'] //自定义分页布局
@@ -180,10 +262,8 @@
                             }, minWidth:120, sort: true}
                         ,{field:'beiYongYi', title:'更新时间',templet: function(d){
                                 if (d.beiYongYi == null){
-                                    console.log("++"+d.beiYongYi);
                                     return "暂无跟新";
                                 } else {
-                                    console.log("----"+typeof  d.beiYongYi);
                                     return  new Date(parseInt(d.beiYongYi)).Format("yyyy-MM-dd hh:mm:ss");
                                 }
                             },
@@ -204,7 +284,22 @@
                                 }
                             }
                         }
-                        ,{field: 'beiYongEr', title:'文章级别', width:150}
+                        ,{field: 'beiYongEr', title:'文章级别',templet: function(d){
+                                if (d.beiYongEr ==0){
+                                    return  "最低";
+                                } else if(d.beiYongEr ==1){
+                                    return  "普通";
+                                }else if(d.beiYongEr ==2){
+                                    return  "中级";
+                                }else if(d.beiYongEr ==3){
+                                    return  "高级";
+                                }else if(d.beiYongEr ==4){
+                                    return  "最高";
+                                }else {
+                                    return "ERROR";
+                                }
+                            }, width:150}
+                        ,{fixed: 'right', width:340, align:'center', toolbar: '#zhengc'}
                     ]]
                     ,page: { //支持传入 laypage 组件的所有参数（某些参数除外，如：jump/elem） - 详见文档
                         layout: ['limit', 'count', 'prev', 'page', 'next', 'skip'] //自定义分页布局
@@ -232,10 +327,8 @@
                             }, minWidth:120, sort: true}
                         ,{field:'beiYongYi', title:'更新时间',templet: function(d){
                                 if (d.beiYongYi == null){
-                                    console.log("++"+d.beiYongYi);
                                     return "暂无跟新";
                                 } else {
-                                    console.log("----"+typeof  d.beiYongYi);
                                     return  new Date(parseInt(d.beiYongYi)).Format("yyyy-MM-dd hh:mm:ss");
                                 }
                             },
@@ -256,7 +349,22 @@
                                 }
                             }
                         }
-                        ,{field: 'beiYongEr', title:'文章级别', width:150}
+                        ,{field: 'beiYongEr', title:'文章级别',templet: function(d){
+                                if (d.beiYongEr ==0){
+                                    return  "最低";
+                                } else if(d.beiYongEr ==1){
+                                    return  "普通";
+                                }else if(d.beiYongEr ==2){
+                                    return  "中级";
+                                }else if(d.beiYongEr ==3){
+                                    return  "高级";
+                                }else if(d.beiYongEr ==4){
+                                    return  "最高";
+                                }else {
+                                    return "ERROR";
+                                }
+                            }, width:150}
+                        ,{fixed: 'right', width:340, align:'center', toolbar: '#gaoj'}
                     ]]
                     ,page: { //支持传入 laypage 组件的所有参数（某些参数除外，如：jump/elem） - 详见文档
                         layout: ['limit', 'count', 'prev', 'page', 'next', 'skip'] //自定义分页布局
@@ -284,10 +392,8 @@
                             }, minWidth:120, sort: true}
                         ,{field:'beiYongYi', title:'更新时间',templet: function(d){
                                 if (d.beiYongYi == null){
-                                    console.log("++"+d.beiYongYi);
                                     return "暂无跟新";
                                 } else {
-                                    console.log("----"+typeof  d.beiYongYi);
                                     return  new Date(parseInt(d.beiYongYi)).Format("yyyy-MM-dd hh:mm:ss");
                                 }
                             },
@@ -308,7 +414,22 @@
                                 }
                             }
                         }
-                        ,{field: 'beiYongEr', title:'文章级别', width:150}
+                        ,{field: 'beiYongEr', title:'文章级别',templet: function(d){
+                                if (d.beiYongEr ==0){
+                                    return  "最低";
+                                } else if(d.beiYongEr ==1){
+                                    return  "普通";
+                                }else if(d.beiYongEr ==2){
+                                    return  "中级";
+                                }else if(d.beiYongEr ==3){
+                                    return  "高级";
+                                }else if(d.beiYongEr ==4){
+                                    return  "最高";
+                                }else {
+                                    return "ERROR";
+                                }
+                            }, width:150}
+                        ,{fixed: 'right', width:340, align:'center', toolbar: '#shanc'}
                     ]]
                     ,page: { //支持传入 laypage 组件的所有参数（某些参数除外，如：jump/elem） - 详见文档
                         layout: ['limit', 'count', 'prev', 'page', 'next', 'skip'] //自定义分页布局
@@ -336,17 +457,15 @@
                             }, minWidth:120, sort: true}
                         ,{field:'beiYongYi', title:'更新时间',templet: function(d){
                                 if (d.beiYongYi == null){
-                                    console.log("++"+d.beiYongYi);
                                     return "暂无跟新";
                                 } else {
-                                    console.log("----"+typeof  d.beiYongYi);
                                     return  new Date(parseInt(d.beiYongYi)).Format("yyyy-MM-dd hh:mm:ss");
                                 }
                             },
                             sort: true}
                         ,{field:'state', title:'状态', width:110,templet: function(d){
                                 if (d.state == -1){
-                                    return "编辑";
+                                    return "编辑"+"<i class=\"layui-icon layui-icon-face-smile\"></i>";
                                 } else  if (d.state == 0){
                                     return  "正常";
                                 } else  if (d.state == 1){
@@ -360,7 +479,87 @@
                                 }
                             }
                         }
-                        ,{field: 'beiYongEr', title:'文章级别', width:150}
+                        ,{field: 'beiYongEr', title:'文章级别',templet: function(d){
+                                if (d.beiYongEr ==0){
+                                    return  "最低";
+                                } else if(d.beiYongEr ==1){
+                                    return  "普通";
+                                }else if(d.beiYongEr ==2){
+                                    return  "中级";
+                                }else if(d.beiYongEr ==3){
+                                    return  "高级";
+                                }else if(d.beiYongEr ==4){
+                                    return  "最高";
+                                }else {
+                                    return "ERROR";
+                                }
+                            }, width:150}
+                        ,{fixed: 'right', width:340, align:'center', toolbar: '#shenh'}
+                    ]]
+                    ,page: { //支持传入 laypage 组件的所有参数（某些参数除外，如：jump/elem） - 详见文档
+                        layout: ['limit', 'count', 'prev', 'page', 'next', 'skip'] //自定义分页布局
+                        //,curr: 5 //设定初始在第 5 页
+                        ,groups: 7 //只显示 1 个连续页码
+                        ,first: false //不显示首页
+                        ,last: false //不显示尾页,
+                        ,prev:"上一页"
+                        ,next:"下一页"
+                    }
+                });
+            }else if (indexnum==5){
+                table.render({
+                    elem: '#weigui'
+                    ,url:'/system/edit/article/state?statId='+4
+                    ,cellMinWidth: 80
+                    ,cols: [[
+                        {type:'numbers'}
+                        ,{type: 'checkbox'}
+                        ,{field:'articleId', title:'ID', width:100, unresize: true, sort: true}
+                        ,{field:'articleName', title:'文章标题',sort: true}
+                        ,{field:'accountId', title:'创建用户',sort: true}
+                        ,{field:'creatTime', title: '创建时间',templet: function(d){
+                                return  new Date(d.creatTime).Format("yyyy-MM-dd hh:mm:ss")
+                            }, minWidth:120, sort: true}
+                        ,{field:'beiYongYi', title:'更新时间',templet: function(d){
+                                if (d.beiYongYi == null){
+                                    return "暂无跟新";
+                                } else {
+                                    return  new Date(parseInt(d.beiYongYi)).Format("yyyy-MM-dd hh:mm:ss");
+                                }
+                            },
+                            sort: true}
+                        ,{field:'state', title:'状态', width:110,templet: function(d){
+                                if (d.state == -1){
+                                    return "编辑"+"<i class=\"layui-icon layui-icon-face-smile\"></i>";
+                                } else  if (d.state == 0){
+                                    return  "正常";
+                                } else  if (d.state == 1){
+                                    return  "需高级权限" ;
+                                } else  if (d.state == 2){
+                                    return  "已删除";
+                                }else  if (d.state == 3){
+                                    return "待审核" ;
+                                }else {
+                                    return "异常"
+                                }
+                            }
+                        }
+                        ,{field: 'beiYongEr', title:'文章级别',templet: function(d){
+                                if (d.beiYongEr ==0){
+                                    return  "最低";
+                                } else if(d.beiYongEr ==1){
+                                    return  "普通";
+                                }else if(d.beiYongEr ==2){
+                                    return  "中级";
+                                }else if(d.beiYongEr ==3){
+                                    return  "高级";
+                                }else if(d.beiYongEr ==4){
+                                    return  "最高";
+                                }else {
+                                    return "ERROR";
+                                }
+                            }, width:150}
+                        ,{fixed: 'right', width:340, align:'center', toolbar: '#weitg'}
                     ]]
                     ,page: { //支持传入 laypage 组件的所有参数（某些参数除外，如：jump/elem） - 详见文档
                         layout: ['limit', 'count', 'prev', 'page', 'next', 'skip'] //自定义分页布局
@@ -375,17 +574,844 @@
             }
 
         });
+        //编辑状态表格监控
+        table.on('tool(bianjifilter)', function(obj){
+            var data = obj.data;
+            var arid = data.articleId;
+            if(obj.event === 'ck'){
+                layer.open({
+                    type: 2,
+                    title: '文章详情',
+                    shadeClose: true,
+                    shade: false,
+                    anim:4,
+                    maxmin: true, //开启最大化最小化按钮
+                    area: ['893px', '600px'],
+                    content: '/system/admin/fabu/yulan?articleId='+arid
+                });
+
+            }
+            else if(obj.event === 'tg'){
+                layer.confirm('确定修改为通过', {icon: 1, title:'温馨提示'},function(index){
+                    $.ajax({
+                        type: 'post',
+                        url: '/system/edit/state',
+                        data: {
+                            "articleID": arid,
+                            "state": 0
+                        },
+                        success: function (data) {
+                            if (data.code==200){
+                                obj.del();
+                                layer.close(index);
+                            } else {
+                                layer.msg(data.msg);
+                            }
+                        },
+                        error: function () {
+                            layer.close(index);
+                            layer.msg("服务异常！");
+                        }
+                    });
+
+                });
+            }else if(obj.event === 'wg'){
+                layer.confirm('确定修改为违规',{icon: 7, title:'温馨提示'}, function(index){
+                    $.ajax({
+                        type: 'post',
+                        url: '/system/edit/state',
+                        data: {
+                            "articleID": arid,
+                            "state": 4
+                        },
+                        success: function (data) {
+                            if (data.code==200){
+                                obj.del();
+                                layer.close(index);
+                            } else {
+                                layer.msg(data.msg);
+                            }
+                        },
+                        error: function () {
+                            layer.close(index);
+                            layer.msg("服务异常！");
+                        }
+                    });
+
+                });
+            }else if(obj.event === 'gj'){
+                layer.confirm('确定修改为高级',{icon: 4, title:'温馨提示'}, function(index){
+                    $.ajax({
+                        type: 'post',
+                        url: '/system/edit/state',
+                        data: {
+                            "articleID": arid,
+                            "state": 1
+                        },
+                        success: function (data) {
+                            if (data.code==200){
+                                obj.del();
+                                layer.close(index);
+                            } else {
+                                layer.msg(data.msg);
+                            }
+                        },
+                        error: function () {
+                            layer.close(index);
+                            layer.msg("服务异常！");
+                        }
+                    });
+
+                });
+            }else if(obj.event === 'sh'){
+                layer.confirm('确定修改为审核',{icon: 3, title:'温馨提示'}, function(index){
+                    $.ajax({
+                        type: 'post',
+                        url: '/system/edit/state',
+                        data: {
+                            "articleID": arid,
+                            "state": 3
+                        },
+                        success: function (data) {
+                            if (data.code==200){
+                                obj.del();
+                                layer.close(index);
+                            } else {
+                                layer.msg(data.msg);
+                            }
+                        },
+                        error: function () {
+                            layer.close(index);
+                            layer.msg("服务异常！");
+                        }
+                    });
+
+                });
+            }else if(obj.event === 'sc'){
+                layer.confirm('确定修改为删除',{icon: 2, title:'温馨提示'}, function(index){
+                    $.ajax({
+                        type: 'post',
+                        url: '/system/edit/state',
+                        data: {
+                            "articleID": arid,
+                            "state": 2
+                        },
+                        success: function (data) {
+                            if (data.code==200){
+                                obj.del();
+                                layer.close(index);
+                            } else {
+                                layer.msg(data.msg);
+                            }
+                        },
+                        error: function () {
+                            layer.close(index);
+                            layer.msg("服务异常！");
+                        }
+                    });
+
+                });
+            }
+        });
+        //正常状态表格监控
+        table.on('tool(zhengchangfilter)', function(obj){
+            var data = obj.data;
+            var arid = data.articleId;
+            if(obj.event === 'ck'){
+                layer.open({
+                    type: 2,
+                    title: '文章详情',
+                    shadeClose: true,
+                    shade: false,
+                    anim:4,
+                    maxmin: true, //开启最大化最小化按钮
+                    area: ['893px', '600px'],
+                    content: '/system/admin/fabu/yulan?articleId='+arid
+                });
+
+            }
+            else if(obj.event === 'bj'){
+                layer.confirm('确定修改为编辑', {icon: 3, title:'温馨提示'},function(index){
+                    $.ajax({
+                        type: 'post',
+                        url: '/system/edit/state',
+                        data: {
+                            "articleID": arid,
+                            "state": -1
+                        },
+                        success: function (data) {
+                            if (data.code==200){
+                                obj.del();
+                                layer.close(index);
+                            } else {
+                                layer.msg(data.msg);
+                            }
+                        },
+                        error: function () {
+                            layer.close(index);
+                            layer.msg("服务异常！");
+                        }
+                    });
+
+                });
+            }else if(obj.event === 'wg'){
+                layer.confirm('确定修改为违规',{icon: 7, title:'温馨提示'}, function(index){
+                    $.ajax({
+                        type: 'post',
+                        url: '/system/edit/state',
+                        data: {
+                            "articleID": arid,
+                            "state": 4
+                        },
+                        success: function (data) {
+                            if (data.code==200){
+                                obj.del();
+                                layer.close(index);
+                            } else {
+                                layer.msg(data.msg);
+                            }
+                        },
+                        error: function () {
+                            layer.close(index);
+                            layer.msg("服务异常！");
+                        }
+                    });
+
+                });
+            }else if(obj.event === 'gj'){
+                layer.confirm('确定修改为高级',{icon: 4, title:'温馨提示'}, function(index){
+                    $.ajax({
+                        type: 'post',
+                        url: '/system/edit/state',
+                        data: {
+                            "articleID": arid,
+                            "state": 1
+                        },
+                        success: function (data) {
+                            if (data.code==200){
+                                obj.del();
+                                layer.close(index);
+                            } else {
+                                layer.msg(data.msg);
+                            }
+                        },
+                        error: function () {
+                            layer.close(index);
+                            layer.msg("服务异常！");
+                        }
+                    });
+
+                });
+            }else if(obj.event === 'sh'){
+                layer.confirm('确定修改为审核',{icon: 3, title:'温馨提示'}, function(index){
+                    $.ajax({
+                        type: 'post',
+                        url: '/system/edit/state',
+                        data: {
+                            "articleID": arid,
+                            "state": 3
+                        },
+                        success: function (data) {
+                            if (data.code==200){
+                                obj.del();
+                                layer.close(index);
+                            } else {
+                                layer.msg(data.msg);
+                            }
+                        },
+                        error: function () {
+                            layer.close(index);
+                            layer.msg("服务异常！");
+                        }
+                    });
+
+                });
+            }else if(obj.event === 'sc'){
+                layer.confirm('确定修改为删除',{icon: 2, title:'温馨提示'}, function(index){
+                    $.ajax({
+                        type: 'post',
+                        url: '/system/edit/state',
+                        data: {
+                            "articleID": arid,
+                            "state": 2
+                        },
+                        success: function (data) {
+                            if (data.code==200){
+                                obj.del();
+                                layer.close(index);
+                            } else {
+                                layer.msg(data.msg);
+                            }
+                        },
+                        error: function () {
+                            layer.close(index);
+                            layer.msg("服务异常！");
+                        }
+                    });
+
+                });
+            }
+        });
+        //高级权限状态表格监控
+        table.on('tool(jinzhptfilter)', function(obj){
+            var data = obj.data;
+            var arid = data.articleId;
+            if(obj.event === 'ck'){
+                layer.open({
+                    type: 2,
+                    title: '文章详情',
+                    shadeClose: true,
+                    shade: false,
+                    anim:4,
+                    maxmin: true, //开启最大化最小化按钮
+                    area: ['893px', '600px'],
+                    content: '/system/admin/fabu/yulan?articleId='+arid
+                });
+
+            }
+            else if(obj.event === 'bj'){
+                layer.confirm('确定修改为编辑', {icon: 3, title:'温馨提示'},function(index){
+                    $.ajax({
+                        type: 'post',
+                        url: '/system/edit/state',
+                        data: {
+                            "articleID": arid,
+                            "state": -1
+                        },
+                        success: function (data) {
+                            if (data.code==200){
+                                obj.del();
+                                layer.close(index);
+                            } else {
+                                layer.msg(data.msg);
+                            }
+                        },
+                        error: function () {
+                            layer.close(index);
+                            layer.msg("服务异常！");
+                        }
+                    });
+
+                });
+            }else if(obj.event === 'wg'){
+                layer.confirm('确定修改为违规',{icon: 7, title:'温馨提示'}, function(index){
+                    $.ajax({
+                        type: 'post',
+                        url: '/system/edit/state',
+                        data: {
+                            "articleID": arid,
+                            "state": 4
+                        },
+                        success: function (data) {
+                            if (data.code==200){
+                                obj.del();
+                                layer.close(index);
+                            } else {
+                                layer.msg(data.msg);
+                            }
+                        },
+                        error: function () {
+                            layer.close(index);
+                            layer.msg("服务异常！");
+                        }
+                    });
+
+                });
+            }else if(obj.event === 'tg'){
+                layer.confirm('确定修改为正常',{icon: 1, title:'温馨提示'}, function(index){
+                    $.ajax({
+                        type: 'post',
+                        url: '/system/edit/state',
+                        data: {
+                            "articleID": arid,
+                            "state": 0
+                        },
+                        success: function (data) {
+                            if (data.code==200){
+                                obj.del();
+                                layer.close(index);
+                            } else {
+                                layer.msg(data.msg);
+                            }
+                        },
+                        error: function () {
+                            layer.close(index);
+                            layer.msg("服务异常！");
+                        }
+                    });
+
+                });
+            }else if(obj.event === 'sh'){
+                layer.confirm('确定修改为审核',{icon: 3, title:'温馨提示'}, function(index){
+                    $.ajax({
+                        type: 'post',
+                        url: '/system/edit/state',
+                        data: {
+                            "articleID": arid,
+                            "state": 3
+                        },
+                        success: function (data) {
+                            if (data.code==200){
+                                obj.del();
+                                layer.close(index);
+                            } else {
+                                layer.msg(data.msg);
+                            }
+                        },
+                        error: function () {
+                            layer.close(index);
+                            layer.msg("服务异常！");
+                        }
+                    });
+
+                });
+            }else if(obj.event === 'sc'){
+                layer.confirm('确定修改为删除',{icon: 2, title:'温馨提示'}, function(index){
+                    $.ajax({
+                        type: 'post',
+                        url: '/system/edit/state',
+                        data: {
+                            "articleID": arid,
+                            "state": 2
+                        },
+                        success: function (data) {
+                            if (data.code==200){
+                                obj.del();
+                                layer.close(index);
+                            } else {
+                                layer.msg(data.msg);
+                            }
+                        },
+                        error: function () {
+                            layer.close(index);
+                            layer.msg("服务异常！");
+                        }
+                    });
+
+                });
+            }
+        });
+
+        //删除状态表格监控
+        table.on('tool(shanchufilter)', function(obj){
+            var data = obj.data;
+            var arid = data.articleId;
+            if(obj.event === 'ck'){
+                layer.open({
+                    type: 2,
+                    title: '文章详情',
+                    shadeClose: true,
+                    shade: false,
+                    anim:4,
+                    maxmin: true, //开启最大化最小化按钮
+                    area: ['893px', '600px'],
+                    content: '/system/admin/fabu/yulan?articleId='+arid
+                });
+
+            }
+            else if(obj.event === 'bj'){
+                layer.confirm('确定修改为编辑', {icon: 3, title:'温馨提示'},function(index){
+                    $.ajax({
+                        type: 'post',
+                        url: '/system/edit/state',
+                        data: {
+                            "articleID": arid,
+                            "state": -1
+                        },
+                        success: function (data) {
+                            if (data.code==200){
+                                obj.del();
+                                layer.close(index);
+                            } else {
+                                layer.msg(data.msg);
+                            }
+                        },
+                        error: function () {
+                            layer.close(index);
+                            layer.msg("服务异常！");
+                        }
+                    });
+
+                });
+            }else if(obj.event === 'wg'){
+                layer.confirm('确定修改为违规',{icon: 7, title:'温馨提示'}, function(index){
+                    $.ajax({
+                        type: 'post',
+                        url: '/system/edit/state',
+                        data: {
+                            "articleID": arid,
+                            "state": 4
+                        },
+                        success: function (data) {
+                            if (data.code==200){
+                                obj.del();
+                                layer.close(index);
+                            } else {
+                                layer.msg(data.msg);
+                            }
+                        },
+                        error: function () {
+                            layer.close(index);
+                            layer.msg("服务异常！");
+                        }
+                    });
+
+                });
+            }else if(obj.event === 'tg'){
+                layer.confirm('确定修改为正常',{icon: 1, title:'温馨提示'}, function(index){
+                    $.ajax({
+                        type: 'post',
+                        url: '/system/edit/state',
+                        data: {
+                            "articleID": arid,
+                            "state": 0
+                        },
+                        success: function (data) {
+                            if (data.code==200){
+                                obj.del();
+                                layer.close(index);
+                            } else {
+                                layer.msg(data.msg);
+                            }
+                        },
+                        error: function () {
+                            layer.close(index);
+                            layer.msg("服务异常！");
+                        }
+                    });
+
+                });
+            }else if(obj.event === 'sh'){
+                layer.confirm('确定修改为审核',{icon: 3, title:'温馨提示'}, function(index){
+                    $.ajax({
+                        type: 'post',
+                        url: '/system/edit/state',
+                        data: {
+                            "articleID": arid,
+                            "state": 3
+                        },
+                        success: function (data) {
+                            if (data.code==200){
+                                obj.del();
+                                layer.close(index);
+                            } else {
+                                layer.msg(data.msg);
+                            }
+                        },
+                        error: function () {
+                            layer.close(index);
+                            layer.msg("服务异常！");
+                        }
+                    });
+
+                });
+            }else if(obj.event === 'gj'){
+                layer.confirm('确定修改为高级',{icon: 4, title:'温馨提示'}, function(index){
+                    $.ajax({
+                        type: 'post',
+                        url: '/system/edit/state',
+                        data: {
+                            "articleID": arid,
+                            "state": 1
+                        },
+                        success: function (data) {
+                            if (data.code==200){
+                                obj.del();
+                                layer.close(index);
+                            } else {
+                                layer.msg(data.msg);
+                            }
+                        },
+                        error: function () {
+                            layer.close(index);
+                            layer.msg("服务异常！");
+                        }
+                    });
+
+                });
+            }
+        });
+
+        //审核状态表格监控
+        table.on('tool(shenhefilter)', function(obj){
+            var data = obj.data;
+            var arid = data.articleId;
+            if(obj.event === 'ck'){
+                layer.open({
+                    type: 2,
+                    title: '文章详情',
+                    shadeClose: true,
+                    shade: false,
+                    anim:4,
+                    maxmin: true, //开启最大化最小化按钮
+                    area: ['893px', '600px'],
+                    content: '/system/admin/fabu/yulan?articleId='+arid
+                });
+
+            }
+            else if(obj.event === 'bj'){
+                layer.confirm('确定修改为编辑', {icon: 3, title:'温馨提示'},function(index){
+                    $.ajax({
+                        type: 'post',
+                        url: '/system/edit/state',
+                        data: {
+                            "articleID": arid,
+                            "state": -1
+                        },
+                        success: function (data) {
+                            if (data.code==200){
+                                obj.del();
+                                layer.close(index);
+                            } else {
+                                layer.msg(data.msg);
+                            }
+                        },
+                        error: function () {
+                            layer.close(index);
+                            layer.msg("服务异常！");
+                        }
+                    });
+
+                });
+            }else if(obj.event === 'wg'){
+                layer.confirm('确定修改为违规',{icon: 7, title:'温馨提示'}, function(index){
+                    $.ajax({
+                        type: 'post',
+                        url: '/system/edit/state',
+                        data: {
+                            "articleID": arid,
+                            "state": 4
+                        },
+                        success: function (data) {
+                            if (data.code==200){
+                                obj.del();
+                                layer.close(index);
+                            } else {
+                                layer.msg(data.msg);
+                            }
+                        },
+                        error: function () {
+                            layer.close(index);
+                            layer.msg("服务异常！");
+                        }
+                    });
+
+                });
+            }else if(obj.event === 'tg'){
+                layer.confirm('确定修改为正常',{icon: 1, title:'温馨提示'}, function(index){
+                    $.ajax({
+                        type: 'post',
+                        url: '/system/edit/state',
+                        data: {
+                            "articleID": arid,
+                            "state": 0
+                        },
+                        success: function (data) {
+                            if (data.code==200){
+                                obj.del();
+                                layer.close(index);
+                            } else {
+                                layer.msg(data.msg);
+                            }
+                        },
+                        error: function () {
+                            layer.close(index);
+                            layer.msg("服务异常！");
+                        }
+                    });
+
+                });
+            }else if(obj.event === 'gj'){
+                layer.confirm('确定修改为高级',{icon: 4, title:'温馨提示'}, function(index){
+                    $.ajax({
+                        type: 'post',
+                        url: '/system/edit/state',
+                        data: {
+                            "articleID": arid,
+                            "state": 3
+                        },
+                        success: function (data) {
+                            if (data.code==200){
+                                obj.del();
+                                layer.close(index);
+                            } else {
+                                layer.msg(data.msg);
+                            }
+                        },
+                        error: function () {
+                            layer.close(index);
+                            layer.msg("服务异常！");
+                        }
+                    });
+
+                });
+            }else if(obj.event === 'sc'){
+                layer.confirm('确定修改为删除',{icon: 2, title:'温馨提示'}, function(index){
+                    $.ajax({
+                        type: 'post',
+                        url: '/system/edit/state',
+                        data: {
+                            "articleID": arid,
+                            "state": 2
+                        },
+                        success: function (data) {
+                            if (data.code==200){
+                                obj.del();
+                                layer.close(index);
+                            } else {
+                                layer.msg(data.msg);
+                            }
+                        },
+                        error: function () {
+                            layer.close(index);
+                            layer.msg("服务异常！");
+                        }
+                    });
+
+                });
+            }
+        });
+
+        //未通过状态表格监控
+        table.on('tool(weiguifilter)', function(obj){
+            var data = obj.data;
+            var arid = data.articleId;
+            if(obj.event === 'ck'){
+                layer.open({
+                    type: 2,
+                    title: '文章详情',
+                    shadeClose: true,
+                    shade: false,
+                    anim:4,
+                    maxmin: true, //开启最大化最小化按钮
+                    area: ['893px', '600px'],
+                    content: '/system/admin/fabu/yulan?articleId='+arid
+                });
+
+            }
+            else if(obj.event === 'bj'){
+                layer.confirm('确定修改为编辑', {icon: 3, title:'温馨提示'},function(index){
+                    $.ajax({
+                        type: 'post',
+                        url: '/system/edit/state',
+                        data: {
+                            "articleID": arid,
+                            "state": -1
+                        },
+                        success: function (data) {
+                            if (data.code==200){
+                                obj.del();
+                                layer.close(index);
+                            } else {
+                                layer.msg(data.msg);
+                            }
+                        },
+                        error: function () {
+                            layer.close(index);
+                            layer.msg("服务异常！");
+                        }
+                    });
+
+                });
+            }else if(obj.event === 'gj'){
+                layer.confirm('确定修改为高级',{icon: 4, title:'温馨提示'}, function(index){
+                    $.ajax({
+                        type: 'post',
+                        url: '/system/edit/state',
+                        data: {
+                            "articleID": arid,
+                            "state": 4
+                        },
+                        success: function (data) {
+                            if (data.code==200){
+                                obj.del();
+                                layer.close(index);
+                            } else {
+                                layer.msg(data.msg);
+                            }
+                        },
+                        error: function () {
+                            layer.close(index);
+                            layer.msg("服务异常！");
+                        }
+                    });
+
+                });
+            }else if(obj.event === 'tg'){
+                layer.confirm('确定修改为正常',{icon: 1, title:'温馨提示'}, function(index){
+                    $.ajax({
+                        type: 'post',
+                        url: '/system/edit/state',
+                        data: {
+                            "articleID": arid,
+                            "state": 0
+                        },
+                        success: function (data) {
+                            if (data.code==200){
+                                obj.del();
+                                layer.close(index);
+                            } else {
+                                layer.msg(data.msg);
+                            }
+                        },
+                        error: function () {
+                            layer.close(index);
+                            layer.msg("服务异常！");
+                        }
+                    });
+
+                });
+            }else if(obj.event === 'sh'){
+                layer.confirm('确定修改为审核',{icon: 3, title:'温馨提示'}, function(index){
+                    $.ajax({
+                        type: 'post',
+                        url: '/system/edit/state',
+                        data: {
+                            "articleID": arid,
+                            "state": 3
+                        },
+                        success: function (data) {
+                            if (data.code==200){
+                                obj.del();
+                                layer.close(index);
+                            } else {
+                                layer.msg(data.msg);
+                            }
+                        },
+                        error: function () {
+                            layer.close(index);
+                            layer.msg("服务异常！");
+                        }
+                    });
+
+                });
+            }else if(obj.event === 'sc'){
+                layer.confirm('确定修改为删除',{icon: 2, title:'温馨提示'}, function(index){
+                    $.ajax({
+                        type: 'post',
+                        url: '/system/edit/state',
+                        data: {
+                            "articleID": arid,
+                            "state": 2
+                        },
+                        success: function (data) {
+                            if (data.code==200){
+                                obj.del();
+                                layer.close(index);
+                            } else {
+                                layer.msg(data.msg);
+                            }
+                        },
+                        error: function () {
+                            layer.close(index);
+                            layer.msg("服务异常！");
+                        }
+                    });
+
+                });
+            }
+        });
     });
-    function timestampToTime(timestamp) {
-        var date = new Date(timestamp);//时间戳为10位需*1000，时间戳为13位的话不需乘1000
-        Y = date.getFullYear() + '-';
-        M = (date.getMonth()+1 < 10 ? '0'+(date.getMonth()+1) : date.getMonth()+1) + '-';
-        D = date.getDate() + ' ';
-        h = date.getHours() + ':';
-        m = date.getMinutes() + ':';
-        s = date.getSeconds();
-        return Y+M+D+h+m+s;
-    }
 
 </script>
 

@@ -51,4 +51,12 @@ public interface ArticleDao {
     PageInfo<Article> selectActilcNameLike(Integer pageStart, Integer pageNum, String state, List<String> fneciLists);
 
     PageInfo<Article> selArticleState(String statId, Integer pageStart, Integer pageNum);
+
+    /**
+     * 根据 id 状态值跟新文章状态
+     * @param state
+     * @param articleID
+     * @return
+     */
+    int editState(String state, String articleID);
 }

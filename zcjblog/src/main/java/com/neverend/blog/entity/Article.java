@@ -59,6 +59,7 @@ public class Article implements Serializable {
             "-1编辑状态;" +
             "0已发布，可用;" +
             "3待审核"+
+            "4未通过"+
             "1禁止普通用户查看;" +
             "2删除")
     private String state;
@@ -72,7 +73,7 @@ public class Article implements Serializable {
     /**
      * 文章级别 0,1，3,4 以此类推0表示最低级别
      */
-    @ApiModelProperty(value="文章级别 0,1,3,4 以此类推0表示最低级别")
+    @ApiModelProperty(value="文章级别 0,1,2,3,4 以此类推0表示最低级别")
     private String beiYongEr;
     @JsonIgnore
     private String beiYongSi;

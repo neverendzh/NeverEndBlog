@@ -1,7 +1,7 @@
 package com.neverend.blog.contoller.admin;
 
 import com.neverend.blog.entity.Account;
-import com.neverend.blog.service.AccountService;
+import com.neverend.blog.service.AccountServiceMyzcj;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.*;
@@ -25,7 +25,7 @@ import javax.servlet.http.HttpServletRequest;
 public class IndexAdmin {
 
     @Autowired
-    private AccountService accountService;
+    private AccountServiceMyzcj accountServiceMyzcj;
 
     /**
      * 管理员首页
@@ -77,7 +77,7 @@ public class IndexAdmin {
                 subject.login(usernamePasswordToken);
 
                 //将登录成功的对象放入session（没必要）
-                Account account = accountService.findByMobile(name);
+                Account account = accountServiceMyzcj.findByMobile(name);
                 Session session = subject.getSession();
                 session.setAttribute("account",account);
 

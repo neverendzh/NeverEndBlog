@@ -1,7 +1,7 @@
 package com.neverend.blog.contoller.AdminUserPublic;
 
 import com.neverend.blog.moudel.Msg;
-import com.neverend.blog.service.AccountService;
+import com.neverend.blog.service.AccountServiceMyzcj;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
@@ -17,7 +17,7 @@ import springfox.documentation.annotations.ApiIgnore;
 public class RegisteredAccount {
 
     @Autowired
-    private AccountService accountService;
+    private AccountServiceMyzcj useraccountServiceMyzcj;
 
     /**
      * QQ登陆
@@ -25,9 +25,10 @@ public class RegisteredAccount {
      * @return
      */
     @PostMapping("qq/login")
-    @ApiIgnore
+//    @ApiIgnore
     public String QQRegisteredAccount() {
-
+        useraccountServiceMyzcj.registeredAccount("zcjn",
+                "9999999999","123","false","9999999999");
         return "admin/login";
     }
 
@@ -58,7 +59,7 @@ public class RegisteredAccount {
                                  @RequestParam(name = "password") String password,
                                  @RequestParam(name = "isEncryption") String isEncryption,
                                  @RequestParam(name = "email") String email, Device device) {
-        Msg msg = accountService.registeredAccount(userName, accountNumber, password, isEncryption, email);
+        Msg msg = useraccountServiceMyzcj.registeredAccount(userName, accountNumber, password, isEncryption, email);
 
         return msg;
     }

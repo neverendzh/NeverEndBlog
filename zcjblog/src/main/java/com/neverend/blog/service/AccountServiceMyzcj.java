@@ -8,7 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 /**
  * @author Administrator
  */
-public interface AccountService {
+public interface AccountServiceMyzcj {
 
     Account findByMobile(String userMobile);
 
@@ -25,6 +25,5 @@ public interface AccountService {
      * @param isEncryption
      * @return
      */
-    @Transactional
-    public Msg registeredAccount(String userName, String accountNumber, String password, String isEncryption,String email);
+     Msg registeredAccount(String userName, String accountNumber, String password, String isEncryption,String email);
 }

@@ -4,7 +4,7 @@ import com.neverend.blog.entity.Account;
 import com.neverend.blog.entity.AccountLoginLog;
 import com.neverend.blog.entity.RolePermission;
 import com.neverend.blog.entity.Roles;
-import com.neverend.blog.service.AccountService;
+import com.neverend.blog.service.AccountServiceMyzcj;
 import com.neverend.blog.service.RolePermissionService;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.authz.AuthorizationInfo;
@@ -14,6 +14,7 @@ import org.apache.shiro.subject.PrincipalCollection;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 
 import java.util.*;
 
@@ -24,9 +25,11 @@ public class ShiroRealm extends AuthorizingRealm {
     private Logger logger = LoggerFactory.getLogger(ShiroRealm.class);
 
     @Autowired
-    private AccountService accountService;
+    @Lazy
+    private AccountServiceMyzcj accountServiceMyzcj;
 
     @Autowired
+    @Lazy
     private RolePermissionService rolePermissionService;
 
     /**
@@ -76,7 +79,7 @@ public class ShiroRealm extends AuthorizingRealm {
         UsernamePasswordToken usernamePasswordToken = (UsernamePasswordToken) authenticationToken;
         String userMobile = usernamePasswordToken.getUsername();
         if(userMobile != null) {
-            Account account = accountService.findByMobile(userMobile);
+            Account account = accountServiceMyzcj.findByMobile(userMobile);
             if(account == null) {
                 throw new UnknownAccountException("找不到该账号:" + userMobile);
             } else {
@@ -90,7 +93,7 @@ public class ShiroRealm extends AuthorizingRealm {
                         accountLoginLog.setLoginTime(new Date());
                         accountLoginLog.setLoginIp(usernamePasswordToken.getHost());
                         accountLoginLog.setAccountId(account.getId());
-                        accountService.saveAccountLoginLog(accountLoginLog);
+                        accountServiceMyzcj.saveAccountLoginLog(accountLoginLog);
                         return new SimpleAuthenticationInfo(account,account.getUserPassword(),getName());
 
                 } else {

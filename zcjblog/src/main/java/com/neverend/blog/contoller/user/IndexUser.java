@@ -5,7 +5,7 @@ import com.neverend.blog.entity.Account;
 import com.neverend.blog.moudel.Code;
 import com.neverend.blog.moudel.LanMuUi;
 import com.neverend.blog.moudel.Msg;
-import com.neverend.blog.service.AccountService;
+import com.neverend.blog.service.AccountServiceMyzcj;
 import com.neverend.blog.service.SuperLanMuService;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
@@ -38,7 +38,7 @@ import java.util.Map;
 @Controller
 public class IndexUser {
     @Autowired
-    private AccountService accountService;
+    private AccountServiceMyzcj accountServiceMyzcj;
     @Autowired
     private SuperLanMuService superLanMuService;
 

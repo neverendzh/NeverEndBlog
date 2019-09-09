@@ -12,7 +12,7 @@ import com.neverend.blog.entity.ArticleWithBLOBs;
 import com.neverend.blog.moudel.ActicleTree;
 import com.neverend.blog.moudel.Code;
 import com.neverend.blog.moudel.Msg;
-import com.neverend.blog.service.AccountService;
+import com.neverend.blog.service.AccountServiceMyzcj;
 import com.neverend.blog.service.ArticleService;
 import com.neverend.blog.service.mq.MsgSend;
 import com.neverend.blog.util.email.FenCIUtil;
@@ -40,7 +40,7 @@ public class ArticleServiceImpl implements ArticleService {
     private ArticleDao articleDao;
 
     @Autowired
-    private AccountService accountService;
+    private AccountServiceMyzcj accountServiceMyzcj;
     @Autowired
     private ArticleSuperArticleIdDao articleIdDao;
     @Autowired
@@ -89,7 +89,7 @@ public class ArticleServiceImpl implements ArticleService {
         Msg msg = new Msg();
         Date date = new Date();
         String uuid = GetUUID.uuid();
-        Account accountIsTrue = accountService.selectAccount(account);
+        Account accountIsTrue = accountServiceMyzcj.selectAccount(account);
         if (accountIsTrue != null) {
             if (getArticleName(articleWithBLOBs)) {
                 Article article = articleDao.selectAccountIdAndArticleName(articleWithBLOBs.getArticleName(), accountIsTrue.getId());
@@ -228,6 +228,24 @@ public class ArticleServiceImpl implements ArticleService {
             msg.setMsg(Code.ParamerrorMsg);
             return msg;
         }
+    }
+
+    @Override
+    public Msg editState(String state, String articleID) {
+        Msg msg = GetMsg.getMsg();
+        int i =  articleDao.editState(state,articleID);
+        if (i>0){
+            msg.setCode(Code.sucess);
+            msg.setMsg(Code.sucessMsg);
+            return msg;
+        }else {
+            msg.setCode(Code.Nonexistent);
+            msg.setMsg(Code.NonexistentMsg);
+            return msg;
+        }
+
+
+
     }
 
 

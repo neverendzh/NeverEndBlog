@@ -12,10 +12,7 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mobile.device.Device;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import springfox.documentation.annotations.ApiIgnore;
 
 @Controller
@@ -24,11 +21,18 @@ public class ArticleStateEdit {
     @Autowired
     private ArticleService articleService;
 
-   @GetMapping("/article/state")
-   @ApiIgnore
-   public String editstate(){
-       return "/admin/articleState/articleStateEdit";
-   }
+    @GetMapping("/article/state")
+    @ApiIgnore
+    public String editstate() {
+        return "/admin/articleState/articleStateEdit";
+    }
+
+    @GetMapping("/article/state/shenhe")
+    @ApiIgnore
+    public String editstateshenhe() {
+        return "/admin/articleState/shenhe";
+    }
+
 
     @ApiOperation(value = "文章状态分类", httpMethod = "GET",
             notes = "文章不同分类查看", protocols = "http")
@@ -42,11 +46,20 @@ public class ArticleStateEdit {
     @GetMapping("/edit/article/state")
     @ResponseBody
     public Msg<PageMsg<Article>> YulanApijson(@RequestParam(name = "statId", required = true) String statId,
-                                     @RequestParam(name = "page", defaultValue = "1") Integer page,
-                                     @RequestParam(value = "limit", defaultValue = "10") Integer limit,
-                                     Device device) {
-        Msg msg = articleService.getArticleState(statId,page,limit);
+                                              @RequestParam(name = "page", defaultValue = "1") Integer page,
+                                              @RequestParam(value = "limit", defaultValue = "10") Integer limit,
+                                              Device device) {
+        Msg msg = articleService.getArticleState(statId, page, limit);
 
+        return msg;
+    }
+
+
+    @PostMapping("/edit/state")
+    @ResponseBody
+    public Msg editState(@RequestParam(name = "state") String state,
+                         @RequestParam(name = "articleID") String articleID,Device device) {
+        Msg msg = articleService.editState(state,articleID);
         return msg;
     }
 }

@@ -5,7 +5,7 @@ import com.neverend.blog.entity.ArticleWithBLOBs;
 import com.neverend.blog.moudel.ActicleTree;
 import com.neverend.blog.moudel.Code;
 import com.neverend.blog.moudel.Msg;
-import com.neverend.blog.service.AccountService;
+import com.neverend.blog.service.AccountServiceMyzcj;
 import com.neverend.blog.service.ArticleService;
 import com.neverend.blog.service.SuperArticleSortService;
 import io.swagger.annotations.ApiImplicitParam;
@@ -34,7 +34,7 @@ public class FabuBlog {
 
 
     @Autowired
-    private AccountService accountService;
+    private AccountServiceMyzcj accountServiceMyzcj;
     @Autowired
     private ArticleService articleService;
     @Autowired

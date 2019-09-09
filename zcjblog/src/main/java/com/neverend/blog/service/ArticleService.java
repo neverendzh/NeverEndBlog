@@ -81,4 +81,12 @@ public interface ArticleService {
      * @return
      */
     Msg getArticleState(String statId, Integer pageStart, Integer pageNum);
+
+    /**
+     * 修改文章状态
+     * @param state
+     * @param articleID
+     * @return
+     */
+    Msg editState(String state, String articleID);
 }
