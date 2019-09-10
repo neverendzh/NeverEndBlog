@@ -189,6 +189,9 @@
             );
 
     </select>
+    <select id="selSecrity" resultType="com.neverend.blog.moudel.RolePermissionSun">
+      CALL huoququanxleix(#{id});
+    </select>
     <update id="updateByExampleSelective" parameterType="map">
     update tb_role_permission
     <set>

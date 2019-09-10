@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>Never_End</title>
+    <!--header——js-->
+    <div th:replace="../templates/admin/include/header :: headerJsCss"></div>
+</head>
+<body class="layui-layout-body">
+<div class="layui-layout layui-layout-admin">
+    <!--Navigation Bar-->
+    <div th:replace="../templates/admin/include/top :: topHeader"></div>
+
+    <!--Navigation Bar-->
+    <div th:replace="../templates/admin/include/left :: #leftinclude(selAddClass=urllj)"></div>
+
+    <div class="layui-body">
+        <div style="padding: 15px;">
+            <div class="layui-tab layui-tab-card" lay-filter="TabStateAr">
+                <ul class="layui-tab-title">
+                    <li class="layui-this">访问控制权限</li>
+                </ul>
+                <div class="layui-tab-content" style="height: 200px;">
+                    <div class="layui-tab-item layui-show">
+                        <table id="shenhe" lay-filter="shenhefilter"></table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <script type="text/html" id="temporaryMy">
+            <input type="checkbox" name="Temporary" value="{{d.id}}" lay-skin="switch" lay-text="开启|关闭" lay-filter="temporaryMy" {{ d.temporaryMy == 'yes' ? 'checked' : '' }}>
+        </script>
+        <script type="text/html" id="userMy">
+            <input type="checkbox" name="user" value="{{d.id}}" lay-skin="switch" lay-text="开启|关闭" lay-filter="userMy" {{ d.userMy == 'yes' ? 'checked' : '' }}>
+        </script>
+        <script type="text/html" id="adminMy">
+            <input type="checkbox" name="admin" value="{{d.id}}" lay-skin="switch" lay-text="开启|关闭" lay-filter="adminMy" {{ d.adminMy == 'yes' ? 'checked' : '' }}>
+        </script>
+        <script type="text/html" id="superMy">
+            <input type="checkbox" name="super" value="{{d.id}}" lay-skin="switch" lay-text="开启|关闭" lay-filter="superMy" {{ d.superMy == 'yes' ? 'checked' : '' }}>
+        </script>
+    </div>
+
+    <!--Bottom information Text-->
+    <div th:replace="../templates/admin/include/footer :: footerHtml"></div>
+</div>
+<!--Bottom information js-->
+<div th:replace="../templates/admin/include/footerjs :: footerJsCss"></div>
+<script type="text/javascript" src="/static/res/js/util/NumberToChinese.js"></script>
+<script type="text/javascript" th:inline="none">
+    layui.use(['table', 'element'], function () {
+        var type = 0;
+        var table = layui.table;
+        var form = layui.form;
+        var element = layui.element;
+        table.render({
+            elem: '#shenhe'
+            ,url:'/system/admin/editurl'
+            ,cellMinWidth: 80
+            ,cols: [[
+                {type:'numbers'}
+                ,{type: 'checkbox'}
+                ,{field:'id', title:'ID', width:100, unresize: true, sort: true}
+                ,{field:'permissionName', title:'菜单名称',sort: true}
+                ,{field:'permissionCode', title:'权限Code',sort: true}
+                ,{field:'creatTime', title: '创建时间',templet: function(d){
+                        return  new Date(d.creatTime).Format("yyyy-MM-dd hh:mm:ss")}, minWidth:120, sort: true}
+                ,{field:'updateTime', title:'更新时间',templet: function(d){
+                        return  new Date(d.updateTime).Format("yyyy-MM-dd hh:mm:ss")}, sort: true}
+                ,{field:'url', title:'权限对应url', width:110}
+                ,{field:'temporaryMy',title:'游客权限', templet: '#temporaryMy',width:110,}
+                ,{field:'userMy',title:'用户', templet: '#userMy',width:110,}
+                ,{field:'adminMy',title:'管理员', templet: '#adminMy',width:110,}
+                ,{field:'superMy',title:'超级管理员', templet: '#superMy',width:110,}
+                ,{field:'errormy',title:'错误值',width:110,templet:function (d) {
+                        if (d.errormy==""){
+                            return"sucess";
+                        }else {
+                            return d.errormy;
+                        }
+                    }}
+            ]]
+            ,page: { //支持传入 laypage 组件的所有参数（某些参数除外，如：jump/elem） - 详见文档
+                layout: ['limit', 'count', 'prev', 'page', 'next', 'skip'] //自定义分页布局
+                //,curr: 5 //设定初始在第 5 页
+                ,groups: 7 //只显示 1 个连续页码
+                ,first: false //不显示首页
+                ,last: false //不显示尾页,
+                ,prev:"上一页"
+                ,next:"下一页"
+            }
+        });
+
+        form.on('switch(temporaryMy)', function(obj){
+            var id = this.value;
+            var quanxName = this.name;
+            var iskq = obj.elem.checked;
+            $.ajax({
+                type: 'post',
+                url: '/system/admin/open/close',
+                data: {
+                    "iskq": iskq,
+                    "id": id,
+                    "secrityName":quanxName
+                },
+                success: function (data) {
+                    layer.msg(data.msg);
+                    if (data.code !=200){
+                        if (iskq) {
+                            obj.elem.checked=false;
+                        }else{
+                            obj.elem.checked=true;
+                        }
+                        form.render();
+                    }
+                },
+                error: function () {
+                    if (iskq) {
+                        obj.elem.checked=false;
+                    }else{
+                        obj.elem.checked=true;
+                    }
+                    form.render();
+                    layer.msg("服务异常！");
+                }
+            });
+
+        });
+
+        form.on('switch(userMy)', function(obj){
+            var id = this.value;
+            var quanxName = this.name;
+            var iskq = obj.elem.checked;
+            $.ajax({
+                type: 'post',
+                url: '/system/admin/open/close',
+                data: {
+                    "iskq": iskq,
+                    "id": id,
+                    "secrityName":quanxName
+                },
+                success: function (data) {
+                    layer.msg(data.msg);
+                    if (data.code !=200){
+                        if (iskq) {
+                            obj.elem.checked=false;
+                        }else{
+                            obj.elem.checked=true;
+                        }
+                        form.render();
+                    }
+                },
+                error: function () {
+                    if (iskq) {
+                        obj.elem.checked=false;
+                    }else{
+                        obj.elem.checked=true;
+                    }
+                    form.render();
+                    layer.msg("服务异常！");
+                }
+            });
+        });
+
+        form.on('switch(adminMy)', function(obj){
+            var id = this.value;
+            var quanxName = this.name;
+            var iskq = obj.elem.checked;
+            $.ajax({
+                type: 'post',
+                url: '/system/admin/open/close',
+                data: {
+                    "iskq": iskq,
+                    "id": id,
+                    "secrityName":quanxName
+                },
+                success: function (data) {
+                    layer.msg(data.msg);
+                    if (data.code !=200){
+                        if (iskq) {
+                            obj.elem.checked=false;
+                        }else{
+                            obj.elem.checked=true;
+                        }
+                        form.render();
+                    }
+                },
+                error: function () {
+                    if (iskq) {
+                        obj.elem.checked=false;
+                    }else{
+                        obj.elem.checked=true;
+                    }
+                    form.render();
+                    layer.msg("服务异常！");
+                }
+            });
+        });
+
+        form.on('switch(superMy)', function(obj){
+            var id = this.value;
+            var quanxName = this.name;
+            var iskq = obj.elem.checked;
+            $.ajax({
+                type: 'post',
+                url: '/system/admin/open/close',
+                data: {
+                    "iskq": iskq,
+                    "id": id,
+                    "secrityName":quanxName
+                },
+                success: function (data) {
+                    layer.msg(data.msg);
+                    if (data.code !=200){
+                        if (iskq) {
+                            obj.elem.checked=false;
+                        }else{
+                            obj.elem.checked=true;
+                        }
+                    }
+                },
+                error: function () {
+                    if (iskq) {
+                        obj.elem.checked=false;
+                    }else{
+                        obj.elem.checked=true;
+                    }
+                    form.render();
+                    layer.msg("服务异常！");
+                }
+            });
+        });
+    });
+
+</script>
+
+</body>
+</html>

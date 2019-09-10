@@ -4,6 +4,7 @@ import com.neverend.blog.entity.RolePermission;
 import com.neverend.blog.entity.RolePermissionExample;
 import java.util.List;
 
+import com.neverend.blog.moudel.RolePermissionSun;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 @Mapper
@@ -31,4 +32,6 @@ public interface RolePermissionMapper {
     int updateByPrimaryKey(RolePermission record);
 
     List<RolePermission> findAllByRolesId(@Param("roleId")String roleId);
+
+    RolePermissionSun selSecrity(@Param("id") String id);
 }
