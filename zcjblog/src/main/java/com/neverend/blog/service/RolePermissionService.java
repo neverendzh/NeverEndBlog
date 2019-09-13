@@ -29,4 +29,11 @@ public interface RolePermissionService {
      * @return
      */
     Msg openCloseSecrity(String id, String secrityName, boolean iskq);
+
+    /**
+     * 添加url权限链接
+     * @param urlName
+     * @return
+     */
+    Msg addurl(String urlName,String typeName);
 }

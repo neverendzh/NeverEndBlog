@@ -1,5 +1,7 @@
 package com.neverend.blog.service.impl;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.neverend.blog.entity.Account;
 import com.neverend.blog.entity.AccountExample;
 import com.neverend.blog.entity.AccountLoginLog;
@@ -10,11 +12,11 @@ import com.neverend.blog.mapper.RoleAccountKeyMapper;
 import com.neverend.blog.moudel.Code;
 import com.neverend.blog.moudel.Msg;
 import com.neverend.blog.service.AccountServiceMyzcj;
+import com.neverend.blog.util.email.GetMsg;
 import com.neverend.blog.util.email.GetUUID;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
@@ -115,6 +117,26 @@ public class AccountServiceMyzcjImpl implements AccountServiceMyzcj {
         }
 
 
+    }
+
+    /**
+     * 查看用户信息
+     *
+     * @param page
+     * @param size
+     * @return
+     */
+    @Override
+    public Msg selectAccountmsg(Integer page, Integer size) {
+        Msg msg = GetMsg.getMsg();
+        PageHelper.startPage(page,size);
+        List<Account> accounts = accountMapper.selaccountRole();
+        PageInfo<Account> pageInfo = new PageInfo<>(accounts);
+        msg.setCode(Code.layuisucess);
+        msg.setMsg(Code.sucessMsg);
+        msg.setData(pageInfo.getList());
+        msg.setCount(Long.toString(pageInfo.getTotal()));
+        return msg;
     }
 
     /**

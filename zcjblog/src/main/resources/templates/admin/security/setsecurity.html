@@ -23,23 +23,33 @@
                 </ul>
                 <div class="layui-tab-content" style="height: 200px;">
                     <div class="layui-tab-item layui-show">
-                        <table id="shenhe" lay-filter="shenhefilter"></table>
+                        <table id="shenhe" lay-filter="urlfawenfilter"></table>
                     </div>
                 </div>
             </div>
         </div>
 
+        <script type="text/html" id="addurl">
+            <div class="layui-btn-container">
+                <button class="layui-btn layui-btn-sm" lay-event="addnewurl">新增url</button>
+            </div>
+        </script>
+
         <script type="text/html" id="temporaryMy">
-            <input type="checkbox" name="Temporary" value="{{d.id}}" lay-skin="switch" lay-text="开启|关闭" lay-filter="temporaryMy" {{ d.temporaryMy == 'yes' ? 'checked' : '' }}>
+            <input type="checkbox" name="Temporary" value="{{d.id}}" lay-skin="switch" lay-text="开启|关闭"
+                   lay-filter="temporaryMy" {{ d.temporaryMy== 'yes' ? 'checked' : '' }}>
         </script>
         <script type="text/html" id="userMy">
-            <input type="checkbox" name="user" value="{{d.id}}" lay-skin="switch" lay-text="开启|关闭" lay-filter="userMy" {{ d.userMy == 'yes' ? 'checked' : '' }}>
+            <input type="checkbox" name="user" value="{{d.id}}" lay-skin="switch" lay-text="开启|关闭" lay-filter="userMy"
+                   {{ d.userMy== 'yes' ? 'checked' : '' }}>
         </script>
         <script type="text/html" id="adminMy">
-            <input type="checkbox" name="admin" value="{{d.id}}" lay-skin="switch" lay-text="开启|关闭" lay-filter="adminMy" {{ d.adminMy == 'yes' ? 'checked' : '' }}>
+            <input type="checkbox" name="admin" value="{{d.id}}" lay-skin="switch" lay-text="开启|关闭" lay-filter="adminMy"
+                   {{ d.adminMy== 'yes' ? 'checked' : '' }}>
         </script>
         <script type="text/html" id="superMy">
-            <input type="checkbox" name="super" value="{{d.id}}" lay-skin="switch" lay-text="开启|关闭" lay-filter="superMy" {{ d.superMy == 'yes' ? 'checked' : '' }}>
+            <input type="checkbox" name="super" value="{{d.id}}" lay-skin="switch" lay-text="开启|关闭" lay-filter="superMy"
+                   {{ d.superMy== 'yes' ? 'checked' : '' }}>
         </script>
     </div>
 
@@ -57,43 +67,96 @@
         var element = layui.element;
         table.render({
             elem: '#shenhe'
-            ,url:'/system/admin/editurl'
-            ,cellMinWidth: 80
-            ,cols: [[
-                {type:'numbers'}
-                ,{type: 'checkbox'}
-                ,{field:'id', title:'ID', width:100, unresize: true, sort: true}
-                ,{field:'permissionName', title:'菜单名称',sort: true}
-                ,{field:'permissionCode', title:'权限Code',sort: true}
-                ,{field:'creatTime', title: '创建时间',templet: function(d){
-                        return  new Date(d.creatTime).Format("yyyy-MM-dd hh:mm:ss")}, minWidth:120, sort: true}
-                ,{field:'updateTime', title:'更新时间',templet: function(d){
-                        return  new Date(d.updateTime).Format("yyyy-MM-dd hh:mm:ss")}, sort: true}
-                ,{field:'url', title:'权限对应url', width:110}
-                ,{field:'temporaryMy',title:'游客权限', templet: '#temporaryMy',width:110,}
-                ,{field:'userMy',title:'用户', templet: '#userMy',width:110,}
-                ,{field:'adminMy',title:'管理员', templet: '#adminMy',width:110,}
-                ,{field:'superMy',title:'超级管理员', templet: '#superMy',width:110,}
-                ,{field:'errormy',title:'错误值',width:110,templet:function (d) {
-                        if (d.errormy==""){
-                            return"sucess";
-                        }else {
+            , url: '/system/admin/editurl'
+            , cellMinWidth: 80
+            , toolbar: '#addurl'
+            , defaultToolbar: []
+            , cols: [[
+                {type: 'numbers'}
+                , {field: 'id', title: 'ID', width: 100, unresize: true, sort: true}
+                , {field: 'permissionName', title: '菜单名称', sort: true}
+                , {field: 'permissionCode', title: '权限Code', sort: true}
+                , {
+                    field: 'creatTime', title: '创建时间', templet: function (d) {
+                        return new Date(d.creatTime).Format("yyyy-MM-dd hh:mm:ss")
+                    }, minWidth: 120, sort: true
+                }
+                , {
+                    field: 'updateTime', title: '更新时间', templet: function (d) {
+                        return new Date(d.updateTime).Format("yyyy-MM-dd hh:mm:ss")
+                    }, sort: true
+                }
+                , {field: 'url', title: '权限对应url', width: 110}
+                , {field: 'temporaryMy', title: '游客权限', templet: '#temporaryMy', width: 110,}
+                , {field: 'userMy', title: '用户', templet: '#userMy', width: 110,}
+                , {field: 'adminMy', title: '管理员', templet: '#adminMy', width: 110,}
+                , {field: 'superMy', title: '超级管理员', templet: '#superMy', width: 110,}
+                , {
+                    field: 'errormy', title: '错误值', width: 110, templet: function (d) {
+                        if (d.errormy == "") {
+                            return "sucess";
+                        } else {
                             return d.errormy;
                         }
-                    }}
+                    }
+                }
             ]]
-            ,page: { //支持传入 laypage 组件的所有参数（某些参数除外，如：jump/elem） - 详见文档
+            , page: { //支持传入 laypage 组件的所有参数（某些参数除外，如：jump/elem） - 详见文档
                 layout: ['limit', 'count', 'prev', 'page', 'next', 'skip'] //自定义分页布局
                 //,curr: 5 //设定初始在第 5 页
-                ,groups: 7 //只显示 1 个连续页码
-                ,first: false //不显示首页
-                ,last: false //不显示尾页,
-                ,prev:"上一页"
-                ,next:"下一页"
+                , groups: 7 //只显示 1 个连续页码
+                , first: false //不显示首页
+                , last: false //不显示尾页,
+                , prev: "上一页"
+                , next: "下一页"
+            }
+            ,done: function (res, curr, count) {
+
+                $current = $('.layui-table-body td[data-field="url"]>div:contains("system/")'); //field为name的值为xxxx的行
+                $current.parent().parent().css('background-color', '#FF8D6D');//设置css
+
+                $current1 = $('.layui-table-body td[data-field="permissionName"]>div:contains("url")'); //field为name的值为xxxx的行
+                $current1.parent().parent().css('background-color', '#ff5d5b');//设置css
             }
         });
+//头工具栏事件
+        table.on('toolbar(urlfawenfilter)', function (obj) {
+            layer.prompt({title: '填写菜单名称', formType: 0}, function (valuename, index1) {
+                var typename = valuename;
+                if (typename.trim().length == 0) {
+                    layer.msg("请输入正确名称");
+                } else {
+                    layer.close(index1);
+                    layer.prompt({title: '填写相对路径URL', formType: 0}, function (pass, index2) {
+                        if (pass.trim().length == 0) {
+                            layer.msg("请输入正确RUL");
+                        } else {
+                            layer.close(index2);
+                            var addurl = pass;
+                            $.ajax({
+                                type: 'post',
+                                url: '/system/admin/add/url',
+                                data: {
+                                    "urlName": addurl,
+                                    "typeName": typename
+                                },
+                                success: function (data) {
+                                    layer.msg(data.msg);
+                                },
+                                error: function () {
+                                    layer.msg("服务异常！");
+                                }
+                            });
+                        }
 
-        form.on('switch(temporaryMy)', function(obj){
+
+                    });
+                }
+
+            });
+
+        });
+        form.on('switch(temporaryMy)', function (obj) {
             var id = this.value;
             var quanxName = this.name;
             var iskq = obj.elem.checked;
@@ -103,24 +166,24 @@
                 data: {
                     "iskq": iskq,
                     "id": id,
-                    "secrityName":quanxName
+                    "secrityName": quanxName
                 },
                 success: function (data) {
                     layer.msg(data.msg);
-                    if (data.code !=200){
+                    if (data.code != 200) {
                         if (iskq) {
-                            obj.elem.checked=false;
-                        }else{
-                            obj.elem.checked=true;
+                            obj.elem.checked = false;
+                        } else {
+                            obj.elem.checked = true;
                         }
                         form.render();
                     }
                 },
                 error: function () {
                     if (iskq) {
-                        obj.elem.checked=false;
-                    }else{
-                        obj.elem.checked=true;
+                        obj.elem.checked = false;
+                    } else {
+                        obj.elem.checked = true;
                     }
                     form.render();
                     layer.msg("服务异常！");
@@ -129,7 +192,7 @@
 
         });
 
-        form.on('switch(userMy)', function(obj){
+        form.on('switch(userMy)', function (obj) {
             var id = this.value;
             var quanxName = this.name;
             var iskq = obj.elem.checked;
@@ -139,24 +202,24 @@
                 data: {
                     "iskq": iskq,
                     "id": id,
-                    "secrityName":quanxName
+                    "secrityName": quanxName
                 },
                 success: function (data) {
                     layer.msg(data.msg);
-                    if (data.code !=200){
+                    if (data.code != 200) {
                         if (iskq) {
-                            obj.elem.checked=false;
-                        }else{
-                            obj.elem.checked=true;
+                            obj.elem.checked = false;
+                        } else {
+                            obj.elem.checked = true;
                         }
                         form.render();
                     }
                 },
                 error: function () {
                     if (iskq) {
-                        obj.elem.checked=false;
-                    }else{
-                        obj.elem.checked=true;
+                        obj.elem.checked = false;
+                    } else {
+                        obj.elem.checked = true;
                     }
                     form.render();
                     layer.msg("服务异常！");
@@ -164,7 +227,7 @@
             });
         });
 
-        form.on('switch(adminMy)', function(obj){
+        form.on('switch(adminMy)', function (obj) {
             var id = this.value;
             var quanxName = this.name;
             var iskq = obj.elem.checked;
@@ -174,24 +237,24 @@
                 data: {
                     "iskq": iskq,
                     "id": id,
-                    "secrityName":quanxName
+                    "secrityName": quanxName
                 },
                 success: function (data) {
                     layer.msg(data.msg);
-                    if (data.code !=200){
+                    if (data.code != 200) {
                         if (iskq) {
-                            obj.elem.checked=false;
-                        }else{
-                            obj.elem.checked=true;
+                            obj.elem.checked = false;
+                        } else {
+                            obj.elem.checked = true;
                         }
                         form.render();
                     }
                 },
                 error: function () {
                     if (iskq) {
-                        obj.elem.checked=false;
-                    }else{
-                        obj.elem.checked=true;
+                        obj.elem.checked = false;
+                    } else {
+                        obj.elem.checked = true;
                     }
                     form.render();
                     layer.msg("服务异常！");
@@ -199,7 +262,7 @@
             });
         });
 
-        form.on('switch(superMy)', function(obj){
+        form.on('switch(superMy)', function (obj) {
             var id = this.value;
             var quanxName = this.name;
             var iskq = obj.elem.checked;
@@ -209,23 +272,23 @@
                 data: {
                     "iskq": iskq,
                     "id": id,
-                    "secrityName":quanxName
+                    "secrityName": quanxName
                 },
                 success: function (data) {
                     layer.msg(data.msg);
-                    if (data.code !=200){
+                    if (data.code != 200) {
                         if (iskq) {
-                            obj.elem.checked=false;
-                        }else{
-                            obj.elem.checked=true;
+                            obj.elem.checked = false;
+                        } else {
+                            obj.elem.checked = true;
                         }
                     }
                 },
                 error: function () {
                     if (iskq) {
-                        obj.elem.checked=false;
-                    }else{
-                        obj.elem.checked=true;
+                        obj.elem.checked = false;
+                    } else {
+                        obj.elem.checked = true;
                     }
                     form.render();
                     layer.msg("服务异常！");

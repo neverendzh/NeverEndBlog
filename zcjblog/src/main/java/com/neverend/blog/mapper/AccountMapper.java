@@ -31,4 +31,6 @@ public interface AccountMapper {
     public int updateByPrimaryKeySelective(Account record);
 
     public int updateByPrimaryKey(Account record);
+
+    List<Account> selaccountRole();
 }

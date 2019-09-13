@@ -75,7 +75,16 @@ public class Account implements Serializable {
 
     private String beiYongBa;
 
+    private String rolesName;
     private static final long serialVersionUID = 1L;
+
+    public String getRolesName() {
+        return rolesName;
+    }
+
+    public void setRolesName(String rolesName) {
+        this.rolesName = rolesName;
+    }
 
     public String getId() {
         return id;

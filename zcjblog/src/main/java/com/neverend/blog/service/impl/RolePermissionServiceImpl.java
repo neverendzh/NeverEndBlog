@@ -19,6 +19,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @SuppressWarnings("ALL")
@@ -117,6 +118,56 @@ public class RolePermissionServiceImpl implements RolePermissionService {
                 return msg;
             }
         }
+    }
+
+    /**
+     * 添加url权限链接
+     *
+     * @param urlName
+     * @return
+     */
+    @Override
+    public Msg addurl(String urlName,String typeName) {
+        Msg msg = GetMsg.getMsg();
+        PageHelper.startPage(1,1);
+        RolePermissionExample rolePermissionExample = new RolePermissionExample();
+        rolePermissionExample.setOrderByClause("CAST( permission_code as signed) DESC");
+        List<RolePermission> rolePermissions = rolePermissionMapper.selectByExample(rolePermissionExample);
+        Integer code = 0;
+        Integer id = 0;
+        if (!rolePermissions.isEmpty() && rolePermissions.size()>0){
+            RolePermission rolePermission = rolePermissions.get(0);
+            code = Integer.valueOf(rolePermission.getPermissionCode())+1;
+
+            RolePermissionExample rolePermissionExampleid = new RolePermissionExample();
+            rolePermissionExampleid.setOrderByClause("CAST( id as signed) DESC");
+            List<RolePermission> rolePermissionsid = rolePermissionMapper.selectByExample(rolePermissionExampleid);
+            if (!rolePermissionsid.isEmpty() && rolePermissionsid.size()>0){
+                RolePermission rolePermissionid = rolePermissionsid.get(0);
+                id = Integer.valueOf(rolePermissionid.getId())+1;
+            }
+        }else {
+           code=code+1;
+        }
+
+        RolePermission permission = new RolePermission();
+        permission.setId(Integer.toString(id));
+        permission.setPermissionName(typeName);
+        permission.setPermissionCode(Integer.toString(code));
+        permission.setPermissionType("100");
+        permission.setParentId("0");
+        permission.setCreatTime(new Date());
+        permission.setUpdateTime(new Date());
+        permission.setUrl(urlName);
+        int insert = rolePermissionMapper.insert(permission);
+        if (insert==1){
+            msg.setMsg(Code.sucessMsg);
+            msg.setCode(Code.sucess);
+        }else {
+            msg.setCode(Code.error);
+            msg.setCode(Code.errorMsg);
+        }
+        return msg;
     }
 
     private int closeSecrity(String id, String secrityName) {

@@ -24,13 +24,13 @@ public class ArticleStateEdit {
     @GetMapping("/article/state")
     @ApiIgnore
     public String editstate() {
-        return "/admin/articleState/articleStateEdit";
+        return "admin/articleState/articleStateEdit";
     }
 
     @GetMapping("/article/state/shenhe")
     @ApiIgnore
     public String editstateshenhe() {
-        return "/admin/articleState/shenhe";
+        return "admin/articleState/shenhe";
     }
 
 

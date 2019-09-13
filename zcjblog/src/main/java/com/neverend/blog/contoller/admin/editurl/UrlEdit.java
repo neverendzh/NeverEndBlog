@@ -1,9 +1,7 @@
 package com.neverend.blog.contoller.admin.editurl;
 
-import com.neverend.blog.entity.RolePermission;
 import com.neverend.blog.moudel.Msg;
 import com.neverend.blog.service.RolePermissionService;
-import com.neverend.blog.util.email.GetMsg;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,7 +10,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import springfox.documentation.annotations.ApiIgnore;
 
-import java.util.List;
 
 @Controller
 @ApiIgnore
@@ -23,7 +20,7 @@ public class UrlEdit {
 
     @GetMapping("/system/admin/sel/url")
     public String urledit(){
-        return "/admin/security/setsecurity";
+        return "admin/security/setsecurity";
     }
 
     @GetMapping("/system/admin/editurl")
@@ -41,6 +38,13 @@ public class UrlEdit {
                          @RequestParam(name = "id") String id,
                          @RequestParam(name = "secrityName")   String secrityName){
         Msg msg = rolePermissionService.openCloseSecrity(id,secrityName,iskq);
+        return msg;
+    }
+
+    @PostMapping("/system/admin/add/url")
+    @ResponseBody
+    public Msg addurl(@RequestParam(name = "urlName") String urlName,@RequestParam(name = "typeName") String typeName){
+        Msg msg = rolePermissionService.addurl(urlName,typeName);
         return msg;
     }
 }

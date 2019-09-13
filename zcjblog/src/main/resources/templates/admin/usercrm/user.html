@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>Never_End</title>
+    <!--header——js-->
+    <div th:replace="../templates/admin/include/header :: headerJsCss"></div>
+</head>
+<body class="layui-layout-body">
+<div class="layui-layout layui-layout-admin">
+    <!--Navigation Bar-->
+    <div th:replace="../templates/admin/include/top :: topHeader"></div>
+
+    <!--Navigation Bar-->
+    <div th:replace="../templates/admin/include/left :: #leftinclude(selAddClass=usercrm)"></div>
+
+    <div class="layui-body">
+        <div style="padding: 15px;">
+            <div class="layui-tab layui-tab-card" lay-filter="TabStateAr">
+                <ul class="layui-tab-title">
+                    <li class="layui-this">用户</li>
+                </ul>
+                <div class="layui-tab-content" style="height: 200px;">
+                    <div class="layui-tab-item layui-show">
+                        <table id="user_gl" lay-filter="user_glfilter"></table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script type="text/html" id="checkboxTpl">
+        <input type="checkbox" name="lock" value="{{d.id}}" title="禁用" lay-filter="lockDemo" {{
+               d.accountState== '禁用' ? 'checked' : '' }}>
+    </script>
+    <script type="text/html" id="editroles">
+        <a class="layui-btn layui-btn-xs" lay-event="edit">编辑角色</a>
+        <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+    </script>
+    <!--Bottom information Text-->
+    <div th:replace="../templates/admin/include/footer :: footerHtml"></div>
+</div>
+<!--Bottom information js-->
+<div th:replace="../templates/admin/include/footerjs :: footerJsCss"></div>
+<script type="text/javascript" src="/static/res/js/util/NumberToChinese.js"></script>
+<script type="text/javascript" th:inline="none">
+    layui.use(['table', 'element'], function () {
+        var type = 0;
+        var table = layui.table;
+        var form = layui.form;
+        var element = layui.element;
+        table.render({
+            elem: '#user_gl'
+            , url: '/system/user/crm'
+            , cellMinWidth: 80
+            , toolbar: '#addurl'
+            , defaultToolbar: []
+            , cols: [[
+                {type: 'numbers'}
+                , {field: 'id', title: 'ID', width: 100, unresize: true, sort: true}
+                , {field: 'userName', title: '用户名', sort: true}
+                , {field: 'userEmail', title: '邮箱', sort: true}
+                , {
+                    field: 'creatTime', title: '创建时间', templet: function (d) {
+                        return new Date(d.creatTime).Format("yyyy-MM-dd hh:mm:ss")
+                    }, minWidth: 120, sort: true
+                }
+                , {field: 'accountState', title: '用户状态', templet: '#checkboxTpl', width: 110}
+                , {field: 'cellphoneNumber', title: '手机', width: 110,}
+                , {field: 'loginEndTime', title: '最新登陆时间', width: 110,}
+                , {
+                    field: 'rolesName', title: '所属角色', width: 110, templet: function (d) {
+                        if (d.rolesName == "admin") {
+                            return "管理员";
+                        } else if (d.rolesName == "super") {
+                            return "超级管理员";
+                        } else if (d.rolesName == "Temporary") {
+                            return "游客";
+                        } else if (d.rolesName == "user") {
+                            return "用户";
+                        } else {
+                            return d.rolesName;
+                        }
+                    }
+                }
+                , {fixed: 'right', title: '操作', toolbar: '#editroles', width: 150}
+            ]]
+            , page: { //支持传入 laypage 组件的所有参数（某些参数除外，如：jump/elem） - 详见文档
+                layout: ['limit', 'count', 'prev', 'page', 'next', 'skip'] //自定义分页布局
+                //,curr: 5 //设定初始在第 5 页
+                , groups: 7 //只显示 1 个连续页码
+                , first: false //不显示首页
+                , last: false //不显示尾页,
+                , prev: "上一页"
+                , next: "下一页"
+            }
+            , done: function (res, curr, count) {
+
+                $current = $('.layui-table-body td[data-field="url"]>div:contains("system/")'); //field为name的值为xxxx的行
+                $current.parent().parent().css('background-color', '#FF8D6D');//设置css
+
+                $current1 = $('.layui-table-body td[data-field="permissionName"]>div:contains("url")'); //field为name的值为xxxx的行
+                $current1.parent().parent().css('background-color', '#ff5d5b');//设置css
+            }
+        });
+        table.on('tool(user_glfilter)', function (obj) {
+            if (obj.event == "edit") {
+                $.ajax({
+                    type: 'get',
+                    url: '/system/user/roles',
+                    data: 'type=' + type,
+                    success: function (data) {
+                        if (data.code == 200) {
+
+                            layer.open({
+                                type: 1,
+                                title: "添加分类",
+                                skin: 'layui-layer-demo', //样式类名
+                                closeBtn: 1, //不显示关闭按钮
+                                anim: 2,
+                                shadeClose: true, //开启遮罩关闭
+                                content: ''
+                            });
+                            form.render();
+                        } else {
+                            layer.msg("服务中断");
+                        }
+
+                    },
+                    error: function (data) {
+                        layer.msg("服务暂停")
+                    }
+                });
+            }
+        });
+        form.render();
+    });
+
+</script>
+
+</body>
+</html>

@@ -26,4 +26,12 @@ public interface AccountServiceMyzcj {
      * @return
      */
      Msg registeredAccount(String userName, String accountNumber, String password, String isEncryption,String email);
+
+    /**
+     * 查看用户信息
+     * @param page
+     * @param size
+     * @return
+     */
+    Msg selectAccountmsg(Integer page, Integer size);
 }

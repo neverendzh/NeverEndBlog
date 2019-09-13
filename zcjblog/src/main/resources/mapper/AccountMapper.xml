@@ -235,7 +235,26 @@
       <include refid="Example_Where_Clause" />
     </if>
   </select>
-  <update id="updateByExampleSelective" parameterType="map">
+    <select id="selaccountRole" resultType="com.neverend.blog.entity.Account">
+      SELECT
+          acc.id,
+          acc.account_state,
+          acc.user_name,
+          acc.creat_time,
+          acc.account_state,
+          acc.cellphone_number,
+          acc.login_end_time,
+          acc.user_email,
+          ro.roles_name
+      FROM
+          `tb_account` AS acc,
+          tb_roles AS ro,
+          tb_role_account_key AS roak
+      WHERE
+          roak.account_id = acc.id
+      AND ro.role_id = roak.role_id
+    </select>
+    <update id="updateByExampleSelective" parameterType="map">
     update tb_account
     <set>
       <if test="record.id != null">
