@@ -9,4 +9,20 @@ public interface RoleService {
      * @return
      */
    Msg getRoles();
+
+    /**
+     * 修改用户角色
+     * @param accountid
+     * @param roleid
+     * @return
+     */
+    Msg editRoles(String accountid, String roleid);
+
+    /**
+     * 解除或禁用用户
+     * @param accountid
+     * @param isLock
+     * @return
+     */
+    Msg editlockAccount(String accountid, boolean isLock);
 }

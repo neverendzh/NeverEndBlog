@@ -7,6 +7,7 @@ import com.neverend.blog.service.RoleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -44,6 +45,31 @@ public class UserCrm {
     @ResponseBody
     public Msg<Account> getRole(){
         Msg msg = roleService.getRoles();
+        return msg;
+    }
+
+    /**
+     * 修改用户角色
+     * @return
+     */
+    @PostMapping("/system/edit/acc/role")
+    @ResponseBody
+    public Msg<Account> editRole(@RequestParam(name = "accountid") String accountid,
+                                 @RequestParam(name = "roleid") String roleid){
+        Msg msg = roleService.editRoles(accountid,roleid);
+        return msg;
+    }
+
+
+    /**
+     * 锁定或修改为正常
+     * @return
+     */
+    @PostMapping("/system/acount/lock/open")
+    @ResponseBody
+    public Msg editlockAccount(@RequestParam(name = "accountid") String accountid,
+                                 @RequestParam(name = "isLock") boolean isLock){
+        Msg msg = roleService.editlockAccount(accountid,isLock);
         return msg;
     }
 }

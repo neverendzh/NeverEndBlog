@@ -30,7 +30,7 @@
         </div>
     </div>
     <script type="text/html" id="checkboxTpl">
-        <input type="checkbox" name="lock" value="{{d.id}}" title="禁用" lay-filter="lockDemo" {{
+        <input type="checkbox" name="lock" value="{{d.id}}" title="禁用" lay-filter="accLockFiler" {{
                d.accountState== '禁用' ? 'checked' : '' }}>
     </script>
     <script type="text/html" id="editroles">
@@ -45,10 +45,10 @@
 <script type="text/javascript" src="/static/res/js/util/NumberToChinese.js"></script>
 <script type="text/javascript" th:inline="none">
     layui.use(['table', 'element'], function () {
-        var type = 0;
         var table = layui.table;
         var form = layui.form;
         var element = layui.element;
+        var crrpage = 1;
         table.render({
             elem: '#user_gl'
             , url: '/system/user/crm'
@@ -95,31 +95,54 @@
                 , next: "下一页"
             }
             , done: function (res, curr, count) {
-
+                crrpage=curr;
                 $current = $('.layui-table-body td[data-field="url"]>div:contains("system/")'); //field为name的值为xxxx的行
                 $current.parent().parent().css('background-color', '#FF8D6D');//设置css
-
                 $current1 = $('.layui-table-body td[data-field="permissionName"]>div:contains("url")'); //field为name的值为xxxx的行
                 $current1.parent().parent().css('background-color', '#ff5d5b');//设置css
             }
         });
+        var accountid = "";
         table.on('tool(user_glfilter)', function (obj) {
             if (obj.event == "edit") {
+                accountid = obj.data.id;
+                console.log(accountid);
                 $.ajax({
                     type: 'get',
                     url: '/system/user/roles',
-                    data: 'type=' + type,
+                    data: '',
                     success: function (data) {
                         if (data.code == 200) {
+                            var headht = "<form class=\"layui-form layui-form-pane\" style='margin-top: 10px;'>\n" +
+                                "          <div class=\"layui-form-item\">\n" +
+                                "            <label class=\"layui-form-label\" style='margin-left: 15px;'>选择角色</label>\n" +
+                                "            <div class=\"layui-input-inline\">\n" +
+                                "                <select name=\"role\">";
+                            var opten = " <option value=\"\">请选择角色</option>";
+                            var roles = data.data;
+                            for (var i = 0; i < roles.length; i++) {
+                                opten = opten + "<option  value=" + roles[i].roleId + ">" + roles[i].rolesName + "</option>";
+                            }
+                            var endhtml = "</select>\n" +
+                                "            </div>\n" +
+                                "        </div>\n" +
+                                "   <div class=\"layui-form-item\" style='margin-top: 156px;'>\n" +
+                                "                <div class=\"layui-input-block\">\n" +
+                                "                    <button class=\"layui-btn\" lay-submit lay-filter=\"saverole\">保存</button>\n" +
+                                "                    <button type=\"reset\" class=\"layui-btn layui-btn-primary\">取消</button>\n" +
+                                "                </div>\n" +
+                                "            </div>"
+                            "        </form><div></div>";
 
                             layer.open({
                                 type: 1,
-                                title: "添加分类",
+                                title: "设置角色",
                                 skin: 'layui-layer-demo', //样式类名
+                                area: ['342px', '300px'],
                                 closeBtn: 1, //不显示关闭按钮
                                 anim: 2,
                                 shadeClose: true, //开启遮罩关闭
-                                content: ''
+                                content: headht + opten + endhtml
                             });
                             form.render();
                         } else {
@@ -133,6 +156,79 @@
                 });
             }
         });
+        form.on('submit(saverole)', function (data) {
+            var roleid = data.field.role;
+            if (roleid != "") {
+                $.ajax({
+                    type: 'post',
+                    url: '/system/edit/acc/role',
+                    data: {
+                        "accountid": accountid,
+                        "roleid": roleid
+                    },
+                    success: function (data) {
+                        if (data.code == "200") {
+                            layer.closeAll();
+                            table.reload('user_gl', {
+                               page: {
+                                    curr: crrpage
+                                }
+                            });
+                        }else {
+                            layer.msg(data.msg);
+                        }
+                    },
+                    error: function (data) {
+                        layer.msg("服务暂停")
+                    }
+                });
+                return false;
+            } else {
+                layer.msg("请选择角色");
+                return false;
+            }
+            return false;
+
+        });
+        //监听锁定操作
+        form.on('checkbox(accLockFiler)', function(obj){
+            var iskq = obj.elem.checked;
+            $.ajax({
+                type:'post',
+                url:'/system/acount/lock/open',
+                data:'accountid='+this.value+"&isLock="+obj.elem.checked,
+                success:function(data){
+                    if (data.code == "200"){
+                        if (iskq) {
+                            obj.elem.checked = false;
+                        } else {
+                            obj.elem.checked = true;
+                        }
+                        form.render();
+                        layer.msg(data.msg)
+                    }else {
+                        if (iskq) {
+                            obj.elem.checked = false;
+                        } else {
+                            obj.elem.checked = true;
+                        }
+                        form.render();
+                        layer.msg(data.msg)
+                    }
+
+                },
+                error:function (data) {
+                    if (iskq) {
+                        obj.elem.checked = false;
+                    } else {
+                        obj.elem.checked = true;
+                    }
+                    form.render();
+                    layer.msg("服务暂停")
+                }
+            });
+        });
+
         form.render();
     });
 

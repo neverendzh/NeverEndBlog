@@ -65,6 +65,7 @@
         var table = layui.table;
         var form = layui.form;
         var element = layui.element;
+        var crrpage=1;
         table.render({
             elem: '#shenhe'
             , url: '/system/admin/editurl'
@@ -111,7 +112,7 @@
                 , next: "下一页"
             }
             ,done: function (res, curr, count) {
-
+                crrpage=curr;
                 $current = $('.layui-table-body td[data-field="url"]>div:contains("system/")'); //field为name的值为xxxx的行
                 $current.parent().parent().css('background-color', '#FF8D6D');//设置css
 
@@ -142,6 +143,11 @@
                                 },
                                 success: function (data) {
                                     layer.msg(data.msg);
+                                    table.reload('shenhe', {
+                                        page: {
+                                            curr: crrpage
+                                        }
+                                    });
                                 },
                                 error: function () {
                                     layer.msg("服务异常！");

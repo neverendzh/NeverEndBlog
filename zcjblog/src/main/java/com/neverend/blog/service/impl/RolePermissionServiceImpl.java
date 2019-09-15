@@ -73,6 +73,7 @@ public class RolePermissionServiceImpl implements RolePermissionService {
         Msg msg = GetMsg.getMsg();
         PageHelper.startPage(page, num);
         RolePermissionExample permissionExample = new RolePermissionExample();
+        permissionExample.setOrderByClause("creat_time DESC");
         List<RolePermission> permissionList = rolePermissionMapper.selectByExample(permissionExample);
         PageInfo<RolePermission> pageInfo = new PageInfo<>(permissionList);
         List<RolePermission> list = pageInfo.getList();
