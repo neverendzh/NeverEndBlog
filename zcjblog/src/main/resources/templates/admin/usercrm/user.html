@@ -199,11 +199,6 @@
                 data:'accountid='+this.value+"&isLock="+obj.elem.checked,
                 success:function(data){
                     if (data.code == "200"){
-                        if (iskq) {
-                            obj.elem.checked = false;
-                        } else {
-                            obj.elem.checked = true;
-                        }
                         form.render();
                         layer.msg(data.msg)
                     }else {
