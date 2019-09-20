@@ -111,8 +111,9 @@ public class UserController {
                                              @RequestParam(name = "pageStart", defaultValue = "1") Integer pageStart,
                                              @RequestParam(name = "pageNum", defaultValue = "5") Integer pageNum,
                                              @RequestParam(name = "state", defaultValue = "0") String state,
+                                                 @RequestParam(name = "artilceids",required = false) String[] artilceids,
             Device device) {
-        Msg<List<Article>> msg = articleService.getArtilceFeiL(artilceid, pageStart, pageNum, state);
+        Msg<List<Article>> msg = articleService.getArtilceFeiL(artilceid, pageStart, pageNum, state,artilceids);
         return msg;
     }
 

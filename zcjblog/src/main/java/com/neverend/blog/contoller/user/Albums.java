@@ -92,7 +92,6 @@ public class Albums {
                                            @RequestParam(name = "pageSize",defaultValue = "10",required = false) Integer pageSize,
                                                Device device){
         Msg msg = replyleavingService.geseeleavingMessage(pageStart,pageSize);
-        weiXinUtil.getBufenUser(msg.toString());
         return msg;
     }
 

@@ -42,7 +42,7 @@ public interface ArticleDao {
      */
     PageInfo<Article> orderByArcileB6(int pageStart, int pageNum);
 
-    PageInfo<Article> getArtilceFeiL(String artilceid, Integer pageNum, Integer pageSize,String state);
+    PageInfo<Article> getArtilceFeiL(String artilceid, Integer pageNum, Integer pageSize,String state,String[] artilceids);
 
     List<Article> getAll();
 

@@ -51,7 +51,7 @@ public interface ArticleService {
      * @param pageSize 条数
      * @return
      */
-    Msg getArtilceFeiL(String artilceid,Integer pageNum,Integer pageSize,String state);
+    Msg getArtilceFeiL(String artilceid,Integer pageNum,Integer pageSize,String state,String [] articleIds);
 
     /**
      * 根据名称搜索 或者文章分类名称搜索

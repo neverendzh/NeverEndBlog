@@ -24,6 +24,16 @@ public class RepMessage {
     @ApiModelProperty(value = "当前回复或发布留言用户头像地址网络地址")
     private String accountImg;
 
+    public Integer getCountReMsg() {
+        return countReMsg;
+    }
+
+    public void setCountReMsg(Integer countReMsg) {
+        this.countReMsg = countReMsg;
+    }
+    @ApiModelProperty(value = "当前留言回复条数")
+    private Integer countReMsg;
+
     public String getAccountImg() {
         return accountImg;
     }

@@ -90,7 +90,7 @@ public class ArticleDaoImpl implements ArticleDao {
     }
 
     @Override
-    public PageInfo<Article> getArtilceFeiL(String artilceid, Integer pageStart, Integer pageSize,String state) {
+    public PageInfo<Article> getArtilceFeiL(String artilceid, Integer pageStart, Integer pageSize,String state,String[] artilcleids) {
         PageHelper.startPage(pageStart,pageSize);
         List<Article> articles = articleMapper.getArtilceFeiL(artilceid,state);
         PageInfo<Article> personPageInfo = new PageInfo<>(articles);

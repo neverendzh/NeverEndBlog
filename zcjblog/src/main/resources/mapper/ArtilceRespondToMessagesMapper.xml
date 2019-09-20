@@ -260,23 +260,26 @@
   </select>
     <select id="SeleavingMessage" resultType="com.neverend.blog.moudel.RepMessage">
       SELECT
-          msg.id AS id,
-          msg.account_id AS accountId,
-          msg.respond_to_messages_id AS messageId,
-          msg.respond_to_messages_id_id AS messagePid,
-          msg.message,
-          msg.time,
-          ac.user_name AS hfname,
-          ac.bei_yong_san AS accountImg
-      FROM
-          tb_artilce_respond_to_messages AS msg,
-          tb_account AS ac
-      WHERE
-          msg.article_id IS NULL
-      AND msg.respond_to_messages_id_id IS NULL
-      AND msg.account_id = ac.id
-      ORDER BY
-          msg.time ASC
+    msg.id AS id,
+    msg.account_id AS accountId,
+    msg.respond_to_messages_id AS messageId,
+    msg.respond_to_messages_id_id AS messagePid,
+    msg.message,
+    msg.time,
+    ac.user_name AS hfname,
+    ac.bei_yong_san AS accountImg,
+   (select count(tb_artilce_respond_to_messages.respond_to_messages_id) from
+    tb_artilce_respond_to_messages where tb_artilce_respond_to_messages.respond_to_messages_id_id
+                                             = messageId ) as countReMsg
+FROM
+    tb_artilce_respond_to_messages AS msg,
+    tb_account AS ac
+WHERE
+    msg.article_id IS NULL
+  AND msg.respond_to_messages_id_id IS NULL
+  AND msg.account_id = ac.id
+ORDER BY
+    msg.time ASC
     </select>
   <select id="seleavingMessagerep" resultType="com.neverend.blog.moudel.RepMessage">
     SELECT
@@ -287,7 +290,11 @@
         msg.message,
         msg.time,
         ac.user_name AS hfname,
-        ac.bei_yong_san AS accountImg
+        ac.bei_yong_san AS accountImg,
+        (select count(tb_artilce_respond_to_messages.respond_to_messages_id) from
+    tb_artilce_respond_to_messages where tb_artilce_respond_to_messages.respond_to_messages_id_id
+                                             = messageId ) as countReMsg
+
     FROM
         tb_artilce_respond_to_messages AS msg,
         tb_account AS ac
