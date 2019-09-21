@@ -95,7 +95,7 @@ public class UserController {
             notes = "根据点击率排序", protocols = "http")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "artilceid", value = "文章分类id",
-                    required = true, dataType = "String", paramType = "query"),
+                    required = false, dataType = "String", paramType = "query"),
             @ApiImplicitParam(name = "pageStart", value = "第几页", defaultValue = "1",
                     required = true, dataType = "Integer", paramType = "query"),
             @ApiImplicitParam(name = "pageNum", value = "每页数量", defaultValue = "5",
@@ -104,10 +104,12 @@ public class UserController {
                     "0已发布，可用;" +
                     "1禁止普通用户查看;" +
                     "2删除", defaultValue = "0",
-                    required = true, dataType = "String", paramType = "query")})
+                    required = true, dataType = "String", paramType = "query"),
+            @ApiImplicitParam(name = "artilceids", value = "文章id数组",
+                    required = false,  allowMultiple = true,paramType = "query"),})
     @GetMapping("/index/articlesHort/fenlei")
     @ResponseBody
-    public Msg<List<Article>> getArtilceFeiLjson(@RequestParam(name = "artilceid") String artilceid,
+    public Msg<List<Article>> getArtilceFeiLjson(@RequestParam(name = "artilceid",required = false) String artilceid,
                                              @RequestParam(name = "pageStart", defaultValue = "1") Integer pageStart,
                                              @RequestParam(name = "pageNum", defaultValue = "5") Integer pageNum,
                                              @RequestParam(name = "state", defaultValue = "0") String state,

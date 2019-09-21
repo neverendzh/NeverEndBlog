@@ -59,4 +59,6 @@ public interface ArticleDao {
      * @return
      */
     int editState(String state, String articleID);
+
+    PageInfo<Article> getArtilceFeiL(String artilceid, Integer pageNum, Integer pageSize, String state);
 }

@@ -242,7 +242,63 @@
     </if>
   </select>
     <select id="getArtilceFeiL" resultType="com.neverend.blog.entity.Article">
-     SELECT
+      SELECT
+      tb_article.article_id,
+      tb_article.article_name,
+      tb_article.brief_introduction,
+      tb_article.creat_time,
+      tb_article.bei_yong_wu,
+      (
+      SELECT
+      tb_account.user_name
+      FROM
+      tb_account
+      WHERE
+      tb_account.id = tb_article.account_id
+      ) AS author
+      FROM
+      tb_article
+      WHERE
+      tb_article.state = #{state}
+      AND tb_article.article_id IN (
+      SELECT
+      tb_article_super_article_id.article_id
+      FROM
+      tb_article_super_article_id
+      WHERE
+      tb_article_super_article_id.super_article_id IN
+      <foreach item="item" index="index" collection="array" open="(" separator="," close=")">#{item}
+      </foreach>
+      )
+        ORDER BY
+            CAST(
+                tb_article.bei_yong_wu AS signed
+	         ) DESC
+    </select>
+    <select id="selectActilcNameLike" resultType="com.neverend.blog.entity.Article">
+        SELECT
+            tb_article.article_id,
+            tb_article.article_name,
+            tb_article.brief_introduction,
+            (
+            SELECT
+            tb_account.user_name
+            FROM
+            tb_account
+            WHERE
+            tb_account.id = tb_article.account_id
+            ) AS author
+        FROM
+            `tb_article`
+        WHERE
+            state = #{state}
+      <foreach item="item" index="index" collection="list" open="AND" separator="AND" close="">
+         article_name LIKE  CONCAT(CONCAT('%', #{item}), '%')
+      </foreach>
+
+    </select>
+  <select id="getArtilceFeiLon" resultType="com.neverend.blog.entity.Article">
+    SELECT
           tb_article.article_id,
           tb_article.article_name,
           tb_article.brief_introduction
@@ -260,22 +316,8 @@
       )
       ORDER BY
           CAST(tb_article.bei_yong_wu AS signed) DESC
-    </select>
-    <select id="selectActilcNameLike" resultType="com.neverend.blog.entity.Article">
-        SELECT
-            tb_article.article_id,
-            tb_article.article_name,
-            tb_article.brief_introduction
-        FROM
-            `tb_article`
-        WHERE
-            state = #{state}
-      <foreach item="item" index="index" collection="list" open="AND" separator="AND" close="">
-         article_name LIKE  CONCAT(CONCAT('%', #{item}), '%')
-      </foreach>
-
-    </select>
-    <update id="updateByExampleSelective" parameterType="map">
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
     update tb_article
     <set>
       <if test="record.articleId != null">

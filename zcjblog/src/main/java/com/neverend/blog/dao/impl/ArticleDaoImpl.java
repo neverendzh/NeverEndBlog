@@ -92,7 +92,7 @@ public class ArticleDaoImpl implements ArticleDao {
     @Override
     public PageInfo<Article> getArtilceFeiL(String artilceid, Integer pageStart, Integer pageSize,String state,String[] artilcleids) {
         PageHelper.startPage(pageStart,pageSize);
-        List<Article> articles = articleMapper.getArtilceFeiL(artilceid,state);
+        List<Article> articles = articleMapper.getArtilceFeiL(artilceid,state,artilcleids);
         PageInfo<Article> personPageInfo = new PageInfo<>(articles);
         return personPageInfo;
     }
@@ -162,5 +162,13 @@ public class ArticleDaoImpl implements ArticleDao {
         criteria.andArticleIdEqualTo(articleID);
         int i = articleMapper.updateByExampleSelective(article, articleExample);
         return i;
+    }
+
+    @Override
+    public PageInfo<Article> getArtilceFeiL(String artilceid, Integer pageNum, Integer pageSize, String state) {
+        PageHelper.startPage(pageNum,pageSize);
+        List<Article> articles = articleMapper.getArtilceFeiLon(artilceid,state);
+        PageInfo<Article> personPageInfo = new PageInfo<>(articles);
+        return personPageInfo;
     }
 }

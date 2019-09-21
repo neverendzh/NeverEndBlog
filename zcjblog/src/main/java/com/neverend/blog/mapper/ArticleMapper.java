@@ -37,7 +37,9 @@ public interface ArticleMapper {
 
     int updateByPrimaryKey(Article record);
 
-    List<Article> getArtilceFeiL(@Param("artilceid") String artilceid,@Param("state") String state);
+    List<Article> getArtilceFeiL(@Param("artilceid") String artilceid,@Param("state") String state,@Param("array")String[] array);
 
     List<Article> selectActilcNameLike(@Param("list") List<String> list,@Param("state") String state);
+
+    List<Article> getArtilceFeiLon(@Param("artilceid") String artilceid,@Param("state") String state);
 }

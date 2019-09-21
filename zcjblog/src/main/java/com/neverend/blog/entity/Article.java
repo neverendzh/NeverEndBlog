@@ -84,6 +84,16 @@ public class Article implements Serializable {
     private String beiYongWu;
     @JsonIgnore
     private String beiYongQi;
+    @ApiModelProperty(value="文章作者")
+    private String author;
+
+    public String getAuthor() {
+        return author;
+    }
+
+    public void setAuthor(String author) {
+        this.author = author;
+    }
 
     private static final long serialVersionUID = 1L;
 

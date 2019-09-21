@@ -174,7 +174,13 @@ public class ArticleServiceImpl implements ArticleService {
 
     @Override
     public Msg getArtilceFeiL(String artilceid, Integer pageNum, Integer pageSize, String state,String[] artilceIds) {
-        PageInfo<Article> articles = articleDao.getArtilceFeiL(artilceid, pageNum, pageSize, state,artilceIds);
+        PageInfo<Article> articles = null;
+        if (artilceIds !=null && artilceIds.length>0){
+            articles  = articleDao.getArtilceFeiL(artilceid, pageNum, pageSize, state,artilceIds);
+        }else if (artilceid !=null){
+            articles = articleDao.getArtilceFeiL(artilceid, pageNum, pageSize, state);
+        }
+
         Msg msg = new Msg();
         msg.setCount(articles.getPages() + "");
         msg.setCode(Code.sucess);
