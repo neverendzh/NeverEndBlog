@@ -1,5 +1,6 @@
 package com.neverend.blog.contoller.user;
 
+import com.github.pagehelper.PageInfo;
 import com.neverend.blog.moudel.Msg;
 import com.neverend.blog.moudel.PageMsg;
 import com.neverend.blog.moudel.RepMessage;
@@ -92,6 +93,31 @@ public class Albums {
                                            @RequestParam(name = "pageSize",defaultValue = "10",required = false) Integer pageSize,
                                                Device device){
         Msg msg = replyleavingService.geseeleavingMessage(pageStart,pageSize);
+        return msg;
+    }
+
+
+    /**
+     * 查看留言
+     * @return
+     */
+    @PostMapping("/see/leaving/message/dev")
+    @ResponseBody
+    @ApiOperation(value = "查看留言", httpMethod = "POST",
+            notes = "查看不带回复的留言", protocols = "http")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "pageStart", value = "第几页", defaultValue = "1",
+                    required = false, dataType = "Integer", paramType = "query"),
+            @ApiImplicitParam(name = "pageSize", value = "每页数量", defaultValue = "10",
+                    required = false, dataType = "Integer", paramType = "query")})
+    public  Msg seeleavingMessagedev(@RequestParam(name = "pageStart",defaultValue = "1",required = false)Integer pageStart,
+                                                           @RequestParam(name = "pageSize",defaultValue = "10",required = false) Integer pageSize,
+                                                           Device device){
+        Msg msg = replyleavingService.geseeleavingMessage(pageStart,pageSize);
+        PageInfo<RepMessage> pageInfo = (PageInfo<RepMessage>) msg.getData();
+        msg.setCode("0");
+        msg.setCount(pageInfo.getTotal()+"");
+        msg.setData(pageInfo.getList());
         return msg;
     }
 

@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>Never_End</title>
+    <!--header——js-->
+    <div th:replace="../templates/admin/include/header :: headerJsCss"></div>
+</head>
+<body class="layui-layout-body">
+<div class="layui-layout layui-layout-admin">
+    <!--Navigation Bar-->
+    <div th:replace="../templates/admin/include/top :: topHeader"></div>
+
+    <!--Navigation Bar-->
+    <div th:replace="../templates/admin/include/left :: #leftinclude(selAddClass=wzfl)"></div>
+
+    <div class="layui-body">
+        <!-- 内容主体区域 -->
+        <div id="bodyHtmlAdd" style="padding: 15px;">
+            <div class="layui-tab layui-tab-card" lay-filter="tabclass">
+                <ul id="liTapType" class="layui-tab-title">
+                </ul>
+                <div id="tapContent" class="layui-tab-content">
+                    <div class="layui-tab-item layui-show">
+                        <table class="layui-hide" id="yijifenl" lay-filter="yijifenl">
+                        </table>
+                        <script type="text/html" id="bianji">
+                            <div class="layui-btn-container">
+                                <button class="layui-btn layui-btn-sm" lay-event="getCheckData">新增分类</button>
+                            </div>
+                        </script>
+                        <script type="text/html" id="barDemo">
+                            <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+                            <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+                        </script>
+                        <script type="text/html" id="checkboxTpl">
+                            <input type="checkbox" name="lock" value="{{d.beiYongYi}}" title="锁定" lay-filter="lockDemo"
+                                   {{ d.beiYongYi== d.superArticleSortId ? 'checked' : '' }}>
+                        </script>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!--Bottom information Text-->
+    <div th:replace="../templates/admin/include/footer :: footerHtml"></div>
+</div>
+<!--Bottom information js-->
+<div th:replace="../templates/admin/include/footerjs :: footerJsCss"></div>
+<script type="text/javascript" src="/static/res/js/util/NumberToChinese.js"></script>
+<script type="text/javascript" th:inline="none">
+    layui.use(['table', 'element'], function () {
+        var type = 0;
+        var table = layui.table
+            , form = layui.form;
+        var $ = layui.jquery
+            , element = layui.element;
+        //一级star
+        table.render({
+            elem: '#yijifenl'
+            , toolbar: '#bianji'
+            , url: '/album/see/leaving/message/dev'
+            , method:'post'
+            , cellMinWidth: 80
+            , cols: [[
+                {type: 'numbers'}
+                , {type: 'checkbox'}
+                , {field: 'id', title: 'ID', width: 100, unresize: true, sort: true}
+                , {field: 'accountid', title: '用户id', sort: true}
+                , {field: 'messageid', title: '当前信息id', sort: true}
+                , {field: 'messagepid', title: '回复信息id', sort: true}
+                , {field: 'message', title: '信息详情', sort: true}
+                , {field: 'messagepid', title: '回复信息id', sort: true}
+                , {field: 'time', title: '留言或回复时间', minWidth: 120, sort: true}
+                , {field: 'hfname', title: '该信息的用户名称', minWidth: 120, sort: true}
+                , {field: 'accountimg', title: '用户头像地址网络地址', minWidth: 120, sort: true}
+            ]]
+            , page: { //支持传入 laypage 组件的所有参数（某些参数除外，如：jump/elem） - 详见文档
+                layout: ['limit', 'count', 'prev', 'page', 'next', 'skip'] //自定义分页布局
+                //,curr: 5 //设定初始在第 5 页
+                , groups: 7 //只显示 1 个连续页码
+                , first: false //不显示首页
+                , last: false //不显示尾页,
+                , prev: "上一页"
+                , next: "下一页"
+            }
+        });
+
+
+        //一级end
+        element.init();
+    });
+
+
+</script>
+
+</body>
+</html>
