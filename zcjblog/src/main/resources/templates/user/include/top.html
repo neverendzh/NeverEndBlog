@@ -8,9 +8,16 @@
             <ul class="layui-nav layui-layout-right" style="margin-top: 16px;">
                 <button onclick="loginUserAccount()" type="button" id="longinId"
                         class="layui-btn layui-btn-sm"
-                        shiro:hasRole="1">登录
+                        shiro:hasRole="1"><i class="layui-icon">&#xe66f;</i>
                 </button>
-
+                <button onclick="loginUserAccount()" type="button" id="longinWeiXin"
+                        class="layui-btn layui-btn-sm"
+                        shiro:hasRole="1"><i class="layui-icon">&#xe677;</i>
+                </button>
+                <button onclick="loginUserAccount()" type="button" id="longinqq"
+                        class="layui-btn layui-btn-sm"
+                        shiro:hasRole="1"><i class="layui-icon">&#xe676;</i>
+                </button>
                 <a href="/registered/account" class="layui-btn layui-btn-sm"
                    shiro:hasRole="1">注册</a>
                 <a href="/system/logout" class="layui-btn layui-btn-sm"

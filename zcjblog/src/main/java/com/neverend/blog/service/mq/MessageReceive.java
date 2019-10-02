@@ -11,7 +11,7 @@ public class MessageReceive {
     private WeiXinUtil weiXinUtil;
     public void receiveMessagesend(Object message) {
         if (message!=null){
-            weiXinUtil.getBufenUser("发布文章："+message.toString()+"待审核；请处理");
+            weiXinUtil.getBufenUser(message.toString());
         }
     }
 }

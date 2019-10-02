@@ -23,6 +23,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -63,6 +65,11 @@ public class ArticleServiceImpl implements ArticleService {
      */
     @Override
     public ArticleWithBLOBs getArticle(String articleId) {
+        try {
+             articleId = URLEncoder.encode(articleId, "UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
         List<ArticleWithBLOBs> articleWithBLOBsList = articleDao.selectArticleId(articleId);
         ArticleWithBLOBs articleWithBLOBs = null;
         if (articleWithBLOBsList.size() > 0) {
@@ -111,7 +118,7 @@ public class ArticleServiceImpl implements ArticleService {
                     msg.setUrl("/system/admin/fabu/yulan?articleId=" + article.getArticleId());
                     msg.setCode(Code.sucess);
                     msg.setMsg(Code.sucessMsg);
-                    msgSend.send(articleWithBLOBs.getArticleName());
+                    msgSend.send(articleWithBLOBs.getArticleId()+","+articleWithBLOBs.getArticleName());
 
                 } else {
 //                插入
@@ -135,7 +142,7 @@ public class ArticleServiceImpl implements ArticleService {
                         msg.setUrl("/system/admin/fabu/yulan?articleId=" + articleWithBLOBs.getArticleId());
                         msg.setCode(Code.sucess);
                         msg.setMsg(Code.sucessMsg);
-                        msgSend.send(articleWithBLOBs.getArticleName());
+                        msgSend.send(articleWithBLOBs.getArticleId()+","+articleWithBLOBs.getArticleName());
                     } else {
 //                    插入失败
                         msg.setCode(Code.error);

@@ -5,7 +5,9 @@ import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
 import com.neverend.blog.exception.ServiceException;
+import com.neverend.blog.moudel.weixin.BtnBean;
 import com.neverend.blog.moudel.weixin.BuMenMSg;
+import com.neverend.blog.moudel.weixin.TaskcardBean;
 import com.neverend.blog.moudel.weixin.WeiXiUserMsg;
 import okhttp3.*;
 import org.springframework.beans.factory.annotation.Value;
@@ -80,6 +82,21 @@ public class WeiXinUtil {
                     throw new ServiceException(resultJson);
                 }
             });
+    /**
+     * touser : UserID1|UserID2|UserID3
+     * toparty : PartyID1 | PartyID2
+     * totag : TagID1 | TagID2
+     * msgtype : taskcard
+     * agentid : 1
+     * taskcard : {"title":"赵明登的礼物申请","description":"礼品：A31茶具套装<br>用途：赠与小黑科技张总经理","url":"URL","task_id":"taskid123","btn":[{"key":"key111","name":"批准","replace_name":"已批准","color":"red","is_bold":true},{"key":"key222","name":"驳回","replace_name":"已驳回"}]}
+     */
+
+    private String touser;
+    private String toparty;
+    private String totag;
+    private String msgtype;
+    private String agentid;
+    private TaskcardBean taskcard;
 
 
     /**
@@ -168,7 +185,14 @@ public class WeiXinUtil {
     }
 
 
+    /**
+     * 发送文章审核消息
+     * @param userIdList
+     * @param message
+     * @return
+     */
     public int sendTextMessageToUsers(List<String> userIdList, String message) {
+        String[] splitmsg = message.split(",");
         String url = String.format(POST_SEND_MESSAGE, getAccessToken(tukenCahe));
         StringBuilder stringBuilder = new StringBuilder();
         for (String userId : userIdList) {
@@ -180,17 +204,39 @@ public class WeiXinUtil {
         Map<String, Object> data = new HashMap<String, Object>();
 //        接收的用户
         data.put("touser", idString);
-        data.put("msgtype", "text");
+        data.put("msgtype", "taskcard");
         data.put("agentid", agentId);
-        Map<String, String> messageMap = new HashMap<String, String>();
-        messageMap.put("content", message);
-        data.put("text", messageMap);
 
+        TaskcardBean taskcardBean = new TaskcardBean();
+        taskcardBean.setTitle("待审核文章");
+        taskcardBean.setDescription("新发布文章待审核！<br>"+"点击预览:"+"<div class=\"highlight\">"+splitmsg[1]+"</div>");
+        taskcardBean.setTask_id(splitmsg[0]);
+        taskcardBean.setUrl("http://www.neverend.cn/system/admin/fabu/yulan?articleId="+splitmsg[0]);
+        BtnBean btnBean = new BtnBean();
+        btnBean.setColor("blue");
+        btnBean.setIs_bold(true);
+        btnBean.setKey("btn1");
+        btnBean.setName("通过");
+        btnBean.setReplace_name("已处理");
+
+        BtnBean btnBean1 = new BtnBean();
+        btnBean1.setColor("blue");
+        btnBean1.setIs_bold(true);
+        btnBean1.setKey("btn2");
+        btnBean1.setName("驳回");
+        btnBean1.setReplace_name("已驳回");
+//        按钮集合
+        List<BtnBean> btnBeans = new ArrayList<>();
+        btnBeans.add(btnBean);
+        btnBeans.add(btnBean1);
+        taskcardBean.setBtn(btnBeans);
+        data.put("taskcard", taskcardBean);
+        String title = JSON.toJSONString(data);
+        System.out.println(title);
         String resultJson = sendHttpPostRequest(url, JSON.toJSONString(data));
-
         Map<String, Object> resultMap = JSON.parseObject(resultJson, HashMap.class);
         if (!resultMap.get("errcode").equals(0)) {
-            throw new ServiceException("发送文本消息失败: " + resultJson);
+            throw new ServiceException("发送消息失败: " + resultJson);
         }else {
             return 0;
         }
