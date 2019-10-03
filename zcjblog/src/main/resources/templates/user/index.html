@@ -8,30 +8,33 @@
     <!--header——js-->
     <div th:replace="../templates/user/include/header :: headerJsCss"></div>
     <style>
-
+        .layui-nav-tree {
+             width: 100%;
+            padding: 0;
+        }
     </style>
 </head>
-<body background="/static/res/img/indeximg/backgru.jpg">
+<body style="background-color: #9ea4e8">
 <!--Navigation Bar-->
 <div th:replace="../templates/user/include/top :: topHeader"></div>
 
-<div class="layui-container" style="background: #e4e8d7;min-height: 592px;">
+<div class="layui-container" style="background: #6b9fe8;min-height: 592px;">
 
     <div class="layui-row" style="margin-top: 10px;">
-        <div class="layui-col-xs6 layui-col-sm6 layui-col-md3">
+        <div class="layui-col-xs6 layui-col-sm6 layui-col-md3" style="margin-top: 4%;z-index: 100; position:fixed; float:left;width: 18%; ">
             <div class="layui-card" style="margin-top: 2px;border-radius: 8px;">
                 <div class="layui-card-header">选择文章分类查看</div>
                 <div class="layui-card-body">
                     <div id="ztreeAticle"></div>
                 </div>
             </div>
+        </div>
+
+        <div id="articleAdds" style="margin-top: 5%;left: 22%" class="layui-col-xs6 layui-col-sm6 layui-col-md6">
 
         </div>
-        <div id="articleAdds" class="layui-col-xs6 layui-col-sm6 layui-col-md6">
-
-        </div>
-        <div class="layui-col-xs6 layui-col-sm6 layui-col-md3">
-            <div>
+        <div   class="layui-col-xs6 layui-col-sm6 layui-col-md3">
+            <div style="margin-top: 4%;z-index: 100; position:fixed;left: 72%;" >
                 <div class="layui-form-item">
                     <div class="layui-input-inline">
                         <div class="layui-input-inline">
@@ -73,7 +76,10 @@
     //总页数
     var total = 0;
     var temp = 0;
-
+    var layuiDomeLogin;
+    var layer;
+    var form;
+    var element;
     function getDocumentTop() {
 
         var scrollTop = 0, bodyScrollTop = 0, documentScrollTop = 0;
@@ -188,10 +194,11 @@
 
     layui.config({
         base: '/static/res/js/util/'
-    }).use(['layer', 'form', 'tree'], function () {
-        layer = layui.layer;
-        var form = layui.form;
+    }).use(['layer', 'form', 'tree','element'], function () {
+        var layer = layui.layer;
+        form = layui.form;
         tree = layui.tree;
+         element = layui.element;
         layer.msg("您好^_^ ^_^ |本博客正在开发测试中！")
         //加载树形分类数据
         $.ajax({
@@ -304,7 +311,7 @@
             url: '/user/index/articlesHort',
             data: {
                 "pageStart": 1,
-                "pageNum": 10
+                "pageNum": 4
             },
             success: function (data) {
 
@@ -326,7 +333,7 @@
             url: '/user/index/articlelevel',
             data: {
                 "pageStart": 1,
-                "pageNum": 10,
+                "pageNum": 4,
                 "levelNum":-1
             },
             success: function (data) {
@@ -364,6 +371,8 @@
             }
 
         })
+
+
     })();
     (function requestJsonWeiBo() {
         var topLanMu = "";
@@ -388,9 +397,6 @@
 
         })
     })();
-
-    var layuiDomeLogin;
-    var layer;
 
     //登录表单显示
     function loginUserAccount() {
@@ -455,7 +461,12 @@
             });
         });
     };
-
+    function openclickm() {
+        layer.msg("正在开发中",{offset: ['50%', '50%']});
+    }
+    function openclickmzc() {
+        layer.msg("暂不开放注册",{offset: ['50%', '50%']});
+    }
     // 搜索
     function search() {
         var searchname = $("#searchName").val().trim();

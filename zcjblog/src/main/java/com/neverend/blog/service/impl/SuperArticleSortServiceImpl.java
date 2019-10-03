@@ -12,6 +12,7 @@ import com.neverend.blog.moudel.Msg;
 import com.neverend.blog.moudel.NumSize;
 import com.neverend.blog.service.AccountServiceMyzcj;
 import com.neverend.blog.service.SuperArticleSortService;
+import com.neverend.blog.util.email.redis.RedisUtil;
 import org.hibernate.validator.constraints.URL;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -35,6 +36,9 @@ public class SuperArticleSortServiceImpl implements SuperArticleSortService {
     private SuperArticleSortMapper superArticleSortMapper;
     @Autowired
     private AccountServiceMyzcj accountServiceMyzcj;
+    @Autowired
+    private RedisUtil redisUtil;
+    private String shuxcj = "shuxinchajian";
 
     /**
      * 获取所有一级分类
@@ -336,7 +340,12 @@ public class SuperArticleSortServiceImpl implements SuperArticleSortService {
     @Override
     public Msg getClassTypeNameS(boolean checked) {
         Msg msg = new Msg();
-        List<SuperArticleSort> articles = superArticleSortMapper.selArticleNameSTypeS();
+        List<Object> objects = redisUtil.lGet(shuxcj, 0L, -1);
+        List<SuperArticleSort> articles = zhhua(objects);
+        if (articles==null){
+            articles = superArticleSortMapper.selArticleNameSTypeS();
+            redisUtil.lSet(shuxcj,articles);
+        }
         Map<String,List<SuperArticleSort>> treeMap = new HashMap<>();
         getTreeMap(articles, treeMap);
         int size = treeMap.size();
@@ -442,6 +451,19 @@ public class SuperArticleSortServiceImpl implements SuperArticleSortService {
         msg.setMsg("sucess");
         msg.setCount(retunActicleTree.size()+"");
         return msg;
+    }
+
+    /**
+     * 对象转换
+     * @param objects
+     * @return
+     */
+    private List<SuperArticleSort> zhhua(List<Object> objects) {
+        if (objects.size()>0){
+            List<SuperArticleSort> superArticleSorts = (List<SuperArticleSort>) objects.get(0);
+            return superArticleSorts;
+        }
+        return null;
     }
 
     /**

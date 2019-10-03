@@ -214,8 +214,7 @@ public class IndexUser {
                                                @RequestParam(name = "state", defaultValue = "false", required = false) String state,
                                                    Device device) {
         Subject subject = SecurityUtils.getSubject();
-        Session session = subject.getSession();
-        Account account = (Account) session.getAttribute("account");
+        Account account = (Account) subject.getPreviousPrincipals();
         List<LanMuUi> lanMus = superLanMuService.getLanMus(account, bName, state);
         Msg msg = new Msg();
         msg.setData(lanMus);

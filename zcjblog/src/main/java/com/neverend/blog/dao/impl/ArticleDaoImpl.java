@@ -5,6 +5,7 @@ import com.github.pagehelper.PageInfo;
 import com.neverend.blog.dao.ArticleDao;
 import com.neverend.blog.entity.*;
 import com.neverend.blog.mapper.ArticleMapper;
+import com.neverend.blog.util.email.redis.RedisUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -17,6 +18,13 @@ import java.util.List;
 @SuppressWarnings("ALL")
 @Component
 public class ArticleDaoImpl implements ArticleDao {
+
+//    热度redis键值
+    private static final String redupaixu ="redupaixu";
+//    置顶推荐文章键值
+    private static final String zhidingtuijian = "zhidingtuijian";
+    @Autowired
+    private RedisUtil redisUtil;
     @Autowired
     private ArticleMapper articleMapper;
     /**
@@ -79,14 +87,29 @@ public class ArticleDaoImpl implements ArticleDao {
 
     @Override
     public  PageInfo<Article>  orderByArcileB6(int pageStart, int pageNum) {
-        PageHelper.startPage(pageStart,pageNum);
-        ArticleExample articleExample = new ArticleExample();
-        articleExample.setOrderByClause(" CAST( bei_yong_wu as signed) ASC");
-        ArticleExample.Criteria criteria = articleExample.createCriteria();
-        criteria.andStateEqualTo("0");
-        List<Article> articles = articleMapper.selectByExample(articleExample);
-        PageInfo<Article> personPageInfo = new PageInfo<>(articles);
-        return personPageInfo;
+        PageInfo<Article> personPageInfo = (PageInfo<Article>) redisUtil.lGetIndex(redupaixu + pageStart + pageNum, -1L);
+        if (personPageInfo !=null ){
+            return personPageInfo;
+        }else {
+            PageHelper.startPage(pageStart,pageNum);
+            ArticleExample articleExample = new ArticleExample();
+            articleExample.setOrderByClause(" CAST( bei_yong_wu as signed) ASC");
+            ArticleExample.Criteria criteria = articleExample.createCriteria();
+            criteria.andStateEqualTo("0");
+            List<Article> articles = articleMapper.selectByExample(articleExample);
+            personPageInfo = new PageInfo<>(articles);
+            redisUtil.lSet(redupaixu+pageStart+pageNum,personPageInfo,3600L);
+            return personPageInfo;
+        }
+
+    }
+
+    private List<Article> zh(List<Object> objects) {
+        if (objects.size()>0){
+            List<Article> articles = (List<Article>) objects.get(0);
+            return articles;
+        }
+        return null;
     }
 
     @Override
@@ -106,20 +129,35 @@ public class ArticleDaoImpl implements ArticleDao {
 
     @Override
     public PageInfo<Article> getarticlelevel(String levelNum, Integer pageStart, Integer pageNum) {
-        PageHelper.startPage(pageStart,pageNum);
-        ArticleExample articleExample = new ArticleExample();
+        List<Article> articles = null;
         if (levelNum.equals("0")|| levelNum.equals("1")||levelNum.equals("2")
                 ||levelNum.equals("3")||levelNum.equals("4")){
-            articleExample.setOrderByClause(" CAST( bei_yong_wu as signed) DESC");
-            ArticleExample.Criteria criteria = articleExample.createCriteria();
-            criteria.andStateEqualTo("0");
-            criteria.andBeiYongErEqualTo(levelNum);
+            List<Object> objects = redisUtil.lGet(zhidingtuijian+levelNum+pageStart+pageNum, 0L, -1L);
+            articles = zh(objects);
+            if (articles==null){
+                PageHelper.startPage(pageStart,pageNum);
+                ArticleExample articleExample = new ArticleExample();
+                articleExample.setOrderByClause(" CAST( bei_yong_wu as signed) DESC");
+                ArticleExample.Criteria criteria = articleExample.createCriteria();
+                criteria.andStateEqualTo("0");
+                criteria.andBeiYongErEqualTo(levelNum);
+                articles = articleMapper.selectByExample(articleExample);
+                redisUtil.lSet(zhidingtuijian+levelNum+pageStart+pageNum,articles,1800L);
+            }
         }else{
-            articleExample.setOrderByClause(" CAST( bei_yong_er as signed) DESC,CAST( bei_yong_wu as signed) DESC");
-            ArticleExample.Criteria criteria = articleExample.createCriteria();
-            criteria.andStateEqualTo("0");
+            List<Object> objects = redisUtil.lGet(zhidingtuijian+pageStart+pageNum, 0L, -1L);
+            articles = zh(objects);
+            if (articles==null){
+                PageHelper.startPage(pageStart,pageNum);
+                ArticleExample articleExample = new ArticleExample();
+                articleExample.setOrderByClause(" CAST( bei_yong_er as signed) DESC,CAST( bei_yong_wu as signed) DESC");
+                ArticleExample.Criteria criteria = articleExample.createCriteria();
+                criteria.andStateEqualTo("0");
+                articles = articleMapper.selectByExample(articleExample);
+                redisUtil.lSet(zhidingtuijian+pageStart+pageNum,articles,1800L);
+            }
+
         }
-        List<Article> articles = articleMapper.selectByExample(articleExample);
         PageInfo<Article> personPageInfo = new PageInfo<>(articles);
         return personPageInfo;
 

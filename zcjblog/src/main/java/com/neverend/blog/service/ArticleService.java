@@ -30,6 +30,17 @@ public interface ArticleService {
     Msg saveArticle(Account account, ArticleWithBLOBs articleWithBLOBs, String s,String acid,String articlelevel);
 
     /**
+     * 预览文章
+     * @param account
+     * @param articleWithBLOBs
+     * @param s
+     * @param acid
+     * @param articlelevel
+     * @return
+     */
+    Msg saveylanArticle(Account account, ArticleWithBLOBs articleWithBLOBs, String s,String acid,String articlelevel);
+
+    /**
      * 根据热度排序文章
      * @param pageStart
      * @param pageNum

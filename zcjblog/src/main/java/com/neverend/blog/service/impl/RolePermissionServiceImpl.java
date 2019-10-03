@@ -14,6 +14,7 @@ import com.neverend.blog.moudel.RolePermissionSun;
 import com.neverend.blog.service.RolePermissionService;
 import com.neverend.blog.util.email.GetMsg;
 import com.neverend.blog.util.email.GetUUID;
+import com.neverend.blog.util.email.redis.RedisUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -31,7 +32,12 @@ public class RolePermissionServiceImpl implements RolePermissionService {
     private RolePermissionMapper rolePermissionMapper;
     @Autowired
     private RolesPermissionKeyMapper rolekeyMapper;
-
+//   用户角色key
+    private static final String rolekey = "rolekey";
+//    用户角色对应菜单key
+    private static final String rolePermissionkey="rolePermissionkey";
+    @Autowired
+    private RedisUtil redisUtil;
     /**
      * 根据用户id查询该用户所有的角色集合
      *
@@ -40,7 +46,22 @@ public class RolePermissionServiceImpl implements RolePermissionService {
      */
     @Override
     public List<Roles> findRolesByAccountId(String id) {
-        return rolesMapper.findRolesByAccountId(id);
+        List<Object> objects = redisUtil.lGet(rolekey+id, 0, -1);
+        List<Roles> roles = zh(objects);
+        if (roles==null){
+            roles = rolesMapper.findRolesByAccountId(id);
+            redisUtil.lSet(rolekey+id,roles,1800);
+            return roles;
+        }
+        return  roles;
+    }
+
+    private List<Roles> zh(List<Object> objects) {
+        if (objects.size()>0){
+            List<Roles> rolesList= (List<Roles>) objects.get(0);
+            return rolesList;
+        }
+        return null;
     }
 
     /**
@@ -51,7 +72,26 @@ public class RolePermissionServiceImpl implements RolePermissionService {
      */
     @Override
     public List<RolePermission> findAllPermissionByRolesId(String roleId) {
-        return rolePermissionMapper.findAllByRolesId(roleId);
+        List<Object> objects = redisUtil.lGet(rolePermissionkey+roleId, 0, -1);
+        List<RolePermission>  allByRolesId = zhRolePermission(objects);
+        if (allByRolesId==null){
+            allByRolesId = rolePermissionMapper.findAllByRolesId(roleId);
+            redisUtil.lSet(rolePermissionkey+roleId,allByRolesId,1800);
+        }
+        return allByRolesId;
+    }
+
+    /**
+     * 转换为RolePermission
+     * @param objects
+     * @return
+     */
+    private List<RolePermission> zhRolePermission(List<Object> objects) {
+        if (objects.size()>0){
+           List<RolePermission> rolePermissions = (List<RolePermission>) objects.get(0);
+           return rolePermissions;
+        }
+        return null;
     }
 
     /**

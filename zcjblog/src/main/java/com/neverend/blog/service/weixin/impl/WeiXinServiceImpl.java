@@ -33,17 +33,22 @@ public class WeiXinServiceImpl implements WeiXinService {
     @Override
     public String handleWeiXinMsg(String msg_signature, String timestamp, String nonce, String echostr) {
         try {
-            System.out.println("ABCDEFG:"+msg_signature);
+
             String sToken = "q2Oiq3QGTpebCT";
             String sCorpID = "wwcfe718794b798a88";
             String sEncodingAESKey = "WrxtzXSt4qjz33za6mtMPiZSVIHPQuAYeYVLWYwJznH";
             WXBizMsgCrypt wxcpt = new WXBizMsgCrypt(sToken, sEncodingAESKey, sCorpID);
-            echostr = URLDecoder.decode(echostr,"UTF-8");
-            String sechostr = wxcpt.VerifyURL(msg_signature, timestamp,
-                    nonce, echostr);
+            System.out.println("ABCDEFG:"+msg_signature);
+            if (echostr == null){
+            }else {
+                echostr = URLDecoder.decode(echostr,"UTF-8");
+                String sechostr = wxcpt.VerifyURL(msg_signature, timestamp,
+                        nonce, echostr);
 
-            System.out.println("decode" + sechostr);
-            return sechostr;
+                System.out.println("decode" + sechostr);
+                return sechostr;
+            }
+
         } catch (AesException e) {
             e.printStackTrace();
         } catch (UnsupportedEncodingException e) {

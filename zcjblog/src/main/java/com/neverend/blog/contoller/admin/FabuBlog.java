@@ -72,7 +72,7 @@ public class FabuBlog {
                          @RequestParam(name = "articlelevel", defaultValue = "0")
                                          String articlelevel, Device device) {
         Account account = (Account) SecurityUtils.getSubject().getPrincipal();
-        Msg msg = articleService.saveArticle(account, articleWithBLOBs, "-1", articleSortId,articlelevel);
+        Msg msg = articleService.saveylanArticle(account, articleWithBLOBs, "-1", articleSortId,articlelevel);
         return msg;
     }
 

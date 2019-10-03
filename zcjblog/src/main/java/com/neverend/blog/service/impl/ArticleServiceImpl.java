@@ -18,6 +18,7 @@ import com.neverend.blog.service.mq.MsgSend;
 import com.neverend.blog.util.email.FenCIUtil;
 import com.neverend.blog.util.email.GetMsg;
 import com.neverend.blog.util.email.GetUUID;
+import com.neverend.blog.util.email.redis.RedisUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -40,13 +41,13 @@ public class ArticleServiceImpl implements ArticleService {
 
     @Autowired
     private ArticleDao articleDao;
-
     @Autowired
     private AccountServiceMyzcj accountServiceMyzcj;
     @Autowired
     private ArticleSuperArticleIdDao articleIdDao;
     @Autowired
     private MsgSend msgSend;
+
 
     public boolean getArticleName(ArticleWithBLOBs articleWithBLOBs) {
         if (articleWithBLOBs != null || !"".equals(articleWithBLOBs.getContext().trim()) || !"".equals(articleWithBLOBs.getArticleSortId().trim())) {
@@ -143,6 +144,83 @@ public class ArticleServiceImpl implements ArticleService {
                         msg.setCode(Code.sucess);
                         msg.setMsg(Code.sucessMsg);
                         msgSend.send(articleWithBLOBs.getArticleId()+","+articleWithBLOBs.getArticleName());
+                    } else {
+//                    插入失败
+                        msg.setCode(Code.error);
+                        msg.setCode(Code.errorMsg);
+
+                    }
+
+                }
+
+            }
+        } else {
+            msg.setCode(Code.login);
+            msg.setMsg(Code.loginMsg);
+        }
+
+        return msg;
+    }
+
+    /**
+     * 预览文章
+     * @param account
+     * @param articleWithBLOBs
+     * @param state
+     * @param acid
+     * @param articlelevel
+     * @return
+     */
+    @Override
+    public Msg saveylanArticle(Account account, ArticleWithBLOBs articleWithBLOBs, String state, String acid, String articlelevel) {
+        Msg msg = new Msg();
+        Date date = new Date();
+        String uuid = GetUUID.uuid();
+        Account accountIsTrue = accountServiceMyzcj.selectAccount(account);
+        if (accountIsTrue != null) {
+            if (getArticleName(articleWithBLOBs)) {
+                Article article = articleDao.selectAccountIdAndArticleName(articleWithBLOBs.getArticleName(), accountIsTrue.getId());
+                if (article != null) {
+//                设置文章id
+                    articleWithBLOBs.setArticleId(article.getArticleId());
+//                跟新时间
+                    articleWithBLOBs.setBeiYongYi(Long.toString(System.currentTimeMillis()));
+                    articleWithBLOBs.setState(state);
+                    articleWithBLOBs.setBeiYongEr(articlelevel);
+                    String code = articleDao.updateByArticle(articleWithBLOBs);
+
+//                    取出生成的文章隶属id
+                    List<String> acids = getArticeleSuperid(acid);
+                    List<ArticleSuperArticleId> articleSuperArticleId = setArticleSuperid(acids, article.getArticleId());
+                    int del = articleIdDao.delid(articleWithBLOBs.getArticleId());
+                    int save = articleIdDao.save(articleSuperArticleId);
+
+                    msg.setUrl("/system/admin/fabu/yulan?articleId=" + article.getArticleId());
+                    msg.setCode(Code.sucess);
+                    msg.setMsg(Code.sucessMsg);
+
+                } else {
+//                插入
+                    articleWithBLOBs.setArticleId(uuid);
+                    articleWithBLOBs.setAccountId(accountIsTrue.getId());
+                    articleWithBLOBs.setArticleName(articleWithBLOBs.getArticleName());
+                    articleWithBLOBs.setBriefIntroduction(articleWithBLOBs.getBriefIntroduction());
+                    articleWithBLOBs.setCreatTime(new Date());
+                    articleWithBLOBs.setArticleSortId(uuid);
+                    articleWithBLOBs.setState(state);
+                    articleWithBLOBs.setBeiYongEr(articlelevel);
+                    articleWithBLOBs.setBeiYongWu("0");
+                    int saveNum = articleDao.saveArticleDao(articleWithBLOBs);
+//                    获取隶属文章的id集合
+                    List<String> acidss = getArticeleSuperid(acid);
+//                   设置
+                    List<ArticleSuperArticleId> articleSuperArticleId = setArticleSuperid(acidss, uuid);
+                    int save = articleIdDao.save(articleSuperArticleId);
+
+                    if (saveNum > 0) {
+                        msg.setUrl("/system/admin/fabu/yulan?articleId=" + articleWithBLOBs.getArticleId());
+                        msg.setCode(Code.sucess);
+                        msg.setMsg(Code.sucessMsg);
                     } else {
 //                    插入失败
                         msg.setCode(Code.error);
