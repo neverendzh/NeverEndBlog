@@ -28,10 +28,18 @@
 <!--Bottom information js-->
 <div th:replace="../templates/admin/include/footerjs :: footerJsCss"></div>
 <script>
-    layui.use('element', function(){
+    var layer ;
+    layui.use(['element','layer'], function(){
         var element = layui.element;
-
+        layer = layui.layer;
     });
+
+    function openclickm() {
+        layer.msg("正在开发中",{offset: ['50%', '50%']});
+    }
+    function openclickmzc() {
+        layer.msg("暂不开放注册",{offset: ['50%', '50%']});
+    }
 </script>
 </body>
 </html>

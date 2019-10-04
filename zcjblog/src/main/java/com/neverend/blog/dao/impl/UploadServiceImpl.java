@@ -9,6 +9,7 @@ import com.neverend.blog.moudel.ErrorMsg;
 import com.neverend.blog.moudel.UploadFileMsg;
 import com.neverend.blog.security.CustomerFilterChainDefinition;
 import com.neverend.blog.service.UploadService;
+import com.neverend.blog.util.email.redis.RedisUtil;
 import com.qiniu.common.QiniuException;
 import com.qiniu.http.Response;
 import com.qiniu.storage.Configuration;
@@ -38,6 +39,10 @@ public class UploadServiceImpl implements UploadService {
     private Logger logger = LoggerFactory.getLogger(CustomerFilterChainDefinition.class);
     @Autowired
     private QiNiuKeyDao qiNiuKeyDao;
+    @Autowired
+    private RedisUtil redisUtil;
+
+    private static final String qiNiuKeyred = "qiNiuKey";
 
     /**
      * 上传图片
@@ -48,11 +53,16 @@ public class UploadServiceImpl implements UploadService {
     @Override
     public UploadFileMsg uploadimg(MultipartFile multipartFile) {
         UploadFileMsg uploadFileMsg = new UploadFileMsg();
-        List<QiNiuKey> qiNiuKey = qiNiuKeyDao.getQiNiuKey();
+        List<Object> objects = redisUtil.lGet(qiNiuKeyred, 0L, -1L);
+        List<QiNiuKey> qiNiuKey = zhQiNiuKey(objects);
+        if (qiNiuKey == null) {
+            qiNiuKey = qiNiuKeyDao.getQiNiuKey();
+            redisUtil.lSet(qiNiuKeyred,qiNiuKey,7200);
+        }
         Subject subject = SecurityUtils.getSubject();
         Account account = (Account) subject.getPrincipal();
         if (!qiNiuKey.isEmpty()) {
-            if (account!=null && account.getBeiYongEr().equals("管理员")){
+            if (account != null && account.getBeiYongEr().equals("管理员")) {
                 //构造一个带指定 Region 对象的配置类
                 Configuration cfg = new Configuration(Region.huanan());
                 String accessKey = qiNiuKey.get(0).getAk();
@@ -74,6 +84,9 @@ public class UploadServiceImpl implements UploadService {
 //                    生成访问url
                         String encodedFileName = URLEncoder.encode(putRet.key, "utf-8").replace("+", "%20");
                         String publicUrl = String.format("%s/%s", qiNiuKey.get(0).getYuMing(), encodedFileName);
+//                      根据当前用户德尔id作为redis的键，将url存储进redis缓存，设置过期时间30min。
+//                      如果30分钟内没有点击发布或者预览，则不存储链接到数据库。
+                        redisUtil.set(account.getId(),publicUrl);
 //                    设置响应信息
                         uploadFileMsg.setUrl(publicUrl);
                         uploadFileMsg.setUploaded("1");
@@ -87,14 +100,21 @@ public class UploadServiceImpl implements UploadService {
                 } catch (IOException ex) {
                     return seErroMsg(uploadFileMsg, ex);
                 }
-            }else {
-                return seErroMsg(uploadFileMsg,new ServiceException("您没有无权限"));
+            } else {
+                return seErroMsg(uploadFileMsg, new ServiceException("您没有无权限"));
             }
 
         } else {
             logger.error("获取七牛 ak sk 失败");
             return seErroMsg(uploadFileMsg, new ServiceException("获取七牛 ak sk 失败"));
         }
+    }
+
+    private List<QiNiuKey> zhQiNiuKey(List<Object> objects) {
+        if (objects != null && objects.size() > 0) {
+            return (List<QiNiuKey>) objects.get(0);
+        }
+        return null;
     }
 
 

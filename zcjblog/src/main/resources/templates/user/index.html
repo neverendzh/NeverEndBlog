@@ -283,12 +283,12 @@
                     var dataArticle = data.data;
                     for (var i = 0; i < dataArticle.length; i++) {
                         var art = dataArticle[i];
+                        console.log(art);
                         addarticel = addarticel + " <div class=\"layui-card\" style=\"margin: 4px;border-radius: 8px;\">\n" +
                             "                <div class=\"layui-card-header\"><a href='/system/admin/fabu/yulan?articleId=" + art.articleId + "'><span style='color: #00B0E8'>" + art.articleName + "</span></a></div>\n" +
                             "                <div class=\"layui-card-body\">\n" +
                             "                    <div class=\"layui-row\" style=\"margin-top: 10px;\">\n" +
-                            "                        <div class=\"layui-col-xs6 layui-col-sm6 layui-col-md4\">\n" +
-                            "                            <img src=\"/static/res/img/banner.jpg\" style=\"width: 100%;height: 150px\">\n" +
+                            "                        <div class=\"layui-col-xs6 layui-col-sm6 layui-col-md4\">\n" +"<img src="+'"'+art.beiYongSi+'"'+"style='width: 100%;height: 150px'"+">"+
                             "                        </div>\n" +
                             "                        <div class=\"layui-col-xs6 layui-col-sm6 layui-col-md8\">\n" +
                             "                            <div style=\"margin-left: 6px;\">" + art.briefIntroduction + "</div>\n" +
@@ -371,7 +371,7 @@
             }
 
         })
-
+        element.render();
 
     })();
     (function requestJsonWeiBo() {

@@ -92,11 +92,7 @@ public class ArticleDaoImpl implements ArticleDao {
             return personPageInfo;
         }else {
             PageHelper.startPage(pageStart,pageNum);
-            ArticleExample articleExample = new ArticleExample();
-            articleExample.setOrderByClause(" CAST( bei_yong_wu as signed) ASC");
-            ArticleExample.Criteria criteria = articleExample.createCriteria();
-            criteria.andStateEqualTo("0");
-            List<Article> articles = articleMapper.selectByExample(articleExample);
+            List<Article> articles = articleMapper.selectArticleHort();
             personPageInfo = new PageInfo<>(articles);
             redisUtil.lSet(redupaixu+pageStart+pageNum,personPageInfo,3600L);
             return personPageInfo;

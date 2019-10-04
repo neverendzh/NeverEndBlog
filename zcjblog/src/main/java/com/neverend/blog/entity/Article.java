@@ -75,7 +75,7 @@ public class Article implements Serializable {
      */
     @ApiModelProperty(value="文章级别 0,1,2,3,4 以此类推0表示最低级别")
     private String beiYongEr;
-    @JsonIgnore
+    @ApiModelProperty(value="文章图片")
     private String beiYongSi;
     /**
      * 文章浏览次数

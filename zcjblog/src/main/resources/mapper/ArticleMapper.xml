@@ -317,7 +317,30 @@
       ORDER BY
           CAST(tb_article.bei_yong_wu AS signed) DESC
   </select>
-  <update id="updateByExampleSelective" parameterType="map">
+    <select id="selectArticleHort" resultType="com.neverend.blog.entity.Article">
+      SELECT
+            arc.article_id,
+            arc.account_id,
+            arc.article_name,
+            arc.brief_introduction,
+            arc.creat_time,
+            arc.article_sort_id,
+            arc.state,
+            arc.bei_yong_yi,
+            arc.bei_yong_er,
+            arc.bei_yong_si,
+            arc.bei_yong_wu,
+            ac.user_name AS author
+        FROM
+            tb_article AS arc,
+            tb_account AS ac
+        WHERE
+            state = "0"
+        AND arc.account_id = ac.id
+        ORDER BY
+            CAST(arc.bei_yong_wu AS signed) ASC
+    </select>
+    <update id="updateByExampleSelective" parameterType="map">
     update tb_article
     <set>
       <if test="record.articleId != null">

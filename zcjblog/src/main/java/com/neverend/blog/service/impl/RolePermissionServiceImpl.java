@@ -57,7 +57,7 @@ public class RolePermissionServiceImpl implements RolePermissionService {
     }
 
     private List<Roles> zh(List<Object> objects) {
-        if (objects.size()>0){
+        if (objects!=null && objects.size()>0){
             List<Roles> rolesList= (List<Roles>) objects.get(0);
             return rolesList;
         }

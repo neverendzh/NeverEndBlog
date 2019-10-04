@@ -47,7 +47,8 @@ public class ArticleServiceImpl implements ArticleService {
     private ArticleSuperArticleIdDao articleIdDao;
     @Autowired
     private MsgSend msgSend;
-
+    @Autowired
+    private RedisUtil redisUtil;
 
     public boolean getArticleName(ArticleWithBLOBs articleWithBLOBs) {
         if (articleWithBLOBs != null || !"".equals(articleWithBLOBs.getContext().trim()) || !"".equals(articleWithBLOBs.getArticleSortId().trim())) {
@@ -108,6 +109,12 @@ public class ArticleServiceImpl implements ArticleService {
                     articleWithBLOBs.setBeiYongYi(Long.toString(System.currentTimeMillis()));
                     articleWithBLOBs.setState(state);
                     articleWithBLOBs.setBeiYongEr(articlelevel);
+                    //                    获取url图片链接
+                    String obg = (String) redisUtil.get(account.getId());
+                    if (obg!=null && obg.equals("")){
+                     articleWithBLOBs.setBeiYongSi(obg);
+                    }
+                    redisUtil.del(account.getId());
                     String code = articleDao.updateByArticle(articleWithBLOBs);
 
 //                    取出生成的文章隶属id
@@ -115,7 +122,6 @@ public class ArticleServiceImpl implements ArticleService {
                     List<ArticleSuperArticleId> articleSuperArticleId = setArticleSuperid(acids, article.getArticleId());
                     int del = articleIdDao.delid(articleWithBLOBs.getArticleId());
                     int save = articleIdDao.save(articleSuperArticleId);
-
                     msg.setUrl("/system/admin/fabu/yulan?articleId=" + article.getArticleId());
                     msg.setCode(Code.sucess);
                     msg.setMsg(Code.sucessMsg);
@@ -132,6 +138,12 @@ public class ArticleServiceImpl implements ArticleService {
                     articleWithBLOBs.setState(state);
                     articleWithBLOBs.setBeiYongEr(articlelevel);
                     articleWithBLOBs.setBeiYongWu("0");
+                    //                    获取url图片链接
+                    String obg = (String) redisUtil.get(account.getId());
+                    if (obg!=null && !obg.equals("")){
+                        articleWithBLOBs.setBeiYongSi(obg);
+                    }
+                    redisUtil.del(account.getId());
                     int saveNum = articleDao.saveArticleDao(articleWithBLOBs);
 //                    获取隶属文章的id集合
                     List<String> acidss = getArticeleSuperid(acid);

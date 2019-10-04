@@ -42,4 +42,6 @@ public interface ArticleMapper {
     List<Article> selectActilcNameLike(@Param("list") List<String> list,@Param("state") String state);
 
     List<Article> getArtilceFeiLon(@Param("artilceid") String artilceid,@Param("state") String state);
+
+    List<Article> selectArticleHort();
 }
