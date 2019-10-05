@@ -301,7 +301,7 @@ public class ArticleServiceImpl implements ArticleService {
         msg.setCount(articles.getPages()+"");
         msg.setData(articles.getList());
         msg.setCode(Code.sucess);
-        msg.setCode(Code.sucessMsg);
+        msg.setMsg(Code.sucessMsg);
         return msg;
     }
 

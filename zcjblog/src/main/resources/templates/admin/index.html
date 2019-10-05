@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.w3.org/1999/xhtml">
+<html xmlns:th="http://www.w3.org/1999/xhtml" lang="zh">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
@@ -34,6 +34,12 @@
         layer = layui.layer;
     });
 
+    function openclickm() {
+        layer.msg("正在开发中",{offset: ['50%', '50%']});
+    }
+    function openclickmzc() {
+        layer.msg("暂不开放注册",{offset: ['50%', '50%']});
+    }
     function openclickm() {
         layer.msg("正在开发中",{offset: ['50%', '50%']});
     }

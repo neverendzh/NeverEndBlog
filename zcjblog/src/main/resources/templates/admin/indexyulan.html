@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.w3.org/1999/xhtml">
+<html lang="zh" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
@@ -42,9 +42,10 @@
 <!--Bottom information js-->
 <div th:replace="../templates/admin/color/grcyan/include/footerjs :: footerJsCss"></div>
 <script type="text/javascript" th:inline="none">
-
-    layui.use('table', function(){
+    var layer;
+    layui.use(['table','layer'], function(){
         var table = layui.table;
+        layer = layui.layer;
         table.render({
             elem: '#test'
             ,url:'/test/table/demo1'
@@ -92,6 +93,12 @@
     layui.use('element', function(){
         var element = layui.element;
     });
+    function openclickm() {
+        layer.msg("正在开发中",{offset: ['50%', '50%']});
+    }
+    function openclickmzc() {
+        layer.msg("暂不开放注册",{offset: ['50%', '50%']});
+    }
 </script>
 </body>
 </html>

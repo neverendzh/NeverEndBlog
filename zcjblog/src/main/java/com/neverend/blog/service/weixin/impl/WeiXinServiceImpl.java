@@ -23,6 +23,7 @@ public class WeiXinServiceImpl implements WeiXinService {
     private WeiXinUtil weiXinUtil;
     @Autowired
     private ArticleService articleService;
+
     /**
      * 发送文本消息
      *
@@ -37,21 +38,19 @@ public class WeiXinServiceImpl implements WeiXinService {
     }
 
     @Override
-    public String handleWeiXinMsg(XmlRequest xmlRequest,String msg_signature, String timestamp, String nonce) {
+    public String handleWeiXinMsg(XmlRequest xmlRequest, String msg_signature, String timestamp, String nonce) {
         try {
             Date date = new Date();
-            System.out.println("时间："+date.toString()+xmlRequest);
             String sToken = "q2Oiq3QGTpebCT";
             String sCorpID = "wwcfe718794b798a88";
             String sEncodingAESKey = "WrxtzXSt4qjz33za6mtMPiZSVIHPQuAYeYVLWYwJznH";
             WXBizMsgCrypt wxcpt = new WXBizMsgCrypt(sToken, sEncodingAESKey, sCorpID);
 //            解析后的xml
             String xmlx = wxcpt.VerifyURL(msg_signature, timestamp, nonce, xmlRequest.getEncrypt());
-            System.out.println("需要转换的xml格式："+xmlx);
             XStream xStream = new XStream();
             XStream.setupDefaultSecurity(xStream);
-            xStream.allowTypes(new Class[]{ com.neverend.blog.moudel.weixin.jieshouxml.Xml.class});
-            xStream.alias("xml",  com.neverend.blog.moudel.weixin.jieshouxml.Xml.class);
+            xStream.allowTypes(new Class[]{com.neverend.blog.moudel.weixin.jieshouxml.Xml.class});
+            xStream.alias("xml", com.neverend.blog.moudel.weixin.jieshouxml.Xml.class);
             com.neverend.blog.moudel.weixin.jieshouxml.Xml xmlBtnShenHeMsg = (com.neverend.blog.moudel.weixin.jieshouxml.Xml) xStream.fromXML(xmlx);
 //           修改文章待审核为已审核状态
 //            获取文章id
@@ -61,11 +60,11 @@ public class WeiXinServiceImpl implements WeiXinService {
             String event = xmlBtnShenHeMsg.getEvent();
             Msg msg = null;
 //            任务卡片点击时间
-            if (event.equals("taskcard_click")){
-                if (eventKey.equals("btn1")){
-                    msg = articleService.editState("0",articleID);
-                }else if (eventKey.equals("btn2")){
-                    msg = articleService.editState("4",articleID);
+            if (event.equals("taskcard_click")) {
+                if (eventKey.equals("btn1")) {
+                    msg = articleService.editState("0", articleID);
+                } else if (eventKey.equals("btn2")) {
+                    msg = articleService.editState("4", articleID);
                 }
             }
             Xml xmlret = new Xml();
@@ -73,18 +72,17 @@ public class WeiXinServiceImpl implements WeiXinService {
             xmlret.setCreateTime(date.toString());
             xmlret.setFromUserName(xmlBtnShenHeMsg.getToUserName());
             xmlret.setMsgType("text");
-            String retmsg ="";
-            if (msg!=null && msg.getCode().equals("200")){
+            String retmsg = "";
+            if (msg != null && msg.getCode().equals("200")) {
                 xmlret.setContent("处理成功");
-            }else {
+            } else {
                 xmlret.setContent("处理失败");
             }
             XStream xStream1 = new XStream();
             xStream1.setupDefaultSecurity(xStream1);
             xStream1.allowTypes(new Class[]{Xml.class});
-            xStream1.alias("xml",Xml.class);
+            xStream1.alias("xml", Xml.class);
             String xmlmsg = xStream1.toXML(xmlret);
-            System.out.println("返回xml："+xmlmsg);
             retmsg = wxcpt.EncryptMsg(xmlmsg, timestamp, nonce);
             return retmsg;
         } catch (AesException e) {

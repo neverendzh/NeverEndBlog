@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.w3.org/1999/xhtml">
+<html lang="zh" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
@@ -91,8 +91,11 @@
 <div th:replace="../templates/admin/include/footerjs :: footerJsCss"></div>
 <script type="text/javascript" src="/static/res/admin/js/wangEditor.min.js"></script>
 <script>
+    var layer;
     //JavaScript代码区域
-    layui.use('form',function(){});
+    layui.use(['layer','form'],function(){
+        layer = layui.layer;
+    });
     var E = window.wangEditor;
     var editor = new E('#div1', '#div2');  // 两个参数也可以传入 elem 对象，class 选择器
     // 下面两个配置，使用其中一个即可显示“上传图片”的tab。但是两者不要同时使用！！！
@@ -164,7 +167,12 @@
 
         });
     }
-
+    function openclickm() {
+        layer.msg("正在开发中",{offset: ['50%', '50%']});
+    }
+    function openclickmzc() {
+        layer.msg("暂不开放注册",{offset: ['50%', '50%']});
+    }
 </script>
 </body>
 </html>

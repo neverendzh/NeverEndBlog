@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.w3.org/1999/xhtml">
+<html lang="zh" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
@@ -13,7 +13,7 @@
     <div th:replace="../templates/admin/include/top :: topHeader"></div>
 
     <!--Navigation Bar-->
-    <div th:replace="../templates/admin/include/left :: #leftinclude(selAddClass=wzfl)"></div>
+    <div th:replace="../templates/admin/include/left :: #leftinclude(selAddClass=msgcrm)"></div>
 
     <div class="layui-body">
         <!-- 内容主体区域 -->
@@ -52,7 +52,9 @@
 <div th:replace="../templates/admin/include/footerjs :: footerJsCss"></div>
 <script type="text/javascript" src="/static/res/js/util/NumberToChinese.js"></script>
 <script type="text/javascript" th:inline="none">
-    layui.use(['table', 'element'], function () {
+    var layer;
+    layui.use(['table', 'element','layer'], function () {
+        layer = layui.layer;
         var type = 0;
         var table = layui.table
             , form = layui.form;
@@ -93,7 +95,12 @@
         //一级end
         element.init();
     });
-
+    function openclickm() {
+        layer.msg("正在开发中",{offset: ['50%', '50%']});
+    }
+    function openclickmzc() {
+        layer.msg("暂不开放注册",{offset: ['50%', '50%']});
+    }
 
 </script>
 

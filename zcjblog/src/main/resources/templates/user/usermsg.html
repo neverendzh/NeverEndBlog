@@ -1,0 +1,109 @@
+<html lang="zh" xmlns:th="http://www.w3.org/1999/xhtml" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta charset="UTF-8">
+    <title>NeverEnd</title>
+    <!--header——js-->
+    <div th:replace="../templates/user/include/header :: headerJsCss"></div>
+    <style>
+
+    </style>
+</head>
+<body background="/static/res/img/indeximg/backgru.jpg">
+<!--Navigation Bar-->
+<div class="layui-container" style="background: #e4e8d7;min-height: 592px;">
+    <form class="layui-form">
+    <div class="layui-col-md12">
+        <div class="layui-card">
+            <div class="layui-card-header">设置我的资料</div>
+            <div class="layui-card-body" pad15="">
+
+                <div class="layui-form" lay-filter="">
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">角色</label>
+                        <div class="layui-input-inline">
+                            <input type="text" name="username" th:value="${account.beiYongEr}" readonly="" class="layui-input">
+                        </div>
+                        <div class="layui-form-mid layui-word-aux">不可修改,如需修改联系管理员</div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">用户名</label>
+                        <div class="layui-input-inline">
+                            <input type="text" name="username" th:value="${account.cellphoneNumber}" readonly="" class="layui-input">
+                            <!--<shiro:principal property="userName"/>-->
+                        </div>
+                        <div class="layui-form-mid layui-word-aux">不可修改。用于登陆账号</div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">昵称</label>
+                        <div class="layui-input-inline">
+                            <input type="text" name="nickname" th:value="${account.userName}"  lay-verify="nickname" autocomplete="off"
+                                   placeholder="请输入昵称" class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">性别</label>
+                        <div class="layui-input-block">
+                            <div th:if=" ${account.beiYongSi} == '1'">
+                                <input type="radio" name="sex" value="1" title="男" checked>
+                                <input type="radio" name="sex" value="2" title="女" >
+                            </div>
+                            <div th:if=" ${account.beiYongSi} == '0'">
+                                <input type="radio" name="sex" value="1" title="男">
+                                <input type="radio" name="sex" value="2" title="女" checked>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">头像</label>
+                        <div class="layui-input-inline" style="width: 30px;">
+                            <img th:src="${account.beiYongSan}" alt="头像" class="layui-nav-img">
+                        </div>
+                        <div class="layui-input-inline layui-btn-container" style="width: auto;">
+                            <button type="button" class="layui-btn layui-btn-primary" id="LAY_avatarUpload">
+                                <i class="layui-icon layui-icon-upload-drag"></i>上传新头像
+                            </button>
+                            <input class="layui-upload-file" type="file" accept="undefined" name="file">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">手机</label>
+                        <div class="layui-input-inline">
+                            <input type="text" name="cellphone" th:value="${account.cellphoneNumber}" lay-verify="phone" autocomplete="off"
+                                   class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">邮箱</label>
+                        <div class="layui-input-inline">
+                            <input type="text" name="email"  th:value="${account.userEmail}" lay-verify="email" autocomplete="off"
+                                   class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <div class="layui-input-block">
+                            <button class="layui-btn" lay-submit="" lay-filter="setmyinfo">确认修改</button>
+                            <button type="reset" class="layui-btn layui-btn-primary">重新填写</button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    </form>
+</div>
+<!--Bottom information js-->
+<div th:replace="../templates/user/include/footerjs :: footerJsCss"></div>
+<script type="text/javascript">
+    var layer;
+    layui.use(['form', 'layer'], function () {
+        var form = layui.form;
+        layer = layui.layer;
+
+    });
+</script>
+</body>
+</html>

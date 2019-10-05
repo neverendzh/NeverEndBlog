@@ -10,6 +10,9 @@ import com.neverend.blog.service.SuperArticleSortService;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.subject.PrincipalCollection;
+import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mobile.device.Device;
 import org.springframework.stereotype.Controller;
@@ -158,8 +161,8 @@ public class ArticleClassification {
     public Msg editArticleClassjson(@RequestParam(name = "name") String name,
                                 @RequestParam(name = "articleId") String articleId,
                                 HttpServletRequest request, Device device) {
-        HttpSession session = request.getSession();
-        Account account = (Account) session.getAttribute("account");
+        Subject subject = SecurityUtils.getSubject();
+        Account account = (Account) subject.getPreviousPrincipals();
         Msg msg = superArticleSortService.editAtricle(name, account, articleId);
         return msg;
     }

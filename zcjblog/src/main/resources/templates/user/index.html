@@ -1,4 +1,4 @@
-<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<html lang="zh" xmlns:th="http://www.w3.org/1999/xhtml" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
 <head>
     <meta name="renderer" content="webkit">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
@@ -195,7 +195,7 @@
     layui.config({
         base: '/static/res/js/util/'
     }).use(['layer', 'form', 'tree','element'], function () {
-        var layer = layui.layer;
+        layer = layui.layer;
         form = layui.form;
         tree = layui.tree;
          element = layui.element;
@@ -283,12 +283,15 @@
                     var dataArticle = data.data;
                     for (var i = 0; i < dataArticle.length; i++) {
                         var art = dataArticle[i];
-                        console.log(art);
+                        var imgurl = '';
+                        if (art.beiYongSi != null){
+                            imgurl = art.beiYongSi;
+                        }
                         addarticel = addarticel + " <div class=\"layui-card\" style=\"margin: 4px;border-radius: 8px;\">\n" +
                             "                <div class=\"layui-card-header\"><a href='/system/admin/fabu/yulan?articleId=" + art.articleId + "'><span style='color: #00B0E8'>" + art.articleName + "</span></a></div>\n" +
                             "                <div class=\"layui-card-body\">\n" +
                             "                    <div class=\"layui-row\" style=\"margin-top: 10px;\">\n" +
-                            "                        <div class=\"layui-col-xs6 layui-col-sm6 layui-col-md4\">\n" +"<img src="+'"'+art.beiYongSi+'"'+"style='width: 100%;height: 150px'"+">"+
+                            "                        <div class=\"layui-col-xs6 layui-col-sm6 layui-col-md4\">\n" +"<img src="+'"'+imgurl+'"'+"alt='无图片' style='width: 100%;height: 150px'"+">"+
                             "                        </div>\n" +
                             "                        <div class=\"layui-col-xs6 layui-col-sm6 layui-col-md8\">\n" +
                             "                            <div style=\"margin-left: 6px;\">" + art.briefIntroduction + "</div>\n" +
@@ -350,54 +353,58 @@
                 }
             }
         });
-    });
-    (function requestJsonTp() {
-        var hearht = "<ul class=\"layui-nav layui-layout-left\">";
-        var topLanMu = "";
-        $.ajax({
-            type: 'post',
-            url: '/lan/mu/top',
-            contentType: 'application/json;charset=utf-8',
-            //数据格式是json串，商品信息
-            data: '{"topName":"首页头部"}',
-            success: function (data) {//返回json结果'
-                var jsonObject = data.data;
-                for (var i = 0; i < jsonObject.length; i++) {
+        function requestJsonTp() {
+            var hearht = "<ul class=\"layui-nav layui-layout-left\">";
+            var topLanMu = "";
+            $.ajax({
+                type: 'post',
+                url: '/lan/mu/top',
+                contentType: 'application/json;charset=utf-8',
+                //数据格式是json串，商品信息
+                data: '{"topName":"首页头部"}',
+                success: function (data) {//返回json结果'
+                    var jsonObject = data.data;
+                    for (var i = 0; i < jsonObject.length; i++) {
 
-                    topLanMu = topLanMu + "<li class=\"layui-nav-item \"><a href=\"" + jsonObject[i].lookUrl + "\">" + jsonObject[i].lanMu + "</a></li>";
-                }
-                var endht = hearht + topLanMu + " </ul>";
-                $("#topCaiDan").append(endht);
-            }
-
-        })
-        element.render();
-
-    })();
-    (function requestJsonWeiBo() {
-        var topLanMu = "";
-        var xieg = "<span lay-separator=\"\">|</span>";
-        $.ajax({
-            type: 'post',
-            url: '/lan/mu/boom',
-            contentType: 'application/json;charset=utf-8',
-            //数据格式是json串，商品信息
-            data: '{"bName":"首页尾部"}',
-            success: function (data) {//返回json结果'
-                var jsonObject = data.data;
-                for (var i = 0; i < jsonObject.length; i++) {
-                    if (i < jsonObject.length - 1) {
-                        topLanMu = topLanMu + "<a href=\"" + jsonObject[i].lookUrl + "?type=" + jsonObject[i].roleCode + "\">" + jsonObject[i].lanMu + "</a>" + xieg;
-                    } else {
-                        topLanMu = topLanMu + "<a href=\"" + jsonObject[i].lookUrl + "?type=" + jsonObject[i].roleCode + "\">" + jsonObject[i].lanMu + "</a>";
+                        topLanMu = topLanMu + "<li class=\"layui-nav-item \"><a href=\"" + jsonObject[i].lookUrl + "\">" + jsonObject[i].lanMu + "</a></li>";
                     }
+                    var endht = hearht + topLanMu + " </ul>";
+                    $("#topCaiDan").append(endht);
+                    element.render();
+                    form.render();
                 }
-                $("#sybootm").append(topLanMu);
-            }
 
-        })
-    })();
+            })
+        }
+        function requestJsonWeiBo() {
+            var topLanMu = "";
+            var xieg = "<span lay-separator=\"\">|</span>";
+            $.ajax({
+                type: 'post',
+                url: '/lan/mu/boom',
+                contentType: 'application/json;charset=utf-8',
+                //数据格式是json串，商品信息
+                data: '{"bName":"首页尾部"}',
+                success: function (data) {//返回json结果'
+                    var jsonObject = data.data;
+                    for (var i = 0; i < jsonObject.length; i++) {
+                        if (i < jsonObject.length - 1) {
+                            topLanMu = topLanMu + "<a href=\"" + jsonObject[i].lookUrl + "?type=" + jsonObject[i].roleCode + "\">" + jsonObject[i].lanMu + "</a>" + xieg;
+                        } else {
+                            topLanMu = topLanMu + "<a href=\"" + jsonObject[i].lookUrl + "?type=" + jsonObject[i].roleCode + "\">" + jsonObject[i].lanMu + "</a>";
+                        }
+                    }
+                    $("#sybootm").append(topLanMu);
+                    element.render();
+                    form.render();
+                }
 
+            })
+        }
+        requestJsonTp();
+        requestJsonWeiBo();
+
+    });
     //登录表单显示
     function loginUserAccount() {
         layuiDomeLogin = layui.use('layer', function () {
@@ -461,8 +468,24 @@
             });
         });
     };
+    var indexiskq;
     function openclickm() {
-        layer.msg("正在开发中",{offset: ['50%', '50%']});
+           layer.close(indexiskq);
+           indexiskq =  layer.open({
+                type: 2,
+                title: '个人信息',
+                shadeClose: true,
+                shade: false,
+                offset: ['2%', '15%'],
+                anim:4,
+                maxmin: true, //开启最大化最小化按钮
+                area: ['893px', '600px'],
+                content: '/user/msg',
+                end: function(){
+                    iskqigrxx=0;
+                }
+            });
+
     }
     function openclickmzc() {
         layer.msg("暂不开放注册",{offset: ['50%', '50%']});
@@ -482,37 +505,43 @@
                     if (data.code == 200) {
                         if (data.count >0){
                             $("#articleAdds").empty();
-                            var addarticel = "";
-                            var dataArticle = data.data;
-                            for (var i = 0; i < dataArticle.length; i++) {
-                                var art = dataArticle[i];
-                                addarticel = addarticel + " <div class=\"layui-card\" style=\"margin: 4px;border-radius: 8px;\">\n" +
-                                    "                <div class=\"layui-card-header\"><a href='/system/admin/fabu/yulan?articleId=" + art.articleId + "'><span style='color: #00B0E8'>" + art.articleName + "</span></a></div>\n" +
-                                    "                <div class=\"layui-card-body\">\n" +
-                                    "                    <div class=\"layui-row\" style=\"margin-top: 10px;\">\n" +
-                                    "                        <div class=\"layui-col-xs6 layui-col-sm6 layui-col-md4\">\n" +
-                                    "                            <img src=\"/static/res/img/banner.jpg\" style=\"width: 100%;height: 150px\">\n" +
-                                    "                        </div>\n" +
-                                    "                        <div class=\"layui-col-xs6 layui-col-sm6 layui-col-md8\">\n" +
-                                    "                            <div style=\"margin-left: 6px;\">" + art.briefIntroduction + "</div>\n" +
-                                    "                        </div>\n" +
-                                    "\n" +
-                                    "                    </div>\n" +
-                                    "                </div>\n" +
-                                    "            </div>";
+                                total = data.count;
+                                var addarticel = "";
+                                var dataArticle = data.data;
+                                for (var i = 0; i < dataArticle.length; i++) {
+                                    var art = dataArticle[i];
+                                    var imgurl = '';
+                                    if (art.beiYongSi != null){
+                                        imgurl = art.beiYongSi;
+                                    }
+                                    addarticel = addarticel + " <div class=\"layui-card\" style=\"margin: 4px;border-radius: 8px;\">\n" +
+                                        "                <div class=\"layui-card-header\"><a href='/system/admin/fabu/yulan?articleId=" + art.articleId + "'><span style='color: #00B0E8'>" + art.articleName + "</span></a></div>\n" +
+                                        "                <div class=\"layui-card-body\">\n" +
+                                        "                    <div class=\"layui-row\" style=\"margin-top: 10px;\">\n" +
+                                        "                        <div class=\"layui-col-xs6 layui-col-sm6 layui-col-md4\">\n" +"<img src="+'"'+imgurl+'"'+"alt='无图片' style='width: 100%;height: 150px'"+">"+
+                                        "                        </div>\n" +
+                                        "                        <div class=\"layui-col-xs6 layui-col-sm6 layui-col-md8\">\n" +
+                                        "                            <div style=\"margin-left: 6px;\">" + art.briefIntroduction + "</div>\n" +
+                                        "                        </div>\n" +
+                                        "\n" +
+                                        "                    </div>\n" +
+                                        "                </div>\n" +
+                                        "            </div>";
 
 
+                                $("#articleAdds").append(addarticel);
                             }
-                            $("#articleAdds").append(addarticel);
                         } else {
-                            layer.msg("无数据");
+                            layer.msg("无数据",{offset: ['50%', '50%']});
                         }
 
+                    }else {
+                        layer.msg("服务暂停",{offset: ['50%', '50%']});
                     }
                 }
             });
         } else {
-            layer.msg("请输入内容");
+            layer.msg("请输入内容后搜索",{offset: ['50%', '50%']});
         }
     }
 

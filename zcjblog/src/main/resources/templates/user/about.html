@@ -1,4 +1,4 @@
-<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<html lang="zh" xmlns:th="http://www.w3.org/1999/xhtml" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
 <head>
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
@@ -7,9 +7,6 @@
   <title>NeverEnd</title>
   <!--header——js-->
   <div th:replace="../templates/user/include/header :: headerJsCss"></div>
-  <style>
-
-  </style>
 </head>
 <body background="/static/res/img/indeximg/backgru.jpg">
 <!--Navigation Bar-->
@@ -35,36 +32,126 @@
 <!--Bottom information js-->
 <div th:replace="../templates/user/include/footerjs :: footerJsCss"></div>
 <script type="text/javascript">
-    layui.use('form', function () {
+    var layer ;
+    layui.use(['form','layer','element'], function () {
         var form = layui.form;
-
+         layer = layui.layer;
+       var element = layui.element;
         //监听提交
         form.on('submit(formDemo)', function (data) {
             layer.msg(JSON.stringify(data.field));
             return false;
         });
-    });
-    (function requestJsonTp() {
-        var hearht = "<ul class=\"layui-nav layui-layout-left\">";
-        var topLanMu = "";
-        $.ajax({
-            type: 'post',
-            url: '/lan/mu/top',
-            contentType: 'application/json;charset=utf-8',
-            //数据格式是json串，商品信息
-            data: '{"topName":"首页头部"}',
-            success: function (data) {//返回json结果'
-                var jsonObject = data.data;
-                for (var i = 0; i < jsonObject.length; i++) {
+        function requestJsonTp() {
+            var hearht = "<ul class=\"layui-nav layui-layout-left\">";
+            var topLanMu = "";
+            $.ajax({
+                type: 'post',
+                url: '/lan/mu/top',
+                contentType: 'application/json;charset=utf-8',
+                //数据格式是json串，商品信息
+                data: '{"topName":"首页头部"}',
+                success: function (data) {//返回json结果'
+                    var jsonObject = data.data;
+                    for (var i = 0; i < jsonObject.length; i++) {
 
-                    topLanMu = topLanMu + "<li class=\"layui-nav-item \"><a href=\"" + jsonObject[i].lookUrl + "\">" + jsonObject[i].lanMu + "</a></li>";
+                        topLanMu = topLanMu + "<li class=\"layui-nav-item \"><a href=\"" + jsonObject[i].lookUrl + "\">" + jsonObject[i].lanMu + "</a></li>";
+                    }
+                    var endht = hearht + topLanMu + " </ul>";
+                    $("#topCaiDan").append(endht);
+                    element.render();
                 }
-                var endht = hearht + topLanMu + " </ul>";
-                $("#topCaiDan").append(endht);
-            }
 
-        })
-    })();
+            })
+        }
+        requestJsonTp();
+    });
+
+    var indexiskq;
+    function openclickm() {
+        layer.close(indexiskq);
+        indexiskq =  layer.open({
+            type: 2,
+            title: '个人信息',
+            shadeClose: true,
+            shade: false,
+            offset: ['2%', '15%'],
+            anim:4,
+            maxmin: true, //开启最大化最小化按钮
+            area: ['893px', '600px'],
+            content: '/user/msg',
+            end: function(){
+                iskqigrxx=0;
+            }
+        });
+
+    }
+    function openclickmzc() {
+        layer.msg("暂不开放注册",{offset: ['50%', '50%']});
+    }
+    //登录表单显示
+    function loginUserAccount() {
+        layuiDomeLogin = layui.use('layer', function () {
+            layer = layui.layer;
+            var loginhtmlform = layer.open({
+                title: "登录",
+                type: 1,
+                shade: 0,
+                btnAlign: 'c',
+                skin: 'layui-layer-molv',
+                offset: '200px',
+                content: '<form> <div style="margin-top: 25px" class="layui-form-item">\n' +
+                '    <label class="layui-form-label">输入框</label>\n' +
+                '    <div class="layui-input-inline">\n' +
+                '      <input type="text" value="1593658137" id="accountMobile" name="accountMobile" required  lay-verify="required" placeholder="账号" autocomplete="off" class="layui-input">\n' +
+                '    </div>\n' +
+                '  </div>\n' +
+                '  <div class="layui-form-item">\n' +
+                '    <label class="layui-form-label">密码框</label>\n' +
+                '    <div class="layui-input-inline">\n' +
+                '      <input type="password" value="123" id="password" name="password" required lay-verify="required" placeholder="密码" autocomplete="off" class="layui-input">\n' +
+                '    </div>\n' +
+                '  </div></form>',
+                btn: ['登录', '重置'],
+                yes: function (index, layero) {
+                    var accountMobile = $("#accountMobile").val();
+                    var password = $("#password").val();
+                    if (accountMobile == "" || accountMobile == null) {
+                        layer.tips('输入账号', '#accountMobile');
+                        return false;
+                    }
+                    if (password == "" || password == null) {
+                        layer.tips('输入密码', '#password');
+                        return false;
+                    }
+                    $.ajax({
+                        type: 'post',
+                        url: '/',
+                        data: 'accountMobile=' + accountMobile + '&password=' + password,
+                        success: function (data) {//返回json结果'
+                            var Msg = data;
+                            if (Msg.code == "200") {
+                                layer.close(loginhtmlform);
+                                window.location.href = Msg.url;
+                            } else {
+                                layer.tips(Msg.msg, '#accountMobile');
+                            }
+                        }
+                    })
+                    //按钮【按钮一】的回调
+                },
+                btn2: function (index, layero) {
+                    console.log("sss");
+                    //按钮【按钮二】的回调
+                    return false //开启该代码可禁止点击该按钮关闭
+                },
+                cancel: function () {
+                    //右上角关闭回调
+                    //return false 开启该代码可禁止点击该按钮关闭
+                }
+            });
+        });
+    };
 </script>
 </body>
 </html>

@@ -46,7 +46,7 @@ public class Account implements Serializable {
     private Date creatTime;
 
     /**
-     * 关联用户登陆日志表 AccountLoginLog表的account_id
+     * 最近跟新资料时间
      */
     private Date loginEndTime;
 
@@ -65,6 +65,9 @@ public class Account implements Serializable {
      */
     private String beiYongSan;
 
+    /**
+     * 性别 1 男 2女
+     */
     private String beiYongSi;
 
     private String beiYongWu;
