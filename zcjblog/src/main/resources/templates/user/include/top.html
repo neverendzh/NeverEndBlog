@@ -16,7 +16,7 @@
                     </a>
 
                     <a href="javascript:;" shiro:hasAnyRoles="2,3,4">
-                        <img src="http://img.neverend.cn/acountmsg.jpg" class="layui-nav-img">
+                        <img th:src=${account.beiYongSan} class="layui-nav-img">
                         <shiro:principal property="userName"/>
                     </a>
 
@@ -30,12 +30,12 @@
                             </a>
                         </dd>
                         <dd>
-                            <a onclick="openclickm()" href="javascript:;" id="longinWeiXin" shiro:hasRole="1">
+                            <a onclick="openclickmwx()" href="javascript:;" id="longinWeiXin" shiro:hasRole="1">
                                 <i class="layui-icon">&#xe677;</i>微信登陆
                             </a>
                         </dd>
                         <dd>
-                            <a onclick="openclickm()" href="javascript:;" id="longinqq" shiro:hasRole="1">
+                            <a onclick="openclickmqq()" href="javascript:;" id="longinqq" shiro:hasRole="1">
                                 <i class="layui-icon">&#xe676;</i>QQ登陆
                             </a>
                         </dd>

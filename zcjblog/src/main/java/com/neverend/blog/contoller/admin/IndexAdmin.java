@@ -11,6 +11,7 @@ import org.apache.shiro.web.util.SavedRequest;
 import org.apache.shiro.web.util.WebUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -33,7 +34,9 @@ public class IndexAdmin {
      */
     @ApiIgnore
     @RequestMapping("/admin/index")
-    public String AdminIndex(){
+    public String AdminIndex(Model model){
+        Account subject = (Account) SecurityUtils.getSubject().getPrincipal();
+        model.addAttribute("account",subject);
        return "admin/index";
     }
 

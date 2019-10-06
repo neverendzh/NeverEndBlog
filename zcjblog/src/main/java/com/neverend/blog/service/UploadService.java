@@ -1,5 +1,6 @@
 package com.neverend.blog.service;
 
+import com.neverend.blog.moudel.Msg;
 import com.neverend.blog.moudel.UploadFileMsg;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -15,4 +16,11 @@ public interface UploadService {
      * @return
      */
     UploadFileMsg uploadimg( MultipartFile multipartFile);
+
+    /**
+     * 用户上传头像 或修改
+     * @param img
+     * @return
+     */
+    Msg upLoadAccountImg(MultipartFile img);
 }

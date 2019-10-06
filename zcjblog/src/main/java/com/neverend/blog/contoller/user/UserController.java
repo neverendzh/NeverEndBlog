@@ -1,15 +1,18 @@
 package com.neverend.blog.contoller.user;
 
 import com.github.pagehelper.PageInfo;
+import com.neverend.blog.entity.Account;
 import com.neverend.blog.entity.Article;
 import com.neverend.blog.moudel.Msg;
 import com.neverend.blog.service.ArticleService;
 import io.swagger.annotations.*;
 import org.apache.ibatis.annotations.Param;
+import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mobile.device.Device;
 import org.springframework.mobile.device.DevicePlatform;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -55,7 +58,9 @@ public class UserController {
      */
     @GetMapping("/index")
     @ApiIgnore
-    public String index(HttpServletRequest request) {
+    public String index(HttpServletRequest request, Model model) {
+        Account subject = (Account) SecurityUtils.getSubject().getPrincipal();
+        model.addAttribute("account",subject);
         return "user/index";
     }
 

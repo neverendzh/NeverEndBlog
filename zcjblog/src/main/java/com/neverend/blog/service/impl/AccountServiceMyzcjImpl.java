@@ -140,6 +140,17 @@ public class AccountServiceMyzcjImpl implements AccountServiceMyzcj {
     }
 
     /**
+     * 跟新用户信息
+     *
+     * @param account1
+     */
+    @Override
+    public int updateaccount(Account account1) {
+        int i = accountMapper.updateByPrimaryKeySelective(account1);
+        return i;
+    }
+
+    /**
      * 根据id查询用户
      *
      * @param account

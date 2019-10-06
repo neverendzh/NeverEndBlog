@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <meta charset="UTF-8">
     <title>NeverEnd</title>
+    <link rel="Shortcut Icon" href="/static/res/favicon2.ico" type="image/x-icon" />
+
     <!--header——js-->
     <div th:replace="../templates/user/include/header :: headerJsCss"></div>
     <style>
@@ -96,6 +98,14 @@
     }
     function openclickmzc() {
         layer.msg("暂不开放注册",{offset: ['50%', '50%']});
+    }
+    function openclickmwx() {
+        layer.msg("暂未开放",{offset: ['50%', '50%']});
+
+    }
+    function openclickmqq() {
+        layer.msg("暂未开放",{offset: ['50%', '50%']});
+
     }
     //登录表单显示
     function loginUserAccount() {

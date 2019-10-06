@@ -1,5 +1,6 @@
 package com.neverend.blog.contoller.AdminUserPublic;
 
+import com.neverend.blog.moudel.Code;
 import com.neverend.blog.moudel.Msg;
 import com.neverend.blog.service.AccountServiceMyzcj;
 import io.swagger.annotations.ApiImplicitParam;
@@ -27,8 +28,9 @@ public class RegisteredAccount {
     @PostMapping("qq/login")
 //    @ApiIgnore
     public String QQRegisteredAccount() {
-        useraccountServiceMyzcj.registeredAccount("zcjn",
-                "9999999999","123","false","9999999999");
+        Msg msg = new Msg();
+        msg.setCode(Code.sucess);
+        msg.setMsg("暂未开放");
         return "admin/login";
     }
 

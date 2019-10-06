@@ -4,6 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <title>Never_End</title>
+    <link rel="Shortcut Icon" href="/static/res/favicon2.ico" type="image/x-icon" />
     <!--header——js-->
     <div th:replace="../templates/admin/include/header :: headerJsCss"></div>
 </head>
@@ -33,15 +34,32 @@
         var element = layui.element;
         layer = layui.layer;
     });
+    var indexiskq;
+    function openclickm() {
+        layer.close(indexiskq);
+        indexiskq =  layer.open({
+            type: 2,
+            title: '个人信息',
+            shadeClose: true,
+            shade: false,
+            offset: ['2%', '15%'],
+            anim:4,
+            maxmin: true, //开启最大化最小化按钮
+            area: ['893px', '600px'],
+            content: '/user/msg',
+            end: function(){
+                iskqigrxx=0;
+            }
+        });
 
-    function openclickm() {
-        layer.msg("正在开发中",{offset: ['50%', '50%']});
     }
-    function openclickmzc() {
-        layer.msg("暂不开放注册",{offset: ['50%', '50%']});
+    function openclickmwx() {
+        layer.msg("暂未开放",{offset: ['50%', '50%']});
+
     }
-    function openclickm() {
-        layer.msg("正在开发中",{offset: ['50%', '50%']});
+    function openclickmqq() {
+        layer.msg("暂未开放",{offset: ['50%', '50%']});
+
     }
     function openclickmzc() {
         layer.msg("暂不开放注册",{offset: ['50%', '50%']});

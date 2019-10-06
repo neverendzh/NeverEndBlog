@@ -20,8 +20,10 @@ public class QiNiuKeyDaoImpl implements QiNiuKeyDao {
      * @return
      */
     @Override
-    public List<QiNiuKey> getQiNiuKey() {
+    public List<QiNiuKey> getQiNiuKey(String kongjian) {
         QiNiuKeyExample qiNiuKeyExample = new QiNiuKeyExample();
+        QiNiuKeyExample.Criteria criteria = qiNiuKeyExample.createCriteria();
+        criteria.andBeiYiEqualTo(kongjian);
         List<QiNiuKey> qiNiuKeys = qiNiuKeyMapper.selectByExample(qiNiuKeyExample);
         return qiNiuKeys;
     }

@@ -28,26 +28,26 @@
                 </a>
 
                 <a href="javascript:;" shiro:hasAnyRoles="2,3,4">
-                    <img src="http://img.neverend.cn/acountmsg.jpg" class="layui-nav-img">
+                    <img th:src=${account.beiYongSan} class="layui-nav-img">
                     <shiro:principal property="userName"/>
                 </a>
 
                 <dl class="layui-nav-child">
                     <dd><a onclick="openclickm()" href="javascript:;" shiro:hasAnyRoles="2,3,4">基本资料</a></dd>
-                    <dd><a onclick="openclickm()" href="javascript:;" shiro:hasAnyRoles="2,3,4">安全设置</a></dd>
-                    <dd><a onclick="openclickm()" href="javascript:;" shiro:hasAnyRoles="2,3,4">我的发布</a></dd>
+                    <dd><a onclick="openclickmaq()" href="javascript:;" shiro:hasAnyRoles="2,3,4">安全设置</a></dd>
+                    <dd><a onclick="openclickmfb()" href="javascript:;" shiro:hasAnyRoles="2,3,4">我的发布</a></dd>
                     <dd>
                         <a onclick="loginUserAccount()" href="javascript:;" id="longinId" shiro:hasRole="1">
                             <i class="layui-icon">&#xe66f;</i>账号登陆
                         </a>
                     </dd>
                     <dd>
-                        <a onclick="openclickm()" href="javascript:;" id="longinWeiXin" shiro:hasRole="1">
+                        <a onclick="openclickmwx()" href="javascript:;" id="longinWeiXin" shiro:hasRole="1">
                             <i class="layui-icon">&#xe677;</i>微信登陆
                         </a>
                     </dd>
                     <dd>
-                        <a onclick="openclickm()" href="javascript:;" id="longinqq" shiro:hasRole="1">
+                        <a onclick="openclickmqq()" href="javascript:;" id="longinqq" shiro:hasRole="1">
                             <i class="layui-icon">&#xe676;</i>QQ登陆
                         </a>
                     </dd>

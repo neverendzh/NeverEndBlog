@@ -34,4 +34,10 @@ public interface AccountServiceMyzcj {
      * @return
      */
     Msg selectAccountmsg(Integer page, Integer size);
+
+    /**
+     * 跟新用户信息
+     * @param account1
+     */
+    int updateaccount(Account account1);
 }
