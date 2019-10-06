@@ -16,6 +16,7 @@ import com.neverend.blog.util.email.qiniu.Etag;
 import com.neverend.blog.util.email.redis.RedisUtil;
 import com.qiniu.common.QiniuException;
 import com.qiniu.http.Response;
+import com.qiniu.storage.BucketManager;
 import com.qiniu.storage.Configuration;
 import com.qiniu.storage.Region;
 import com.qiniu.storage.UploadManager;
@@ -108,8 +109,9 @@ public class UploadServiceImpl implements UploadService {
      */
     @Override
     public Msg upLoadAccountImg(MultipartFile img) {
+        String gqk = "1";
         Msg msg = new Msg();
-        QiNiuKey qiNiuKey = getqiniukey("1");
+        QiNiuKey qiNiuKey = getqiniukey(gqk);
         Account account = (Account) SecurityUtils.getSubject().getPrincipal();
         if (qiNiuKey != null) {
             if (account != null && account.getBeiYongEr().equals("管理员") ||
@@ -126,8 +128,10 @@ public class UploadServiceImpl implements UploadService {
                     DefaultPutRet putRet = new Gson().fromJson(response.bodyString(), DefaultPutRet.class);
                     String encodedFileName = URLEncoder.encode(putRet.key, "utf-8").replace("+", "%20");
                     String publicUrl = String.format("%s/%s", qiNiuKey.getYuMing(), encodedFileName);
-                    redisUtil.set(account.getId(), publicUrl);
-                    updateimg(account, publicUrl);
+                    delimgOrFile(account.getBeiYongWu(),gqk);
+                    account.setBeiYongSan(publicUrl);
+                    account.setBeiYongWu(key);
+                    updateimg(account, publicUrl,key);
                     retmsg(msg, publicUrl);
                     return msg;
                 } catch (IOException ex) {
@@ -142,6 +146,26 @@ public class UploadServiceImpl implements UploadService {
         }
     }
 
+    private boolean delimgOrFile(String key,String getqiNiuKey){
+        QiNiuKey qiNiuKey = getqiniukey(getqiNiuKey);
+        Configuration cfg = new Configuration(Region.huanan());
+        Auth auth = Auth.create(qiNiuKey.getAk(), qiNiuKey.getSk());
+        BucketManager bucketManager = new BucketManager(auth, cfg);
+        try {
+            Response delete = bucketManager.delete(qiNiuKey.getQiNiuName(), key);
+            return true;
+        } catch (QiniuException ex) {
+            //如果遇到异常，说明删除失败
+            System.err.println(ex.code());
+            System.err.println(ex.response.toString());
+            return false;
+        }
+    }
+    /**
+     * 获取hash文件名
+     * @param img
+     * @return
+     */
     private String hashName(MultipartFile img) {
         try {
             String contentType = img.getContentType();
@@ -176,10 +200,11 @@ public class UploadServiceImpl implements UploadService {
         msg.setData(msgsrc);
     }
 
-    private int updateimg(Account account, String publicUrl) {
+    private int updateimg(Account account, String publicUrl,String key) {
         Account account1 = new Account();
         account1.setId(account.getId());
         account1.setBeiYongSan(publicUrl);
+        account1.setBeiYongWu(key);
         int updateaccount = accountServiceMyzcj.updateaccount(account1);
         return updateaccount;
     }
@@ -222,9 +247,5 @@ public class UploadServiceImpl implements UploadService {
         msg.setCode(Code.error);
         msg.setMsg(Code.errorMsg);
         return msg;
-    }
-
-    public static void main(String[] args) {
-        System.out.println(3 % 3);
     }
 }

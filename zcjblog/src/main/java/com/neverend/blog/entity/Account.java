@@ -69,7 +69,9 @@ public class Account implements Serializable {
      * 性别 1 男 2女
      */
     private String beiYongSi;
-
+    /**
+     * 头像文件名
+     */
     private String beiYongWu;
 
     private String beiYongLiu;
