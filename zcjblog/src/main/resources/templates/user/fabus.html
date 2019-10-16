@@ -1,0 +1,250 @@
+<html lang="zh" xmlns:th="http://www.w3.org/1999/xhtml" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta charset="UTF-8">
+    <title>NeverEnd</title>
+    <link rel="Shortcut Icon" href="/static/res/favicon2.ico" type="image/x-icon" />
+    <!--header——js-->
+    <div th:replace="../templates/user/include/header :: headerJsCss"></div>
+</head>
+<body background="/static/res/img/indeximg/backgru.jpg">
+<!--Navigation Bar-->
+<div th:replace="../templates/user/include/top :: topHeader"></div>
+
+<div class="layui-container" style="background: #e4e8d7;min-height: 592px;">
+    <div class="layui-row">
+        <div class="layui-col-md10">
+            <div class="layui-tab layui-tab-card" lay-filter="tabclass">
+                <ul id="liTapType" class="layui-tab-title" style=" margin-top: 6%;">
+                </ul>
+                <div id="tapContent" class="layui-tab-content" style="height: 100%;">
+                    <div class="layui-tab-item layui-show">
+                        <table class="layui-hide" id="yijifenl" lay-filter="yijifenl">
+                        </table>
+                        <script type="text/html" id="barDemo">
+                            <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+                            <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+                        </script>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="layui-col-md2" >
+            <ul class="layui-nav layui-layout-right" style="margin-top: 20%;background-color: #e4e8d7">
+                <li class="layui-nav-item"><button class="layui-btn layui-btn-sm">新增</button></li>
+                <li class="layui-nav-item"><button class="layui-btn layui-btn-sm">编辑</button></li>
+            </ul>
+        </div>
+    </div>
+    <!--Bottom information Text-->
+    <div th:replace="../templates/user/include/footer :: footerHtml"></div>
+</div>
+
+<!--Bottom information js-->
+<div th:replace="../templates/user/include/footerjs :: footerJsCss"></div>
+<script type="text/javascript" src="/static/res/admin/js/data.js"></script>
+<script th:inline="none">
+    var layer ;
+    var initname;
+    layui.use(['form','layer','element','table'], function () {
+        var form = layui.form;
+        layer = layui.layer;
+        var element = layui.element;
+        var table = layui.table
+        requestJsonTp(element);
+        umberClassType(element,table,form,0);
+        element.on('tab(tabclass)', function(data){
+            yiji(table,form,this.innerText);
+        });
+        // element.init();
+    });
+    function yiji(table,form,name) {
+        //一级star /u/f/f/b/t/wzs/web
+        if (name==0){
+            name = initname;
+        }
+        table.render({
+            elem: '#yijifenl'
+            ,url:'/u/f/f/b/t/wzs/web?name='+name
+            ,cellMinWidth: 80
+            ,cols: [[
+                {type:'numbers'}
+                ,{type: 'checkbox'}
+                ,{field:'articleId', title:'ID', width:100, unresize: true, sort: true}
+                ,{field:'articleName', title:'分类名称',sort: true}
+                ,{field:'briefIntroduction', title:'创建用户',sort: true}
+                ,{field:'creatTime', title: '创建时间',templet: function(d){
+                        return  new Date(d.creatTime).Format("yyyy-MM-dd hh:mm:ss")
+                    }, minWidth:120, sort: true}
+                ,{field:'beiYongYi', title:'更新时间',templet: function(d){
+                        return  new Date(d.toUpdate).Format("yyyy-MM-dd hh:mm:ss")},
+                    sort: true}
+                ,{field:'beiYongSi', title:'状态', width:110, templet: '#checkboxTpl', unresize: true}
+                ,{fixed: 'right', title:'操作', toolbar: '#barDemo', width:150}
+            ]]
+            ,page: { //支持传入 laypage 组件的所有参数（某些参数除外，如：jump/elem） - 详见文档
+                layout: ['limit', 'count', 'prev', 'page', 'next', 'skip'] //自定义分页布局
+                //,curr: 5 //设定初始在第 5 页
+                ,groups: 7 //只显示 1 个连续页码
+                ,first: false //不显示首页
+                ,last: false //不显示尾页,
+                ,prev:"上一页"
+                ,next:"下一页"
+            }
+        });
+    };
+    function requestJsonTp(element) {
+        var hearht = "<ul class=\"layui-nav layui-layout-left\">";
+        var topLanMu = "";
+        $.ajax({
+            type: 'post',
+            url: '/lan/mu/top',
+            contentType: 'application/json;charset=utf-8',
+            //数据格式是json串，商品信息
+            data: '{"topName":"首页头部"}',
+            success: function (data) {//返回json结果'
+                var jsonObject = data.data;
+                for (var i = 0; i < jsonObject.length; i++) {
+
+                    topLanMu = topLanMu + "<li class=\"layui-nav-item \"><a href=\"" + jsonObject[i].lookUrl + "\">" + jsonObject[i].lanMu + "</a></li>";
+                }
+                var endht = hearht + topLanMu + " </ul>";
+                $("#topCaiDan").append(endht);
+                element.render();
+            }
+
+        })
+    }
+    function umberClassType(element,table,form,name) {
+        $.ajax({
+            type:'get',
+            url:'/u/f/f/b/t',
+            data:'',
+            contentType: "application/json;charset=uft-8",
+            dataType: "json",
+            success:function(data){
+                if (data.code == "200"){
+                    var html = "";
+                    var tapcontentHtml = "";
+                    var listatticle = data.data;
+                    for(var i=0;i<listatticle.length;i++){
+                        var tapnum = listatticle[i].superArtilceName;
+                        if (i==0){
+                            initname=tapnum;
+                            tapcontentHtml = "";
+                            html = html+"<li class=\"layui-this\">"+tapnum+"</li>"
+                        }else {
+                            html = html+"<li>"+tapnum+"</li>"
+                        }
+                    }
+                    $("#liTapType").append(html);
+                    element.init();
+                    yiji(table,form,0);
+                }else {
+                    layer.msg(data.msg);
+                }
+            },
+            error:function (data) {
+                layer.msg("服务暂停");
+            }
+        });
+    }
+
+    var indexiskq;
+    function openclickm() {
+        layer.close(indexiskq);
+        indexiskq =  layer.open({
+            type: 2,
+            title: '个人信息',
+            shadeClose: true,
+            shade: false,
+            offset: ['2%', '15%'],
+            anim:4,
+            maxmin: true, //开启最大化最小化按钮
+            area: ['893px', '600px'],
+            content: '/user/msg',
+            end: function(){
+                iskqigrxx=0;
+            }
+        });
+
+    }
+    function openclickmwx() {
+        layer.msg("暂未开放",{offset: ['50%', '50%']});
+
+    }
+    function openclickmqq() {
+        layer.msg("暂未开放",{offset: ['50%', '50%']});
+
+    }
+    function openclickmzc() {
+        layer.msg("暂不开放注册",{offset: ['50%', '50%']});
+    }
+    //登录表单显示
+    function loginUserAccount() {
+        layuiDomeLogin = layui.use('layer', function () {
+            layer = layui.layer;
+            var loginhtmlform = layer.open({
+                title: "登录",
+                type: 1,
+                shade: 0,
+                btnAlign: 'c',
+                skin: 'layui-layer-molv',
+                offset: '200px',
+                content: '<form> <div style="margin-top: 25px" class="layui-form-item">\n' +
+                '    <label class="layui-form-label">输入框</label>\n' +
+                '    <div class="layui-input-inline">\n' +
+                '      <input type="text" value="1593658137" id="accountMobile" name="accountMobile" required  lay-verify="required" placeholder="账号" autocomplete="off" class="layui-input">\n' +
+                '    </div>\n' +
+                '  </div>\n' +
+                '  <div class="layui-form-item">\n' +
+                '    <label class="layui-form-label">密码框</label>\n' +
+                '    <div class="layui-input-inline">\n' +
+                '      <input type="password" value="123" id="password" name="password" required lay-verify="required" placeholder="密码" autocomplete="off" class="layui-input">\n' +
+                '    </div>\n' +
+                '  </div></form>',
+                btn: ['登录', '重置'],
+                yes: function (index, layero) {
+                    var accountMobile = $("#accountMobile").val();
+                    var password = $("#password").val();
+                    if (accountMobile == "" || accountMobile == null) {
+                        layer.tips('输入账号', '#accountMobile');
+                        return false;
+                    }
+                    if (password == "" || password == null) {
+                        layer.tips('输入密码', '#password');
+                        return false;
+                    }
+                    $.ajax({
+                        type: 'post',
+                        url: '/',
+                        data: 'accountMobile=' + accountMobile + '&password=' + password,
+                        success: function (data) {//返回json结果'
+                            var Msg = data;
+                            if (Msg.code == "200") {
+                                layer.close(loginhtmlform);
+                                window.location.href = Msg.url;
+                            } else {
+                                layer.tips(Msg.msg, '#accountMobile');
+                            }
+                        }
+                    })
+                    //按钮【按钮一】的回调
+                },
+                btn2: function (index, layero) {
+                    console.log("sss");
+                    //按钮【按钮二】的回调
+                    return false //开启该代码可禁止点击该按钮关闭
+                },
+                cancel: function () {
+                    //右上角关闭回调
+                    //return false 开启该代码可禁止点击该按钮关闭
+                }
+            });
+        });
+    };
+</script>
+</body>
+</html>

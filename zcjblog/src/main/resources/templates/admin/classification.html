@@ -65,173 +65,94 @@
                 var tabnum = data.index;
                 yiji(table,form,tabnum);
             });
-        getTaps();
-        function yiji(table,form,type) {
-            //一级star
-            table.render({
-                elem: '#yijifenl'
-                ,toolbar: '#bianji'
-                ,url:'/system/articles/classification/all/Articles?type='+type
-                ,cellMinWidth: 80
-                ,cols: [[
-                    {type:'numbers'}
-                    ,{type: 'checkbox'}
-                    ,{field:'superArticleSortId', title:'ID', width:100, unresize: true, sort: true}
-                    ,{field:'superArtilceName', title:'分类名称',sort: true}
-                    ,{field:'accountId', title:'创建用户',sort: true}
-                    ,{field:'creatTime', title: '创建时间',templet: function(d){
-                            return  new Date(d.creatTime).Format("yyyy-MM-dd hh:mm:ss")
-                        }, minWidth:120, sort: true}
-                    ,{field:'toUpdate', title:'更新时间',templet: function(d){
-                            return  new Date(d.toUpdate).Format("yyyy-MM-dd hh:mm:ss")},
-                        sort: true}
-                    ,{field:'beiYongYi', title:'状态', width:110, templet: '#checkboxTpl', unresize: true}
-                    ,{fixed: 'right', title:'操作', toolbar: '#barDemo', width:150}
-                ]]
-                ,page: { //支持传入 laypage 组件的所有参数（某些参数除外，如：jump/elem） - 详见文档
-                    layout: ['limit', 'count', 'prev', 'page', 'next', 'skip'] //自定义分页布局
-                    //,curr: 5 //设定初始在第 5 页
-                    ,groups: 7 //只显示 1 个连续页码
-                    ,first: false //不显示首页
-                    ,last: false //不显示尾页,
-                    ,prev:"上一页"
-                    ,next:"下一页"
-                }
-            });
+        yiji(table,form,0);
+        element.init();
+    });
+    function yiji(table,form,type) {
+        //一级star
+        table.render({
+            elem: '#yijifenl'
+            ,toolbar: '#bianji'
+            ,url:'/system/articles/classification/all/Articles?type='+type
+            ,cellMinWidth: 80
+            ,cols: [[
+                {type:'numbers'}
+                ,{type: 'checkbox'}
+                ,{field:'superArticleSortId', title:'ID', width:100, unresize: true, sort: true}
+                ,{field:'superArtilceName', title:'分类名称',sort: true}
+                ,{field:'accountId', title:'创建用户',sort: true}
+                ,{field:'creatTime', title: '创建时间',templet: function(d){
+                        return  new Date(d.creatTime).Format("yyyy-MM-dd hh:mm:ss")
+                    }, minWidth:120, sort: true}
+                ,{field:'toUpdate', title:'更新时间',templet: function(d){
+                        return  new Date(d.toUpdate).Format("yyyy-MM-dd hh:mm:ss")},
+                    sort: true}
+                ,{field:'beiYongYi', title:'状态', width:110, templet: '#checkboxTpl', unresize: true}
+                ,{fixed: 'right', title:'操作', toolbar: '#barDemo', width:150}
+            ]]
+            ,page: { //支持传入 laypage 组件的所有参数（某些参数除外，如：jump/elem） - 详见文档
+                layout: ['limit', 'count', 'prev', 'page', 'next', 'skip'] //自定义分页布局
+                //,curr: 5 //设定初始在第 5 页
+                ,groups: 7 //只显示 1 个连续页码
+                ,first: false //不显示首页
+                ,last: false //不显示尾页,
+                ,prev:"上一页"
+                ,next:"下一页"
+            }
+        });
 
-            //头工具栏事件
-            table.on('toolbar(yijifenl)', function(obj){
-                if (obj.event == "getCheckData"){
-                    $.ajax({
-                        type:'get',
-                        url:'/system/calss/ifcation/type',
-                        data:'type='+type,
-                        success:function(data){
-                            if (data.code == 0){
-
-                                var htmlhead = " <form class=\"layui-form\">\n" +
-                                    "                <div class=\"layui-form-item\">\n" +
-                                    "                    <label class=\"layui-form-label\">分类名称</label>\n" +
-                                    "                    <div class=\"layui-input-block\">\n" +
-                                    "                        <input type=\"text\" name=\"title\" lay-verify=\"title\" autocomplete=\"off\" placeholder=\"请分类名称\" class=\"layui-input\">\n" +
-                                    "                    </div>\n" +
-                                    "                </div>\n" +
-                                    "                <div class=\"layui-form-item\">\n" +
-                                    "                    <label class=\"layui-form-label\">上级分类</label>\n" +
-                                    "                    <div class=\"layui-input-block\">\n" +
-                                    "                        <select name=\"interest\" lay-filter=\"aihao\">";
-
-                                var opten = " <option value=\"\">默认一级分类</option>";
-
-                                var shangj = data.data;
-                                for (var i=0;i<shangj.length;i++){
-                                    opten = opten+"<option  value="+shangj[i].superArticleSortId+"k"+shangj[i].beiYongEr+">"+shangj[i].superArtilceName+"</option>";
-                                }
-
-                                var endhtml = " </select>\n" +
-                                    "                    </div>\n" +
-                                    "                </div>\n" +
-                                    "                <div class=\"layui-form-item\">\n" +
-                                    "                    <div class=\"layui-input-block\">\n" +
-
-                                    "                        <button class=\"layui-btn\" lay-submit  lay-filter=\"demo1\">保存</button>\n" +
-                                    "                     <button type=\"reset\"  class=\"layui-btn layui-btn-primary\">取消</button>\n" +
-                                    "                    </div>\n" +
-                                    "                </div>\n" +
-                                    "            </form>";
-                                layer.open({
-                                    type: 1,
-                                    title:"添加分类",
-                                    skin: 'layui-layer-demo', //样式类名
-                                    closeBtn: 1, //不显示关闭按钮
-                                    anim: 2,
-                                    shadeClose: true, //开启遮罩关闭
-                                    content: htmlhead+opten+endhtml
-                                });
-                                form.render();
-                            }else {
-                                layer.msg("服务中断");
-                            }
-
-                        },
-                        error:function (data) {
-                            layer.msg("服务暂停")
-                        }
-                    });
-                }
-            });
-
-            //监听行工具事件
-            table.on('tool(yijifenl)', function(obj){
-                var data = obj.data;
-                if(obj.event === 'del'){
-                    layer.confirm('确定删除', function(index){
-                        layer.close(index);
-                        $.ajax({
-                            type:'post',
-                            url:'/system/calss/ifcation/remove',
-                            data:'articleId='+data.superArticleSortId+"&type="+type,
-                            success:function(data){
-                                if (data.code == "200"){
-                                    obj.del();
-                                    layer.msg(data.msg)
-                                }
-                                if (data.code == "404"){
-                                    layer.msg(data.msg)
-                                }
-                                if (data.code == "500"){
-                                    layer.msg(data.msg)
-                                }
-                            },
-                            error:function (data) {
-                                layer.msg("服务暂停")
-                            }
-                        });
-                    });
-                } else if(obj.event === 'edit'){
-                    layer.prompt({
-                        title:'编辑',
-                        formType: 0
-                        ,value: data.superArtilceName
-                    }, function(value, index){
-                        layer.close(index);
-                        $.ajax({
-                            type:'post',
-                            url:'/system/calss/ifcation/edit',
-                            data:'name='+ value+"&type="+type+"&articleId="+data.superArticleSortId,
-                            success:function(data){
-                                if (data.code == "1"){
-                                    obj.update({
-                                        superArtilceName: value
-                                    });
-                                    layer.msg(data.msg)
-                                }
-                                if (data.code == "0"){
-                                    layer.msg(data.msg)
-                                }
-                                if (data.code == "-1"){
-                                    layer.msg(data.msg)
-                                }
-                            },
-                            error:function (data) {
-                                layer.msg("服务暂停")
-                            }
-                        });
-                    });
-                }
-            });
-
-            //监听锁定操作
-            form.on('checkbox(lockDemo)', function(obj){
+        //头工具栏事件
+        table.on('toolbar(yijifenl)', function(obj){
+            if (obj.event == "getCheckData"){
                 $.ajax({
-                    type:'post',
-                    url:'/system/calss/ifcation/lock',
-                    data:'articleId='+this.value+"&type="+type+"&isLock="+obj.elem.checked,
+                    type:'get',
+                    url:'/system/calss/ifcation/type',
+                    data:'type='+type,
                     success:function(data){
-                        if (data.code == "200"){
-                            layer.msg(data.msg)
+                        if (data.code == 0){
+
+                            var htmlhead = " <form class=\"layui-form\">\n" +
+                                "                <div class=\"layui-form-item\">\n" +
+                                "                    <label class=\"layui-form-label\">分类名称</label>\n" +
+                                "                    <div class=\"layui-input-block\">\n" +
+                                "                        <input type=\"text\" name=\"title\" lay-verify=\"title\" autocomplete=\"off\" placeholder=\"请分类名称\" class=\"layui-input\">\n" +
+                                "                    </div>\n" +
+                                "                </div>\n" +
+                                "                <div class=\"layui-form-item\">\n" +
+                                "                    <label class=\"layui-form-label\">上级分类</label>\n" +
+                                "                    <div class=\"layui-input-block\">\n" +
+                                "                        <select name=\"interest\" lay-filter=\"aihao\">";
+
+                            var opten = " <option value=\"\">默认一级分类</option>";
+
+                            var shangj = data.data;
+                            for (var i=0;i<shangj.length;i++){
+                                opten = opten+"<option  value="+shangj[i].superArticleSortId+"k"+shangj[i].beiYongEr+">"+shangj[i].superArtilceName+"</option>";
+                            }
+
+                            var endhtml = " </select>\n" +
+                                "                    </div>\n" +
+                                "                </div>\n" +
+                                "                <div class=\"layui-form-item\">\n" +
+                                "                    <div class=\"layui-input-block\">\n" +
+
+                                "                        <button class=\"layui-btn\" lay-submit  lay-filter=\"demo1\">保存</button>\n" +
+                                "                     <button type=\"reset\"  class=\"layui-btn layui-btn-primary\">取消</button>\n" +
+                                "                    </div>\n" +
+                                "                </div>\n" +
+                                "            </form>";
+                            layer.open({
+                                type: 1,
+                                title:"添加分类",
+                                skin: 'layui-layer-demo', //样式类名
+                                closeBtn: 1, //不显示关闭按钮
+                                anim: 2,
+                                shadeClose: true, //开启遮罩关闭
+                                content: htmlhead+opten+endhtml
+                            });
+                            form.render();
                         }else {
-                            layer.msg(data.msg)
+                            layer.msg("服务中断");
                         }
 
                     },
@@ -239,32 +160,28 @@
                         layer.msg("服务暂停")
                     }
                 });
-            });
+            }
+        });
 
-            form.on('submit(demo1)', function(data){
-                var name = "";
-                var type = "";
-                if (data.field.title != ""){
-                    name = data.field.title;
-                    if (data.field.interest != ""){
-                        type = data.field.interest;
-                    }  else {
-                        type = "";
-                    }
+        //监听行工具事件
+        table.on('tool(yijifenl)', function(obj){
+            var data = obj.data;
+            if(obj.event === 'del'){
+                layer.confirm('确定删除', function(index){
+                    layer.close(index);
                     $.ajax({
                         type:'post',
-                        url:'/system/calss/ifcation/add',
-                        data:'name='+name+"&type="+type,
+                        url:'/system/calss/ifcation/remove',
+                        data:'articleId='+data.superArticleSortId+"&type="+type,
                         success:function(data){
                             if (data.code == "200"){
-                                layer.closeAll();
-                                window.location.href("/system/articles/classification");
+                                obj.del();
                                 layer.msg(data.msg)
                             }
-                            if (data.code == "407"){
+                            if (data.code == "404"){
                                 layer.msg(data.msg)
                             }
-                            if (data.code == "402"){
+                            if (data.code == "500"){
                                 layer.msg(data.msg)
                             }
                         },
@@ -272,24 +189,102 @@
                             layer.msg("服务暂停")
                         }
                     });
-                    return false;
-                }else {
-                   layer.msg("输入名称");
-                   return false;
+                });
+            } else if(obj.event === 'edit'){
+                layer.prompt({
+                    title:'编辑',
+                    formType: 0
+                    ,value: data.superArtilceName
+                }, function(value, index){
+                    layer.close(index);
+                    $.ajax({
+                        type:'post',
+                        url:'/system/calss/ifcation/edit',
+                        data:'name='+ value+"&type="+type+"&articleId="+data.superArticleSortId,
+                        success:function(data){
+                            if (data.code == "1"){
+                                obj.update({
+                                    superArtilceName: value
+                                });
+                                layer.msg(data.msg)
+                            }
+                            if (data.code == "0"){
+                                layer.msg(data.msg)
+                            }
+                            if (data.code == "-1"){
+                                layer.msg(data.msg)
+                            }
+                        },
+                        error:function (data) {
+                            layer.msg("服务暂停")
+                        }
+                    });
+                });
+            }
+        });
+
+        //监听锁定操作
+        form.on('checkbox(lockDemo)', function(obj){
+            $.ajax({
+                type:'post',
+                url:'/system/calss/ifcation/lock',
+                data:'articleId='+this.value+"&type="+type+"&isLock="+obj.elem.checked,
+                success:function(data){
+                    if (data.code == "200"){
+                        layer.msg(data.msg)
+                    }else {
+                        layer.msg(data.msg)
+                    }
+
+                },
+                error:function (data) {
+                    layer.msg("服务暂停")
                 }
-
-
             });
+        });
 
-            //一级end
-        };
-        yiji(table,form,0);
-        element.init();
-    });
-    function getTaps() {
-        var nodesTap =  document.getElementById("liTapType").getElementsByTagName("li").length;
-        var lengli = $("#liTapType li").length;
-    }
+        form.on('submit(demo1)', function(data){
+            var name = "";
+            var type = "";
+            if (data.field.title != ""){
+                name = data.field.title;
+                if (data.field.interest != ""){
+                    type = data.field.interest;
+                }  else {
+                    type = "";
+                }
+                $.ajax({
+                    type:'post',
+                    url:'/system/calss/ifcation/add',
+                    data:'name='+name+"&type="+type,
+                    success:function(data){
+                        if (data.code == "200"){
+                            layer.closeAll();
+                            window.location.href("/system/articles/classification");
+                            layer.msg(data.msg)
+                        }
+                        if (data.code == "407"){
+                            layer.msg(data.msg)
+                        }
+                        if (data.code == "402"){
+                            layer.msg(data.msg)
+                        }
+                    },
+                    error:function (data) {
+                        layer.msg("服务暂停")
+                    }
+                });
+                return false;
+            }else {
+                layer.msg("输入名称");
+                return false;
+            }
+
+
+        });
+
+        //一级end
+    };
     function umberClassType(element) {
         $.ajax({
             type:'post',

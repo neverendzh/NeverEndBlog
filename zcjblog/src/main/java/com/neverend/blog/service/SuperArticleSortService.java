@@ -83,4 +83,27 @@ public interface SuperArticleSortService {
      * @return
      */
     Msg getType(String type);
+
+    /**
+     * 查看当前用户的文章分类数据
+     * @param account
+     * @return
+     */
+    Msg getUfbWzFl(Account account);
+
+    /**
+     *
+     * @param account 用户
+     * @param name 文章分类名称
+     * @return
+     */
+    Msg getUfbWzFlWz(Account account, String name, Integer pageNum,Integer pageSize);
+
+    /**
+     *
+     * @param account 用户
+     * @param name 文章分类名称
+     * @return
+     */
+    Msg getUfbWzFlWzVue(Account account, String name, Integer pageNum,Integer pageSize);
 }

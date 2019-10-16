@@ -134,8 +134,7 @@ public class ArticleClassification {
     public Msg andArticleClassjson(@RequestParam(name = "name") String name,
                                @RequestParam(name = "type") String type,
                                HttpServletRequest request, Device device) {
-        HttpSession session = request.getSession();
-        Account account = (Account) session.getAttribute("account");
+        Account account = (Account) SecurityUtils.getSubject().getPrincipal();
         Msg msg = superArticleSortService.addAtricle(name, type, account);
         return msg;
     }

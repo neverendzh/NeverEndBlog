@@ -1,5 +1,7 @@
 package com.neverend.blog.util.email.redis;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
@@ -12,10 +14,9 @@ import java.util.concurrent.TimeUnit;
 
 @Component
 public class RedisUtil {
+    private Logger logger = LoggerFactory.getLogger(RedisUtil.class);
     @Autowired
     private RedisTemplate<String, Object> redisTemplate;
-    // =============================common============================
-
     /**
      * 指定缓存失效时间
      *
@@ -348,9 +349,9 @@ public class RedisUtil {
     }
 
     /**
-     * 336
+     *
      * 将set数据放入缓存
-     * 337
+     *
      *
      * @param key    键
      *               338
@@ -560,5 +561,12 @@ public class RedisUtil {
             e.printStackTrace();
             return 0;
         }
+    }
+
+    public void flushAll(){
+        Set<String> keys = redisTemplate.keys("*");
+        Long delete = redisTemplate.delete(keys);
+        logger.info("删除缓存："+delete+"个;键="+keys);
+
     }
 }

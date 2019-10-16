@@ -59,8 +59,6 @@ public class UserController {
     @GetMapping("/index")
     @ApiIgnore
     public String index(HttpServletRequest request, Model model) {
-        Account subject = (Account) SecurityUtils.getSubject().getPrincipal();
-        model.addAttribute("account",subject);
         return "user/index";
     }
 

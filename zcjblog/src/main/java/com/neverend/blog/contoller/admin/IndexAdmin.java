@@ -35,8 +35,6 @@ public class IndexAdmin {
     @ApiIgnore
     @RequestMapping("/admin/index")
     public String AdminIndex(Model model){
-        Account subject = (Account) SecurityUtils.getSubject().getPrincipal();
-        model.addAttribute("account",subject);
        return "admin/index";
     }
 

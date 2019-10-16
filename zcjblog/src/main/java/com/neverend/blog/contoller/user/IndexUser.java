@@ -173,10 +173,10 @@ public class IndexUser {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "topName", value = "设置是加载头部标题",
                     defaultValue = "首页头部",
-                    required = true, dataType = "String", paramType = "query"),
+                    required = false, dataType = "String", paramType = "query"),
             @ApiImplicitParam(name = "state", value = "菜单状态，flase加载可用菜单，true加载不可用菜单，null加载所有菜单",
                     defaultValue = "false",
-                    required = true, dataType = "String", paramType = "query")})
+                    required = false, dataType = "String", paramType = "query")})
     @ResponseBody
     @PostMapping("/lan/mu/top")
     public Msg<List<LanMuUi>> indexLanMuTopjson(@RequestParam(name = "topName", defaultValue = "首页头部", required = false) String topName,
@@ -204,10 +204,10 @@ public class IndexUser {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "bName", value = "设置是加载底部标题",
                     defaultValue = "首页尾部",
-                    required = true, dataType = "String", paramType = "query"),
+                    required = false, dataType = "String", paramType = "query"),
             @ApiImplicitParam(name = "state", value = "菜单状态，flase加载可用菜单，true加载不可用菜单，null加载所有菜单",
                     defaultValue = "false",
-                    required = true, dataType = "String", paramType = "query")})
+                    required = false, dataType = "String", paramType = "query")})
     @ResponseBody
     @PostMapping("/lan/mu/boom")
     public Msg<List<LanMuUi>> indexLanMuBottomjson(@RequestParam(name = "bName", defaultValue = "首页尾部", required = false) String bName,

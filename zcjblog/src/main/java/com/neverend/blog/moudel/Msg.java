@@ -41,6 +41,18 @@ public class Msg<T>{
     @ApiModelProperty(value="客户端类型 mobile=手机，tablet=平板，desktop=桌面")
     private String mobile;
 
+    public Msg() {
+    }
+
+    public Msg(String code, String msg, String count, String url, T data, String mobile) {
+        this.code = code;
+        this.msg = msg;
+        this.count = count;
+        this.url = url;
+        this.data = data;
+        this.mobile = mobile;
+    }
+
     public String getMobile() {
         return mobile;
     }

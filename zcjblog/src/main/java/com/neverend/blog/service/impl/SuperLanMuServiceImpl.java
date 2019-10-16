@@ -37,26 +37,26 @@ public class SuperLanMuServiceImpl implements SuperLanMuService {
     @Override
     public List<LanMuUi> getLanMus(Account account, String LanMuName, String state) {
         if (account != null && account.getId() != null && !"".equals(account.getId())) {
-            List<Object> objects = redisUtil.lGet(lanMukeytb+account.getBeiYongEr(), 0L, -1);
+            List<Object> objects = redisUtil.lGet(lanMukeytb+account.getBeiYongEr()+LanMuName+state, 0L, -1);
             List<LanMuUi> lanMuUis = zhua(objects);
             if (lanMuUis != null) {
                 return lanMuUis;
             } else {
                 List<LanMuUi> lanMustb = superLanMuDao.getLanMus(account.getId(), LanMuName, state);
-                boolean b = redisUtil.lSet(lanMukeytb+account.getBeiYongEr(), lanMustb);
+                boolean b = redisUtil.lSet(lanMukeytb+account.getBeiYongEr()+LanMuName+state, lanMustb);
                 if (!b) {
                     logger.error("首页头部加入缓存失败");
                 }
                 return lanMustb;
             }
         } else {
-            List<Object> objects = redisUtil.lGet(lanMukeywb, 0L, -1);
+            List<Object> objects = redisUtil.lGet(lanMukeywb+LanMuName+state, 0L, -1);
             List<LanMuUi> lanMuUis = zhua(objects);
             if (lanMuUis != null) {
                 return lanMuUis;
             } else {
                 List<LanMuUi> lanMus = superLanMuDao.getLanMus("1", LanMuName, state);
-                boolean b = redisUtil.lSet(lanMukeywb, lanMus);
+                boolean b = redisUtil.lSet(lanMukeywb+LanMuName+state, lanMus);
                 if (!b) {
                     logger.error("首页尾部加入缓存失败");
                 }

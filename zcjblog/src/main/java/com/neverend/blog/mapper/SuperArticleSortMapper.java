@@ -39,4 +39,18 @@ public interface SuperArticleSortMapper {
      */
     List<SuperArticleSort> selArticleNameSTypeS();
 
+    /**
+     *
+     * @param id 用户id
+     * @return
+     */
+    List<SuperArticleSort> getwzflsjyh(@Param("id") String id);
+
+    /**
+     * 根据用户 文章分类名 查询文章列表
+     * @param id
+     * @param name
+     * @return
+     */
+    List<Article> getAccountArticleName(@Param("id")String id, @Param("name")String name);
 }

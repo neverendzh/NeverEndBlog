@@ -26,10 +26,17 @@
                     <i class="layui-icon">&#xe66f;</i>
                     登陆
                 </a>
+                <div id="accimg" style="display:none;" >
+                    <shiro:principal property="beiYongSan"/>
+                </div>
+                <a  href="javascript:;" shiro:hasAnyRoles="2,3,4">
 
-                <a href="javascript:;" shiro:hasAnyRoles="2,3,4">
-                    <img th:src=${account.beiYongSan} class="layui-nav-img">
+                    <img id="account_img_top" src="" class="layui-nav-img">
                     <shiro:principal property="userName"/>
+                    <script>
+                        var oDiv = document.getElementById('accimg').innerText;
+                        document.getElementById('account_img_top').src=oDiv;
+                    </script>
                 </a>
 
                 <dl class="layui-nav-child">
