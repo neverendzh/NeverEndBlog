@@ -19,14 +19,9 @@
             <div class="layui-tab layui-tab-card" lay-filter="tabclass">
                 <ul id="liTapType" class="layui-tab-title" style=" margin-top: 6%;">
                 </ul>
-                <div id="tapContent" class="layui-tab-content" style="height: 100%;">
-                    <div class="layui-tab-item layui-show">
-                        <table class="layui-hide" id="yijifenl" lay-filter="yijifenl">
-                        </table>
-                        <script type="text/html" id="barDemo">
-                            <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
-                            <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
-                        </script>
+                <div id="tapContent" class="layui-tab-content" style="height: 90%;">
+                    <div id="articleAdds" class="layui-tab-item layui-show">
+
                     </div>
                 </div>
             </div>
@@ -38,6 +33,8 @@
             </ul>
         </div>
     </div>
+    <div id="page"></div>
+
     <!--Bottom information Text-->
     <div th:replace="../templates/user/include/footer :: footerHtml"></div>
 </div>
@@ -48,11 +45,17 @@
 <script th:inline="none">
     var layer ;
     var initname;
-    layui.use(['form','layer','element','table'], function () {
+    var pageStart = 1;
+    var pageNum = 5;
+    var nametype;
+    var laypage;
+    var addhtmlid = "articleAdds";
+    layui.use(['form','layer','element','table','laypage'], function () {
         var form = layui.form;
         layer = layui.layer;
         var element = layui.element;
         var table = layui.table
+         laypage = layui.laypage
         requestJsonTp(element);
         umberClassType(element,table,form,0);
         element.on('tab(tabclass)', function(data){
@@ -60,41 +63,94 @@
         });
         // element.init();
     });
+
     function yiji(table,form,name) {
         //一级star /u/f/f/b/t/wzs/web
         if (name==0){
-            name = initname;
+            nametype = initname;
+        }else {
+            nametype =name;
         }
-        table.render({
-            elem: '#yijifenl'
-            ,url:'/u/f/f/b/t/wzs/web?name='+name
-            ,cellMinWidth: 80
-            ,cols: [[
-                {type:'numbers'}
-                ,{type: 'checkbox'}
-                ,{field:'articleId', title:'ID', width:100, unresize: true, sort: true}
-                ,{field:'articleName', title:'分类名称',sort: true}
-                ,{field:'briefIntroduction', title:'创建用户',sort: true}
-                ,{field:'creatTime', title: '创建时间',templet: function(d){
-                        return  new Date(d.creatTime).Format("yyyy-MM-dd hh:mm:ss")
-                    }, minWidth:120, sort: true}
-                ,{field:'beiYongYi', title:'更新时间',templet: function(d){
-                        return  new Date(d.toUpdate).Format("yyyy-MM-dd hh:mm:ss")},
-                    sort: true}
-                ,{field:'beiYongSi', title:'状态', width:110, templet: '#checkboxTpl', unresize: true}
-                ,{fixed: 'right', title:'操作', toolbar: '#barDemo', width:150}
-            ]]
-            ,page: { //支持传入 laypage 组件的所有参数（某些参数除外，如：jump/elem） - 详见文档
-                layout: ['limit', 'count', 'prev', 'page', 'next', 'skip'] //自定义分页布局
-                //,curr: 5 //设定初始在第 5 页
-                ,groups: 7 //只显示 1 个连续页码
-                ,first: false //不显示首页
-                ,last: false //不显示尾页,
-                ,prev:"上一页"
-                ,next:"下一页"
+        $.ajax({
+            type: 'get',
+            url: '/u/f/f/b/t/wzs/web?name='+nametype,
+            data: {
+                "pageStart": pageStart,
+                "pageNum": pageNum
+            },
+            success: function (data) {
+                if (data.code == 0) {
+                    sethtml(data,addhtmlid);
+                    pages(data.count, addhtmlid,nametype)//切换分类时候，调用页码，重新渲染
+                }else {
+                    layer.msg("服务暂停");
+                }
+            },
+            error:function (data) {
+                    layer.msg("服务暂停");
             }
         });
     };
+    function sethtml(data,addhtmlid) {
+        $("#articleAdds").empty();
+        total = data.count;
+        var addarticel = "";
+        var dataArticle = data.data;
+        for (var i = 0; i < dataArticle.length; i++) {
+            var art = dataArticle[i];
+            var imgurl = '';
+            if (art.beiYongSi != null){
+                imgurl = art.beiYongSi;
+            }
+            addarticel = addarticel + " <div class=\"layui-card\" style=\"margin: 4px;border-radius: 8px;\">\n" +
+                "                <div class=\"layui-card-header\"><a href='/system/admin/fabu/yulan?articleId=" + art.articleId + "'><span style='color: #00B0E8'>" + art.articleName + "</span></a></div>\n" +
+                "                <div class=\"layui-card-body\">\n" +
+                "                    <div class=\"layui-row\" style=\"margin-top: -15px;\">\n" +
+                "                        <div class=\"layui-col-xs3 layui-col-sm2 layui-col-md2\">\n" +"<img src="+'"'+imgurl+'"'+"alt='无图片' style='width: 100%;height: 50px'"+">"+
+                "                        </div>\n" +
+                "                        <div class=\"layui-col-xs9 layui-col-sm10 layui-col-md10\">\n" +
+                "                            <div style=\"margin-left: 6px;\">" + art.briefIntroduction + "</div>\n" +
+                "                            <div style=\"float: right;\">"+"作者："+art.author +"  时间："+ art.creatTime + "</div>\n" +
+                "                        </div>\n" +
+                "\n" +
+                "                    </div>\n" +
+                "                </div>\n" +
+                "            </div>";
+
+
+        }
+        $("#"+addhtmlid).append(addarticel);
+    }
+    function pages(count, typeId,nametype) {
+        laypage.render({
+            elem: 'page'
+            , count: count
+            , limit: 5
+            , jump: function (obj, first) {
+                if (!first) {
+                    $.ajax({
+                        type: 'get',
+                        url: '/u/f/f/b/t/wzs/web',
+                        data: {
+                            "name":nametype,
+                            "pageStart": obj.curr,
+                            "pageNum": obj.limit
+                        },
+                        success: function (data) {
+                            if (data.code == 0) {
+                                sethtml(data,addhtmlid);
+                            }else {
+                                layer.msg("服务暂停");
+                            }
+                        },
+                        error:function (data) {
+                            layer.msg("服务暂停");
+                        }
+                    });
+                }
+            }
+        })
+    }
     function requestJsonTp(element) {
         var hearht = "<ul class=\"layui-nav layui-layout-left\">";
         var topLanMu = "";

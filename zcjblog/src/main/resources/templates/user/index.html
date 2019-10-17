@@ -169,6 +169,7 @@
                                     "                        </div>\n" +
                                     "                        <div class=\"layui-col-xs6 layui-col-sm6 layui-col-md8\">\n" +
                                     "                            <div style=\"margin-left: 6px;\">" + art.briefIntroduction + "</div>\n" +
+                                    "                            <div style=\"float: right;margin-top: 100px\">"+"作者："+art.author +"  时间："+ art.creatTime + "</div>\n" +
                                     "                        </div>\n" +
                                     "\n" +
                                     "                    </div>\n" +
@@ -244,6 +245,7 @@
                                                     "                        </div>\n" +
                                                     "                        <div class=\"layui-col-xs6 layui-col-sm6 layui-col-md8\">\n" +
                                                     "                            <div style=\"margin-left: 6px;\">" + art.briefIntroduction + "</div>\n" +
+                                                    "                            <div style=\"float: right;margin-top: 100px\">"+"作者："+art.author +"  时间："+ art.creatTime + "</div>\n" +
                                                     "                        </div>\n" +
                                                     "\n" +
                                                     "                    </div>\n" +
@@ -296,6 +298,7 @@
                             "                        </div>\n" +
                             "                        <div class=\"layui-col-xs6 layui-col-sm6 layui-col-md8\">\n" +
                             "                            <div style=\"margin-left: 6px;\">" + art.briefIntroduction + "</div>\n" +
+                            "                            <div style=\"float: right;margin-top: 100px;\">"+"作者："+art.author +"  时间："+ art.creatTime + "</div>\n" +
                             "                        </div>\n" +
                             "\n" +
                             "                    </div>\n" +
@@ -510,10 +513,9 @@
                     "searchname": searchname,
                 },
                 success: function (data) {
-
+                    $("#articleAdds").empty();
                     if (data.code == 200) {
                         if (data.count >0){
-                            $("#articleAdds").empty();
                                 total = data.count;
                                 var addarticel = "";
                                 var dataArticle = data.data;
@@ -531,15 +533,14 @@
                                         "                        </div>\n" +
                                         "                        <div class=\"layui-col-xs6 layui-col-sm6 layui-col-md8\">\n" +
                                         "                            <div style=\"margin-left: 6px;\">" + art.briefIntroduction + "</div>\n" +
+                                        "                            <div style=\"float: right;margin-top: 100px\">"+"作者："+art.author +"  时间："+ art.creatTime + "</div>\n" +
                                         "                        </div>\n" +
                                         "\n" +
                                         "                    </div>\n" +
                                         "                </div>\n" +
                                         "            </div>";
-
-
-                                $("#articleAdds").append(addarticel);
-                            }
+                                    $("#articleAdds").append(addarticel);
+                                }
                         } else {
                             layer.msg("无数据",{offset: ['50%', '50%']});
                         }

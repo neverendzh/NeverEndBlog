@@ -54,8 +54,8 @@ public class YiFaBuWenZh {
     @Deprecated
     @GetMapping("/u/f/f/b/t/wzs/web")
     public Msg<Article> getFenLeiWzjsonWeb(Device device, @RequestParam(name = "name") String name,
-                                                 @RequestParam(name = "page",defaultValue = "1",required = false) Integer pageNum,
-                                                 @RequestParam(name = "limit",defaultValue = "10",required = false) Integer pageSize){
+                                                 @RequestParam(name = "pageStart",defaultValue = "1",required = false) Integer pageNum,
+                                                 @RequestParam(name = "pageNum",defaultValue = "10",required = false) Integer pageSize){
         Account account = (Account) SecurityUtils.getSubject().getPrincipal();
         Msg msg = superArticleSortService.getUfbWzFlWz(account,name,pageNum,pageSize);
         return msg;

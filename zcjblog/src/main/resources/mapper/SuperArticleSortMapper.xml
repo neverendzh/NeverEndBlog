@@ -239,7 +239,8 @@
             tb_article.bei_yong_yi,
             tb_article.bei_yong_er,
             tb_article.bei_yong_si,
-            tb_article.bei_yong_wu
+            tb_article.bei_yong_wu,
+            (select tb_account.user_name from tb_account where tb_account.id=#{id}) as author
         FROM
             `tb_article`
         WHERE
