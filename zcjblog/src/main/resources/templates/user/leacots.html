@@ -5,61 +5,31 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <meta charset="UTF-8">
     <title>NeverEnd</title>
-    <link rel="Shortcut Icon" href="/static/res/favicon2.ico" type="image/x-icon" />
+    <link rel="Shortcut Icon" href="/static/res/favicon2.ico" type="image/x-icon"/>
     <!--header——js-->
     <div th:replace="../templates/user/include/header :: headerJsCss"></div>
     <style>
 
     </style>
 </head>
-<body background="/static/res/img/indeximg/backgru.jpg">
+<body style="background-color: rgba(196,205,224,0.29)">
 <!--Navigation Bar-->
 <div th:replace="../templates/user/include/top :: topHeader"></div>
 
-<div class="layui-container" style="background: #e4e8d7;min-height: 592px;">
-
-    <form class="layui-form" action="">
-
-        <div class="layui-form-item layui-form-text">
-            <div style="text-align: center"><h1>日记</h1></div>
-
-        </div>
-
-        <div>
-            <ul class="layui-timeline">
-                <li class="layui-timeline-item">
-                    <i class="layui-icon layui-icon-rate-solid" style="font-size: 20px; color: #1E9FFF;"></i>
-                    <div class="layui-timeline-content layui-text">
-                        <div class="layui-timeline-title">2018 test1</div>
-                    </div>
-                </li>
-                <li class="layui-timeline-item">
-                    <i class="layui-icon layui-icon-rate-solid" style="font-size: 20px; color: #1E9FFF;"></i>
-                    <div class="layui-timeline-content layui-text">
-                        <div class="layui-timeline-title">2017年test1</div>
-                    </div>
-                </li>
-                <li class="layui-timeline-item">
-                    <i class="layui-icon layui-icon-rate-solid" style="font-size: 20px; color: #1E9FFF;"></i>
-                    <div class="layui-timeline-content layui-text">
-                        <div class="layui-timeline-title">2016年，test1</div>
-                    </div>
-                </li>
-                <li class="layui-timeline-item">
-                    <i class="layui-icon layui-icon-rate-solid" style="font-size: 20px; color: #1E9FFF;"></i>
-                    <div class="layui-timeline-content layui-text">
-                        <div class="layui-timeline-title">2015年，test1</div>
-                    </div>
-                </li>
-                <li class="layui-timeline-item">
-                    <i class="layui-icon layui-icon-rate-solid" style="font-size: 20px; color: #1E9FFF;"></i>
-                    <div class="layui-timeline-content layui-text">
-                        <div class="layui-timeline-title">更久前</div>
-                    </div>
-                </li>
-            </ul>
-        </div>
-    </form>
+<div class="layui-container" style="background: #fffffe;height:90%;overflow-y: scroll">
+    <div class="layui-form-item layui-form-text">
+        <div style="text-align: center;color: #858b9c"><h1>本站大事记</h1></div>
+    </div>
+    <div>
+        <ul class="layui-timeline" id="adddiary">
+        </ul>
+    </div>
+    <div id="jalzai" style="width: 100px;
+    left: 50%;
+    right: 50%;
+    height: 30px;
+    float: bottom;
+    position: absolute;bottom:0;"><a href="javascript:;" onClick="loadMore();">加载更多</a></div>
     <!--Bottom information Text-->
     <div th:replace="../templates/user/include/footer :: footerHtml"></div>
 </div>
@@ -68,10 +38,12 @@
 <div th:replace="../templates/user/include/footerjs :: footerJsCss"></div>
 <script type="text/javascript">
     var layer;
-    layui.use(['form','layer','element'], function () {
+    layui.use(['form', 'layer', 'element'], function () {
         var form = layui.form;
         layer = layui.layer;
         var element = layui.element;
+
+
         //监听提交
         form.on('submit(formDemo)', function (data) {
             layer.msg(JSON.stringify(data.field));
@@ -100,36 +72,41 @@
         }
         requestJsonTp();
     });
+    var page=1;
     var indexiskq;
     function openclickm() {
         layer.close(indexiskq);
-        indexiskq =  layer.open({
+        indexiskq = layer.open({
             type: 2,
             title: '个人信息',
             shadeClose: true,
             shade: false,
             offset: ['2%', '15%'],
-            anim:4,
+            anim: 4,
             maxmin: true, //开启最大化最小化按钮
             area: ['893px', '600px'],
             content: '/user/msg',
-            end: function(){
-                iskqigrxx=0;
+            end: function () {
+                iskqigrxx = 0;
             }
         });
 
     }
+
     function openclickmwx() {
-        layer.msg("暂未开放",{offset: ['50%', '50%']});
+        layer.msg("暂未开放", {offset: ['50%', '50%']});
 
     }
+
     function openclickmqq() {
-        layer.msg("暂未开放",{offset: ['50%', '50%']});
+        layer.msg("暂未开放", {offset: ['50%', '50%']});
 
     }
+
     function openclickmzc() {
-        layer.msg("暂不开放注册",{offset: ['50%', '50%']});
+        layer.msg("暂不开放注册", {offset: ['50%', '50%']});
     }
+
     //登录表单显示
     function loginUserAccount() {
         layuiDomeLogin = layui.use('layer', function () {
@@ -142,17 +119,17 @@
                 skin: 'layui-layer-molv',
                 offset: '200px',
                 content: '<form> <div style="margin-top: 25px" class="layui-form-item">\n' +
-                '    <label class="layui-form-label">输入框</label>\n' +
-                '    <div class="layui-input-inline">\n' +
-                '      <input type="text" value="1593658137" id="accountMobile" name="accountMobile" required  lay-verify="required" placeholder="账号" autocomplete="off" class="layui-input">\n' +
-                '    </div>\n' +
-                '  </div>\n' +
-                '  <div class="layui-form-item">\n' +
-                '    <label class="layui-form-label">密码框</label>\n' +
-                '    <div class="layui-input-inline">\n' +
-                '      <input type="password" value="123" id="password" name="password" required lay-verify="required" placeholder="密码" autocomplete="off" class="layui-input">\n' +
-                '    </div>\n' +
-                '  </div></form>',
+                    '    <label class="layui-form-label">输入框</label>\n' +
+                    '    <div class="layui-input-inline">\n' +
+                    '      <input type="text" value="1593658137" id="accountMobile" name="accountMobile" required  lay-verify="required" placeholder="账号" autocomplete="off" class="layui-input">\n' +
+                    '    </div>\n' +
+                    '  </div>\n' +
+                    '  <div class="layui-form-item">\n' +
+                    '    <label class="layui-form-label">密码框</label>\n' +
+                    '    <div class="layui-input-inline">\n' +
+                    '      <input type="password" value="123" id="password" name="password" required lay-verify="required" placeholder="密码" autocomplete="off" class="layui-input">\n' +
+                    '    </div>\n' +
+                    '  </div></form>',
                 btn: ['登录', '重置'],
                 yes: function (index, layero) {
                     var accountMobile = $("#accountMobile").val();
@@ -193,6 +170,42 @@
             });
         });
     };
+    function initleacots(page) {
+        $.ajax({
+            type: 'post',
+            url: '/admin/sel/diary',
+            //数据格式是json串，商品信息
+            data: {pageStart:page},
+            success: function (data) {//返回json结果'
+                if (data.code == '200') {
+                    var msg = data.data.list;
+                    page=data.data.nextPage;
+                    if (!data.data.hasNextPage){
+                        $("#jalzai").css("display","none");
+                    }
+                    if (msg != null && msg.length > 0) {
+                        var alldiary = '';
+                        for (var i = 0; i < msg.length; i++) {
+                            alldiary = alldiary + '<li class="layui-timeline-item">\n' +
+                                '  <i class="layui-icon layui-icon-rate-solid" style="font-size: 20px; color: #1E9FFF;"></i>\n' +
+                                '    <div class="layui-timeline-content layui-text">\n' +
+                                '      <h3 class="layui-timeline-title">' + new Date(msg[i].creatTime).Format("yyyy-MM-dd hh:mm:ss") + '</h3>\n' +
+                                '      <p> ' + msg[i].textContext + '</p>\n' +
+                                '    </div>\n' +
+                                '  </li>';
+                        }
+                        $("#adddiary").append(alldiary);
+                    }
+                }
+            }
+
+        })
+    }
+    initleacots(page);
+    function loadMore(page) {
+        initleacots(page);
+    }
+
 </script>
 </body>
 </html>

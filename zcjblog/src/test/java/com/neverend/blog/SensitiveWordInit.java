@@ -12,8 +12,7 @@ import java.util.*;
 
 
 /**
- * Ãô¸Ğ´Ê¿â³õÊ¼»¯
- *
+ * æ•æ„Ÿè¯åº“åˆå§‹åŒ–
  * @author pipi
  *
  */
@@ -23,13 +22,13 @@ public class SensitiveWordInit {
     @Autowired
     ArticleDao articleDao  ;
     /**
-     * Ãô¸Ğ´Ê¿â
+     * æ•æ„Ÿè¯åº“
      */
     @SuppressWarnings("rawtypes")
     public static HashMap sensitiveWordMap;
 
     /**
-     * ³õÊ¼»¯Ãô¸Ğ´Ê
+     * åˆå§‹åŒ–æ•æ„Ÿè¯
      *
      * @return
      */
@@ -37,12 +36,12 @@ public class SensitiveWordInit {
     public Map initKeyWord() {
         List<Article> articles = articleDao.getAll();
         try {
-            // ´ÓÃô¸Ğ´Ê¼¯ºÏ¶ÔÏóÖĞÈ¡³öÃô¸Ğ´Ê²¢·â×°µ½Set¼¯ºÏÖĞ
+            // ä»æ•æ„Ÿè¯é›†åˆå¯¹è±¡ä¸­å–å‡ºæ•æ„Ÿè¯å¹¶å°è£…åˆ°Seté›†åˆä¸­
             Set<String> keyWordSet = new HashSet<String>();
             for (Article s : articles) {
                 keyWordSet.add(s.getArticleName().trim());
             }
-            // ½«Ãô¸Ğ´Ê¿â¼ÓÈëµ½HashMapÖĞ
+            // å°†æ•æ„Ÿè¯åº“åŠ å…¥åˆ°HashMapä¸­
             addSensitiveWordToHashMap(keyWordSet);
         } catch (Exception e) {
             e.printStackTrace();
@@ -51,31 +50,31 @@ public class SensitiveWordInit {
     }
 
     /**
-     * ·â×°Ãô¸Ğ´Ê¿â
+     * å°è£…æ•æ„Ÿè¯åº“
      *
      * @param keyWordSet
      */
     @SuppressWarnings({ "rawtypes", "unchecked" })
     private void addSensitiveWordToHashMap(Set<String> keyWordSet) {
-        // ³õÊ¼»¯HashMap¶ÔÏó²¢¿ØÖÆÈİÆ÷µÄ´óĞ¡
+        // åˆå§‹åŒ–HashMapå¯¹è±¡å¹¶æ§åˆ¶å®¹å™¨çš„å¤§å°
         sensitiveWordMap = new HashMap(keyWordSet.size());
-        // Ãô¸Ğ´Ê
+        // æ•æ„Ÿè¯
         String key = null;
-        // ÓÃÀ´°´ÕÕÏàÓ¦µÄ¸ñÊ½±£´æÃô¸Ğ´Ê¿âÊı¾İ
+        // ç”¨æ¥æŒ‰ç…§ç›¸åº”çš„æ ¼å¼ä¿å­˜æ•æ„Ÿè¯åº“æ•°æ®
         Map nowMap = null;
-        // ÓÃÀ´¸¨Öú¹¹½¨Ãô¸Ğ´Ê¿â
+        // ç”¨æ¥è¾…åŠ©æ„å»ºæ•æ„Ÿè¯åº“
         Map<String, String> newWorMap = null;
-        // Ê¹ÓÃÒ»¸öµü´úÆ÷À´Ñ­»·Ãô¸Ğ´Ê¼¯ºÏ
+        // ä½¿ç”¨ä¸€ä¸ªè¿­ä»£å™¨æ¥å¾ªç¯æ•æ„Ÿè¯é›†åˆ
         Iterator<String> iterator = keyWordSet.iterator();
         while (iterator.hasNext()) {
             key = iterator.next();
-            // µÈÓÚÃô¸Ğ´Ê¿â£¬HashMap¶ÔÏóÔÚÄÚ´æÖĞÕ¼ÓÃµÄÊÇÍ¬Ò»¸öµØÖ·£¬ËùÒÔ´ËnowMap¶ÔÏóµÄ±ä»¯£¬sensitiveWordMap¶ÔÏóÒ²»á¸ú×Å¸Ä±ä
+            // ç­‰äºæ•æ„Ÿè¯åº“ï¼ŒHashMapå¯¹è±¡åœ¨å†…å­˜ä¸­å ç”¨çš„æ˜¯åŒä¸€ä¸ªåœ°å€ï¼Œæ‰€ä»¥æ­¤nowMapå¯¹è±¡çš„å˜åŒ–ï¼ŒsensitiveWordMapå¯¹è±¡ä¹Ÿä¼šè·Ÿç€æ”¹å˜
             nowMap = sensitiveWordMap;
             for (int i = 0; i < key.length(); i++) {
-                // ½ØÈ¡Ãô¸Ğ´Êµ±ÖĞµÄ×Ö£¬ÔÚÃô¸Ğ´Ê¿âÖĞ×ÖÎªHashMap¶ÔÏóµÄKey¼üÖµ
+                // æˆªå–æ•æ„Ÿè¯å½“ä¸­çš„å­—ï¼Œåœ¨æ•æ„Ÿè¯åº“ä¸­å­—ä¸ºHashMapå¯¹è±¡çš„Keyé”®å€¼
                 char keyChar = key.charAt(i);
 
-                // ÅĞ¶ÏÕâ¸ö×ÖÊÇ·ñ´æÔÚÓÚÃô¸Ğ´Ê¿âÖĞ
+                // åˆ¤æ–­è¿™ä¸ªå­—æ˜¯å¦å­˜åœ¨äºæ•æ„Ÿè¯åº“ä¸­
                 Object wordMap = nowMap.get(keyChar);
                 if (wordMap != null) {
                     nowMap = (Map) wordMap;
@@ -86,7 +85,7 @@ public class SensitiveWordInit {
                     nowMap = newWorMap;
                 }
 
-                // Èç¹û¸Ã×ÖÊÇµ±Ç°Ãô¸Ğ´ÊµÄ×îºóÒ»¸ö×Ö£¬Ôò±êÊ¶Îª½áÎ²×Ö
+                // å¦‚æœè¯¥å­—æ˜¯å½“å‰æ•æ„Ÿè¯çš„æœ€åä¸€ä¸ªå­—ï¼Œåˆ™æ ‡è¯†ä¸ºç»“å°¾å­—
                 if (i == key.length() - 1) {
                     nowMap.put("isEnd", "1");
                 }

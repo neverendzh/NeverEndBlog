@@ -9,17 +9,17 @@ import java.util.Set;
 public class SensitivewordEngine {
 
     /**
-     * Ö»¹ıÂË×îĞ¡Ãô¸Ğ´Ê
+     * åªè¿‡æ»¤æœ€å°æ•æ„Ÿè¯
      */
     public static int minMatchTYpe = 1;
 
     /**
-     * ¹ıÂËËùÓĞÃô¸Ğ´Ê
+     * è¿‡æ»¤æ‰€æœ‰æ•æ„Ÿè¯
      */
     public static int maxMatchType = 2;
 
     /**
-     * Ãô¸Ğ´Ê¿âÃô¸Ğ´ÊÊıÁ¿
+     * æ•æ„Ÿè¯åº“æ•æ„Ÿè¯æ•°é‡
      *
      * @return
      */
@@ -31,7 +31,7 @@ public class SensitivewordEngine {
     }
 
     /**
-     * ÊÇ·ñ°üº¬Ãô¸Ğ´Ê
+     * æ˜¯å¦åŒ…å«æ•æ„Ÿè¯
      *
      * @param txt
      * @param matchType
@@ -49,11 +49,11 @@ public class SensitivewordEngine {
     }
 
     /**
-     * »ñÈ¡Ãô¸Ğ´ÊÄÚÈİ
+     * è·å–æ•æ„Ÿè¯å†…å®¹
      *
      * @param txt
      * @param matchType
-     * @return Ãô¸Ğ´ÊÄÚÈİ
+     * @return æ•æ„Ÿè¯å†…å®¹
      */
     public static Set<String> getSensitiveWord(String txt, int matchType) {
         Set<String> sensitiveWordList = new HashSet<String>();
@@ -61,7 +61,7 @@ public class SensitivewordEngine {
         for (int i = 0; i < txt.length(); i++) {
             int length = checkSensitiveWord(txt, i, matchType);
             if (length > 0) {
-                // ½«¼ì²â³öµÄÃô¸Ğ´Ê±£´æµ½¼¯ºÏÖĞ
+                // å°†æ£€æµ‹å‡ºçš„æ•æ„Ÿè¯ä¿å­˜åˆ°é›†åˆä¸­
                 sensitiveWordList.add(txt.substring(i, i + length));
                 i = i + length - 1;
             }
@@ -71,7 +71,7 @@ public class SensitivewordEngine {
     }
 
     /**
-     * Ìæ»»Ãô¸Ğ´Ê
+     * æ›¿æ¢æ•æ„Ÿè¯
      *
      * @param txt
      * @param matchType
@@ -94,7 +94,7 @@ public class SensitivewordEngine {
     }
 
     /**
-     * Ìæ»»Ãô¸Ğ´ÊÄÚÈİ
+     * æ›¿æ¢æ•æ„Ÿè¯å†…å®¹
      *
      * @param replaceChar
      * @param length
@@ -110,7 +110,7 @@ public class SensitivewordEngine {
     }
 
     /**
-     * ¼ì²éÃô¸Ğ´ÊÊıÁ¿
+     * æ£€æŸ¥æ•æ„Ÿè¯æ•°é‡
      *
      * @param txt
      * @param beginIndex
@@ -120,20 +120,20 @@ public class SensitivewordEngine {
     @SuppressWarnings("rawtypes")
     public static int checkSensitiveWord(String txt, int beginIndex, int matchType) {
         boolean flag = false;
-        // ¼ÇÂ¼Ãô¸Ğ´ÊÊıÁ¿
+        // è®°å½•æ•æ„Ÿè¯æ•°é‡
         int matchFlag = 0;
         char word = 0;
         Map nowMap = SensitiveWordInit.sensitiveWordMap;
         for (int i = beginIndex; i < txt.length(); i++) {
             word = txt.charAt(i);
-            // ÅĞ¶Ï¸Ã×ÖÊÇ·ñ´æÔÚÓÚÃô¸Ğ´Ê¿âÖĞ
+            // åˆ¤æ–­è¯¥å­—æ˜¯å¦å­˜åœ¨äºæ•æ„Ÿè¯åº“ä¸­
             nowMap = (Map) nowMap.get(word);
             if (nowMap != null) {
                 matchFlag++;
-                // ÅĞ¶ÏÊÇ·ñÊÇÃô¸Ğ´ÊµÄ½áÎ²×Ö£¬Èç¹ûÊÇ½áÎ²×ÖÔòÅĞ¶ÏÊÇ·ñ¼ÌĞø¼ì²â
+                // åˆ¤æ–­æ˜¯å¦æ˜¯æ•æ„Ÿè¯çš„ç»“å°¾å­—ï¼Œå¦‚æœæ˜¯ç»“å°¾å­—åˆ™åˆ¤æ–­æ˜¯å¦ç»§ç»­æ£€æµ‹
                 if ("1".equals(nowMap.get("isEnd"))) {
                     flag = true;
-                    // ÅĞ¶Ï¹ıÂËÀàĞÍ£¬Èç¹ûÊÇĞ¡¹ıÂËÔòÌø³öÑ­»·£¬·ñÔò¼ÌĞøÑ­»·
+                    // åˆ¤æ–­è¿‡æ»¤ç±»å‹ï¼Œå¦‚æœæ˜¯å°è¿‡æ»¤åˆ™è·³å‡ºå¾ªç¯ï¼Œå¦åˆ™ç»§ç»­å¾ªç¯
                     if (SensitivewordEngine.minMatchTYpe == matchType) {
                         break;
                     }

@@ -207,6 +207,7 @@
                         tb_roles.roles_name = "super"
                 )
         )
+        	and tb_super_article_sort.bei_yong_yi like '%true'
     GROUP BY
         super_artilce_name,
         super_article_sort_id,

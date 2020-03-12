@@ -5,36 +5,156 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <meta charset="UTF-8">
     <title>NeverEnd</title>
-    <link rel="Shortcut Icon" href="/static/res/favicon2.ico" type="image/x-icon" />
+    <link rel="Shortcut Icon" href="/static/res/favicon2.ico" type="image/x-icon"/>
 
     <!--header——js-->
     <div th:replace="../templates/user/include/header :: headerJsCss"></div>
     <style>
+        .jieda>li {
+            position: relative;
+            padding: 20px 0 10px;
+            border-bottom: 1px dotted #DFDFDF;
+        }
+        .detail-about-reply {
+            padding: 0 0 0 55px;
+            background: none;
+        }
+
+        .detail-about {
+            position: relative;
+            line-height: 20px;
+            padding: 15px 15px 15px 75px;
+            font-size: 13px;
+            background-color: #f8f8f8;
+            color: #999;
+        }
+        detail-about-reply .fly-avatar {
+            left: 0;
+            top: 0;
+        }
+        .fly-avatar {
+            position: absolute;
+            left: 15px;
+            top: 15px;
+        }
+        a{
+            color: #333;
+            text-decoration: none;
+        }
+
+        fly-detail-user a {
+            padding-right: 10px;
+            font-size: 14px;
+        }
+
+        a {
+            color: #333;
+            text-decoration: none;
+        }
 
     </style>
 </head>
-<body background="/static/res/img/indeximg/backgru.jpg">
+<body style="background-color: rgba(196,205,224,0.29)">
 <!--Navigation Bar-->
 <div th:replace="../templates/user/include/top :: topHeader"></div>
 
-<div class="layui-container" style="background: #e4e8d7;min-height: 592px;">
+<div class="layui-container" style="background: #fffffe;height:90%;overflow-y: scroll">
 
     <form class="layui-form" action="">
 
         <div class="layui-form-item layui-form-text">
-            <div style="text-align: center"><h1>留言页面</h1></div>
+            <div style="text-align: center;color: #858b9c"><h1>有什么想说的可以写下来</h1></div>
             <div class="layui-input-block" style="margin-left: 0px">
                 <textarea name="desc" placeholder="请输入内容" class="layui-textarea"></textarea>
             </div>
         </div>
-        <div class="layui-form-item">
-            <div class="layui-input-block">
-                <button class="layui-btn" lay-submit lay-filter="formDemo">立即提交</button>
-                <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+        <div class="layui-form-item" style="text-align: center">
+            <div class="layui-input-block" style="margin: 0">
+                <button style="background-color: rgba(119,125,142,0.96)" class="layui-btn" lay-submit
+                        lay-filter="formDemo">提交
+                </button>
+                <button style="background-color:rgba(142,149,168,0.67);color: white " type="reset" class="layui-btn">
+                    重置
+                </button>
             </div>
         </div>
         <div>
-            <img src="/static/res/img/test/u12.png">
+            <div class="fly-panel detail-box" id="flyReply">
+                <fieldset class="layui-elem-field layui-field-title" style="text-align: center;">
+                    <legend>留言</legend>
+                </fieldset>
+                <ul class="jieda" id="jieda">
+                    <li data-id="218873">
+                        <div class="detail-about detail-about-reply">
+                            <a class="fly-avatar" href="/u/17709216/">
+                                <img
+                                class="layui-nav-img"      src="http://account.img.neverend.cn/FgB6hGHR8fiiortNZkWAKhrQyz0n.gif"
+                                alt="小明"> </a>
+                            <div style="color: #00B0E8"><cite>小明</cite><span style="color: #0C0C0C;margin: 10px">1998-20-30</span></div>
+                            <p>今天🌛好圆，此时此刻我想吟诗一首，抬头看，月亮圆，古有李白明月光.思故乡，今有小明来到此，一句卧槽离开了。</p>
+                            <br>
+                            <div style="padding: 0;margin: 0;font-size: 16px;">
+                                <i style="cursor: pointer;font-size: 22px" class="layui-icon layui-icon-praise"></i><em>10</em>
+                                <span style="cursor: pointer;color: #1E9FFF">回复</span>
+                            </div>
+                            <br>
+                            <a class="fly-avatar" href="/u/17709216/">
+                                <img
+                                        class="layui-nav-img"      src="http://account.img.neverend.cn/FgB6hGHR8fiiortNZkWAKhrQyz0n.gif"
+                                        alt="小明"> </a>
+                            <div style="color: #00B0E8"><cite>小明</cite><span style="color: #0C0C0C;margin: 10px">回复</span><cite>小红</cite></div>
+                            <p>今天🌛好圆，此时此刻我想吟诗一首，抬头看，月亮圆，古有李白明月光.思故乡，今有小明来到此，一句卧槽离开了。</p>
+
+                        </div>
+                    </li>
+                    <li data-id="218873">
+                        <div class="detail-about detail-about-reply">
+                            <a class="fly-avatar" href="/u/17709216/">
+                                <img
+                                        class="layui-nav-img"      src="http://account.img.neverend.cn/FgB6hGHR8fiiortNZkWAKhrQyz0n.gif"
+                                        alt="小明"> </a>
+                            <div style="color: #00B0E8"><cite>小明</cite><span style="color: #0C0C0C;margin: 10px">1998-20-30</span></div>
+                            <p>今天🌛好圆，此时此刻我想吟诗一首，抬头看，月亮圆，古有李白明月光.思故乡，今有小明来到此，一句卧槽离开了。</p>
+                            <br>
+                            <div style="padding: 0;margin: 0;font-size: 16px;">
+                                <i style="cursor: pointer;font-size: 22px" class="layui-icon layui-icon-praise"></i><em>10</em>
+                                <span style="cursor: pointer;color: #1E9FFF">回复</span>
+                            </div>
+                            <br>
+                            <a class="fly-avatar" href="/u/17709216/">
+                                <img
+                                        class="layui-nav-img"      src="http://account.img.neverend.cn/FgB6hGHR8fiiortNZkWAKhrQyz0n.gif"
+                                        alt="小明"> </a>
+                            <div style="color: #00B0E8"><cite>小明</cite><span style="color: #0C0C0C;margin: 10px">回复</span><cite>小红</cite></div>
+                            <p>今天🌛好圆，此时此刻我想吟诗一首，抬头看，月亮圆，古有李白明月光.思故乡，今有小明来到此，一句卧槽离开了。</p>
+
+                        </div>
+                    </li>
+                    <li data-id="218873">
+                        <div class="detail-about detail-about-reply">
+                            <a class="fly-avatar" href="/u/17709216/">
+                                <img
+                                        class="layui-nav-img"      src="http://account.img.neverend.cn/FgB6hGHR8fiiortNZkWAKhrQyz0n.gif"
+                                        alt="小明"> </a>
+                            <div style="color: #00B0E8"><cite>小明</cite><span style="color: #0C0C0C;margin: 10px">1998-20-30</span></div>
+                            <p>今天🌛好圆，此时此刻我想吟诗一首，抬头看，月亮圆，古有李白明月光.思故乡，今有小明来到此，一句卧槽离开了。</p>
+                            <br>
+                            <div style="padding: 0;margin: 0;font-size: 16px;">
+                                <i style="cursor: pointer;font-size: 22px" class="layui-icon layui-icon-praise"></i><em>10</em>
+                                <span style="cursor: pointer;color: #1E9FFF">回复</span>
+                            </div>
+                            <br>
+                            <a class="fly-avatar" href="/u/17709216/">
+                                <img
+                                        class="layui-nav-img"      src="http://account.img.neverend.cn/FgB6hGHR8fiiortNZkWAKhrQyz0n.gif"
+                                        alt="小明"> </a>
+                            <div style="color: #00B0E8"><cite>小明</cite><span style="color: #0C0C0C;margin: 10px">回复</span><cite>小红</cite></div>
+                            <p>今天🌛好圆，此时此刻我想吟诗一首，抬头看，月亮圆，古有李白明月光.思故乡，今有小明来到此，一句卧槽离开了。</p>
+
+                        </div>
+                    </li>
+                </ul>
+            </div>
         </div>
     </form>
     <!--Bottom information Text-->
@@ -44,16 +164,17 @@
 <!--Bottom information js-->
 <div th:replace="../templates/user/include/footerjs :: footerJsCss"></div>
 <script type="text/javascript">
-    var  layer;
-    layui.use(['form','element'], function(){
+    var layer;
+    layui.use(['form', 'element'], function () {
         var form = layui.form;
-           layer = layui.layer;
+        layer = layui.layer;
         var element = layui.element;
         //监听提交
-        form.on('submit(formDemo)', function(data){
-            layer.msg(JSON.stringify(data.field));
+        form.on('submit(formDemo)', function (data) {
+            layer.msg("暂未开发留言");
             return false;
         });
+
         function requestJsonTp() {
             var hearht = "<ul class=\"layui-nav layui-layout-left\">";
             var topLanMu = "";
@@ -75,38 +196,44 @@
 
             })
         }
+
         requestJsonTp();
     });
     var indexiskq;
+
     function openclickm() {
         layer.close(indexiskq);
-        indexiskq =  layer.open({
+        indexiskq = layer.open({
             type: 2,
             title: '个人信息',
             shadeClose: true,
             shade: false,
             offset: ['2%', '15%'],
-            anim:4,
+            anim: 4,
             maxmin: true, //开启最大化最小化按钮
             area: ['893px', '600px'],
             content: '/user/msg',
-            end: function(){
-                iskqigrxx=0;
+            end: function () {
+                iskqigrxx = 0;
             }
         });
 
     }
+
     function openclickmzc() {
-        layer.msg("暂不开放注册",{offset: ['50%', '50%']});
+        layer.msg("暂不开放注册", {offset: ['50%', '50%']});
     }
+
     function openclickmwx() {
-        layer.msg("暂未开放",{offset: ['50%', '50%']});
+        layer.msg("暂未开放", {offset: ['50%', '50%']});
 
     }
+
     function openclickmqq() {
-        layer.msg("暂未开放",{offset: ['50%', '50%']});
+        layer.msg("暂未开放", {offset: ['50%', '50%']});
 
     }
+
     //登录表单显示
     function loginUserAccount() {
         layuiDomeLogin = layui.use('layer', function () {
@@ -119,17 +246,17 @@
                 skin: 'layui-layer-molv',
                 offset: '200px',
                 content: '<form> <div style="margin-top: 25px" class="layui-form-item">\n' +
-                '    <label class="layui-form-label">输入框</label>\n' +
-                '    <div class="layui-input-inline">\n' +
-                '      <input type="text" value="1593658137" id="accountMobile" name="accountMobile" required  lay-verify="required" placeholder="账号" autocomplete="off" class="layui-input">\n' +
-                '    </div>\n' +
-                '  </div>\n' +
-                '  <div class="layui-form-item">\n' +
-                '    <label class="layui-form-label">密码框</label>\n' +
-                '    <div class="layui-input-inline">\n' +
-                '      <input type="password" value="123" id="password" name="password" required lay-verify="required" placeholder="密码" autocomplete="off" class="layui-input">\n' +
-                '    </div>\n' +
-                '  </div></form>',
+                    '    <label class="layui-form-label">输入框</label>\n' +
+                    '    <div class="layui-input-inline">\n' +
+                    '      <input type="text" value="1593658137" id="accountMobile" name="accountMobile" required  lay-verify="required" placeholder="账号" autocomplete="off" class="layui-input">\n' +
+                    '    </div>\n' +
+                    '  </div>\n' +
+                    '  <div class="layui-form-item">\n' +
+                    '    <label class="layui-form-label">密码框</label>\n' +
+                    '    <div class="layui-input-inline">\n' +
+                    '      <input type="password" value="123" id="password" name="password" required lay-verify="required" placeholder="密码" autocomplete="off" class="layui-input">\n' +
+                    '    </div>\n' +
+                    '  </div></form>',
                 btn: ['登录', '重置'],
                 yes: function (index, layero) {
                     var accountMobile = $("#accountMobile").val();

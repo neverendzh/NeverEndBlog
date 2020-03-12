@@ -14,47 +14,55 @@
             padding: 0;
         }
     </style>
+    <link rel="stylesheet" type="text/css" href="/static/res/layui-remove.css">
 </head>
-<body style="background-color: #9ea4e8">
+<body class="layui-layout-body">
 <!--Navigation Bar-->
 <div th:replace="../templates/user/include/top :: topHeader"></div>
-
-<div class="layui-container" style="background: #6b9fe8;min-height: 592px;">
-
-    <div class="layui-row" style="margin-top: 10px;">
-        <div class="layui-col-xs6 layui-col-sm6 layui-col-md3" style="margin-top: 4%;z-index: 100; position:fixed; float:left;width: 18%; ">
-            <div class="layui-card" style="margin-top: 2px;border-radius: 8px;">
-                <div class="layui-card-header">选择文章分类查看</div>
-                <div class="layui-card-body">
-                    <div id="ztreeAticle"></div>
+<div class="layui-side" style="margin-top: 80px;width: 260px;">
+    <div style="width: 200px;" id="dateTimeDay"></div>
+    <div style="margin-top: 10px;
+    margin: 10px;">
+        <a href="https://www.aliyun.com/sale-season/2020/procurement-new-members?userCode=h3re6oo8" target="_blank"><img src="http://img.neverend.cn/Fh98VKM5m6e4qn1a1voB5pV00sxm.png"></a>
+    </div>
+</div>
+<div class="layui-body" style="margin-top: 80px;margin-left: 55px;">
+    <div class="layui-row">
+        <div class="layui-col-xs2">
+            <div style="overflow-x: scroll">
+                <div class="layui-card" style="border-radius: 8px;">
+                    <div class="layui-card-header" style="font-size: 16px;">文章分类</div>
+                    <div class="layui-card-body">
+                        <div id="ztreeAticle"></div>
+                    </div>
                 </div>
             </div>
         </div>
-
-        <div id="articleAdds" style="margin-top: 5%;left: 22%" class="layui-col-xs6 layui-col-sm6 layui-col-md6">
-
+        <div class="layui-col-xs7">
+            <div>
+                <div id="articleAdds"></div>
+            </div>
         </div>
-        <div   class="layui-col-xs6 layui-col-sm6 layui-col-md3">
-            <div style="margin-top: 4%;z-index: 100; position:fixed;left: 72%;" >
+        <div class="layui-col-xs3">
+            <div>
                 <div class="layui-form-item">
                     <div class="layui-input-inline">
                         <div class="layui-input-inline">
                             <input id="searchName" style="width: 280px;border-radius: 42px;" type="search" name="keyword"
                                    autocomplete="off" class="layui-input" placeholder="标题关键字"/>
                             <i onclick="search()" class="layui-icon layui-icon-search"
-                               style="position: absolute;top:8px;right: -76px;font-size: 24px;color: #1E9FFF;"></i>
+                               style="position: absolute;top:8px;right: -76px;font-size: 24px;color: #1E9FFF;cursor: pointer"></i>
                         </div>
                     </div>
                 </div>
-                <div class="layui-card" style="margin-top: -12px;border-radius: 8px;">
+                <div class="layui-card" style="border-radius: 8px;">
                     <div class="layui-card-header">热门文章</div>
                     <div class="layui-card-body">
                         <ul id="allarticleName" class="layui-nav layui-nav-tree">
                         </ul>
                     </div>
                 </div>
-
-                <div class="layui-card" style="margin-top: -12px;border-radius: 8px;">
+                <div class="layui-card" style="border-radius: 8px;">
                     <div class="layui-card-header">版主推荐</div>
                     <div class="layui-card-body">
                         <ul id="allarticleNameTj" class="layui-nav layui-nav-tree">
@@ -63,7 +71,7 @@
                 </div>
             </div>
         </div>
-    </div>
+        </div>
 
     <!--Bottom information Text-->
     <div th:replace="../templates/user/include/footer :: footerHtml"></div>
@@ -82,68 +90,43 @@
     var form;
     var element;
     function getDocumentTop() {
-
         var scrollTop = 0, bodyScrollTop = 0, documentScrollTop = 0;
-
         if (document.body) {
-
             bodyScrollTop = document.body.scrollTop;
-
         }
-
         if (document.documentElement) {
-
             documentScrollTop = document.documentElement.scrollTop;
-
         }
         scrollTop = (bodyScrollTop - documentScrollTop > 0) ? bodyScrollTop : documentScrollTop;
         return scrollTop;
     }
 
     function getWindowHeight() {
-
         var windowHeight = 0;
         if (document.compatMode == "CSS1Compat") {
-
             windowHeight = document.documentElement.clientHeight;
-
         } else {
-
             windowHeight = document.body.clientHeight;
-
         }
-
         return windowHeight;
-
     }
 
     function getScrollHeight() {
-
         var scrollHeight = 0, bodyScrollHeight = 0, documentScrollHeight = 0;
-
         if (document.body) {
-
             bodyScrollHeight = document.body.scrollHeight;
-
         }
-
         if (document.documentElement) {
-
             documentScrollHeight = document.documentElement.scrollHeight;
-
         }
-
         scrollHeight = (bodyScrollHeight - documentScrollHeight > 0) ? bodyScrollHeight : documentScrollHeight;
         return scrollHeight;
 
     }
 
     window.onscroll = function () {
-
         //监听事件内容
-
         if (getScrollHeight() == getWindowHeight() + getDocumentTop()) {
-
             if (pageStart < total) {
                 pageStart = pageStart + 1;
                 $.ajax({
@@ -188,20 +171,25 @@
                     temp = temp + 1;
                 }
             }
-
-
         }
-
     }
 
     layui.config({
         base: '/static/res/js/util/'
-    }).use(['layer', 'form', 'tree','element'], function () {
+    }).use(['layer', 'form', 'tree','element','laydate'], function () {
         layer = layui.layer;
         form = layui.form;
         tree = layui.tree;
          element = layui.element;
-        layer.msg("您好^_^ ^_^ |本博客正在开发测试中！")
+         var laydate  = layui.laydate;
+        layer.msg("您好^_^ ^_^ |本博客正在开发测试中！");
+        laydate.render({
+            elem: '#dateTimeDay'
+            ,position: 'static'
+            ,theme: '#6d7283'
+            ,lang: 'cn'
+            ,showBottom: false
+        });
         //加载树形分类数据
         $.ajax({
             type: 'get',
@@ -215,6 +203,7 @@
                         elem: '#ztreeAticle',  //绑定元素
                         showLine: true,
                         showCheckbox: false,
+                        showLine: false,
                         data: datatree,
                         id: 'syId' //定义索引
                         , click: function (obj) {
@@ -291,14 +280,14 @@
                             imgurl = art.beiYongSi;
                         }
                         addarticel = addarticel + " <div class=\"layui-card\" style=\"margin: 4px;border-radius: 8px;\">\n" +
-                            "                <div class=\"layui-card-header\"><a href='/system/admin/fabu/yulan?articleId=" + art.articleId + "'><span style='color: #00B0E8'>" + art.articleName + "</span></a></div>\n" +
+                            "                <div class=\"layui-card-header\" style='font-size: 18px;'><a href='/system/admin/fabu/yulan?articleId=" + art.articleId + "'><span style='color: #00B0E8'>" + art.articleName + "</span></a></div>\n" +
                             "                <div class=\"layui-card-body\">\n" +
                             "                    <div class=\"layui-row\" style=\"margin-top: 10px;\">\n" +
-                            "                        <div class=\"layui-col-xs6 layui-col-sm6 layui-col-md4\">\n" +"<img src="+'"'+imgurl+'"'+"alt='无图片' style='width: 100%;height: 150px'"+">"+
+                            "                        <div class=\"layui-col-xs6 layui-col-sm6 layui-col-md6\">\n" +"<img src="+'"'+imgurl+'"'+"alt='无图片' style='width: 100%;height: 150px'"+">"+
                             "                        </div>\n" +
-                            "                        <div class=\"layui-col-xs6 layui-col-sm6 layui-col-md8\">\n" +
+                            "                        <div class=\"layui-col-xs6 layui-col-sm6 layui-col-md6\">\n" +
                             "                            <div style=\"margin-left: 6px;\">" + art.briefIntroduction + "</div>\n" +
-                            "                            <div style=\"float: right;margin-top: 100px;\">"+"作者："+art.author +"  时间："+ art.creatTime + "</div>\n" +
+                            "                            <div style=\"float: right;margin-top: 100px;\">"+"作者："+art.author +"  时间："+new Date( art.creatTime).Format("yyyy-MM-dd hh:mm:ss") + "</div>\n" +
                             "                        </div>\n" +
                             "\n" +
                             "                    </div>\n" +
@@ -369,10 +358,9 @@
                 success: function (data) {//返回json结果'
                     var jsonObject = data.data;
                     for (var i = 0; i < jsonObject.length; i++) {
-
                         topLanMu = topLanMu + "<li class=\"layui-nav-item \"><a href=\"" + jsonObject[i].lookUrl + "\">" + jsonObject[i].lanMu + "</a></li>";
                     }
-                    var endht = hearht + topLanMu + " </ul>";
+                    var endht = hearht + topLanMu+ " </ul>";
                     $("#topCaiDan").append(endht);
                     element.render();
                     form.render();
@@ -560,7 +548,7 @@
             search();
         }
     });
-    
+
     function openclickmsz() {
 
     }
